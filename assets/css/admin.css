@@ -1,0 +1,151 @@
+/* ===== MNSNP – Product meta (1-column, LTR, clean) ===== */
+
+/* ظرف اصلی هر دو حالت: ساده و وارییشن */
+.mns-navasan-plus_simple_product_fields,
+.mns-navasan-plus_variation_product_fields{
+  direction:ltr;          /* اجباری: لیبل‌ها و ورودی‌ها LTR */
+  text-align:left;
+  background:#fff;
+  border:1px solid #e5e7ea;
+  border-radius:8px;
+  padding:16px;
+  margin-top:12px;
+}
+
+/* تک‌ستونه واقعی و خنثی‌سازی float/grid ووکامرس */
+.options_group.mns-navasan-plus_simple_product_fields{
+  display:block !important;
+  grid-template-columns:none !important;
+  gap:0 !important;
+}
+.mns-navasan-plus_simple_product_fields .form-field,
+.mns-navasan-plus_variation_product_fields .form-row{
+  display:block !important;
+  clear:both !important;
+  width:100% !important;
+  max-width:720px;
+  margin:12px 0 !important;
+  padding:0 !important;
+  box-sizing:border-box;
+}
+
+/* لیبل بالا، چپ‌چین، بدون شناوری */
+.mns-navasan-plus_simple_product_fields .form-field > label:first-child,
+.mns-navasan-plus_variation_product_fields .form-row > label:first-child{
+  float:none !important;
+  width:auto !important;
+  display:block !important;
+  margin:0 0 6px !important;
+  font-weight:600;
+  line-height:1.35;
+  text-align:left;
+}
+
+/* رپر ورودی تمام‌عرض */
+.mns-navasan-plus_simple_product_fields .woocommerce-input-wrapper,
+.mns-navasan-plus_variation_product_fields .woocommerce-input-wrapper{
+  display:block !important;
+  width:100% !important;
+  margin:0 !important;
+}
+
+/* ورودی‌ها و سلکت‌ها تمیز و فول‌ویدث */
+.mns-navasan-plus_simple_product_fields input[type="text"],
+.mns-navasan-plus_simple_product_fields input[type="number"],
+.mns-navasan-plus_simple_product_fields input[type="email"],
+.mns-navasan-plus_simple_product_fields input[type="url"],
+.mns-navasan-plus_simple_product_fields select,
+.mns-navasan-plus_simple_product_fields textarea,
+.mns-navasan-plus_variation_product_fields input[type="text"],
+.mns-navasan-plus_variation_product_fields input[type="number"],
+.mns-navasan-plus_variation_product_fields input[type="email"],
+.mns-navasan-plus_variation_product_fields input[type="url"],
+.mns-navasan-plus_variation_product_fields select,
+.mns-navasan-plus_variation_product_fields textarea{
+  width:100% !important;
+  min-height:36px;
+  padding:8px 10px;
+  border:1px solid #c3c4c7;
+  border-radius:6px;
+  background:#fff;
+  box-sizing:border-box;
+  outline:0;
+  transition:border-color .15s ease, box-shadow .15s ease;
+}
+.mns-navasan-plus_simple_product_fields input:focus,
+.mns-navasan-plus_simple_product_fields select:focus,
+.mns-navasan-plus_simple_product_fields textarea:focus,
+.mns-navasan-plus_variation_product_fields input:focus,
+.mns-navasan-plus_variation_product_fields select:focus,
+.mns-navasan-plus_variation_product_fields textarea:focus{
+  border-color:#2271b1;
+  box-shadow:0 0 0 1px #2271b1;
+}
+
+/* توضیح کوتاه نزدیک فیلد */
+.mns-navasan-plus_simple_product_fields .description,
+.mns-navasan-plus_variation_product_fields .description{
+  margin-top:6px;
+  font-size:12px;
+  color:#5a5f63;
+}
+
+/* چک‌باکس‌ها افقی و واضح (wrapper_class: mnsnp-checkbox) */
+.mnsnp-checkbox{
+  display:flex !important;
+  align-items:center;
+  gap:10px;
+}
+.mnsnp-checkbox > label:first-child{
+  margin:0 !important;
+  font-weight:600;
+}
+.mnsnp-checkbox .woocommerce-input-wrapper{
+  display:flex !important;
+  align-items:center;
+  gap:8px;
+  width:auto !important;
+}
+.mnsnp-checkbox input[type="checkbox"]{
+  margin:0;
+  transform:scale(1.1);
+}
+
+/* کارت متغیرهای فرمول */
+.mns-navasan-plus-formula-variables{
+  margin-top:10px;
+  border:1px solid #ececee;
+  background:#fbfbfc;
+  border-radius:6px;
+  padding:10px;
+}
+.mns-navasan-plus-formula-variables fieldset.form-field{
+  display:block !important;
+  border:1px dashed #e6e7ea;
+  border-radius:6px;
+  padding:10px;
+  margin:10px 0;
+}
+.mns-navasan-plus-formula-variables fieldset.form-field legend{
+  display:block;
+  font-weight:600;
+  text-align:left;
+  margin:0 0 8px;
+  padding:0 6px;
+}
+
+/* اطمینان از تک‌ستونه‌بودن کلاس‌های پیش‌فرض */
+.mns-navasan-plus_simple_product_fields .form-row-first,
+.mns-navasan-plus_simple_product_fields .form-row-last,
+.mns-navasan-plus_variation_product_fields .form-row-first,
+.mns-navasan-plus_variation_product_fields .form-row-last{
+  float:none !important;
+  width:100% !important;
+  margin-right:0 !important;
+}
+
+/* select2 ووکامرس فول‌ویدث */
+.mns-navasan-plus_simple_product_fields .select2-container,
+.mns-navasan-plus_variation_product_fields .select2-container{
+  width:100% !important;
+}
