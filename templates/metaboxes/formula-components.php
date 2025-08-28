@@ -1,91 +1,71 @@
 <?php
 /**
- * Formula Components Meta‐box template (Navasan Plus)
- *
- * Vars:
- * @var array $formula {
- *   @type int   $components_counter
- *   @type array $components  (indexed array: [ ['name'=>'','text'=>'','symbol'=>''], ... ])
- * }
+ * Formula Components Meta-box (admin)
+ * ذخیره با کلیدهای: name, text, symbol
  */
+
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 use MNS\NavasanPlus\Templates\Classes\Fields;
 
-// Nonce باید با saver یکی باشد
+// nonce یکسان با saver
 wp_nonce_field( 'mns_navasan_plus_formula', '_mns_navasan_plus_formula_nonce' );
 
-// مقدارهای امن پیش‌فرض
+// داده‌های قبلی
 $components = is_array( $formula['components'] ?? null ) ? $formula['components'] : [];
 $counter    = (int) ( $formula['components_counter'] ?? 1 );
 $total      = max( 1, $counter, count( $components ) );
 ?>
 
-<h4><?php _e( 'Formula Components', 'mns-navasan-plus' ); ?></h4>
+<div class="mns-formula-components-box">
+  <p style="margin:0 0 8px;"><?php esc_html_e( 'Define component lines (name + expression + symbol).', 'mns-navasan-plus' ); ?></p>
 
-<input type="hidden"
-       name="_mns_navasan_plus_formula_components_counter"
-       value="<?php echo (int) $total; ?>" />
-
-<div id="mns-navasan-plus-formula-components-container">
-  <?php for ( $i = 0; $i < $total; $i++ ) :
-      $component = $components[ $i ] ?? [
-        'name'   => '',
-        'text'   => '',
-        'symbol' => '',
-      ];
-  ?>
-  <div class="mns-formula-component" data-index="<?php echo esc_attr( $i ); ?>">
-
-    <?php
-    // نام کامپوننت
-    Fields::text(
-      "_mns_navasan_plus_formula_components[{$i}][name]",
-      "mns_navasan_plus_formula_components_{$i}_name",
-      $component['name'],
-      __( 'Component Name', 'mns-navasan-plus' )
-    );
-
-    // عبارت/متن کامپوننت (برای محاسبه زنده کلاس زیر لازم است)
-    Fields::text(
-      "_mns_navasan_plus_formula_components[{$i}][text]",
-      "mns_navasan_plus_formula_components_{$i}_text",
-      $component['text'],
-      __( 'Component Text / Expression', 'mns-navasan-plus' ),
-      '',
-      [ 'class' => 'mns-component-expression' ]
-    );
-
-    // نماد (اختیاری – فقط نمایش کنار حاصل)
-    Fields::text(
-      "_mns_navasan_plus_formula_components[{$i}][symbol]",
-      "mns_navasan_plus_formula_components_{$i}_symbol",
-      $component['symbol'],
-      __( 'Component Symbol', 'mns-navasan-plus' )
-    );
+  <div id="mns-navasan-plus-formula-components-container">
+    <?php for ( $i = 0; $i < $total; $i++ ) :
+      $component = $components[ $i ] ?? [ 'name' => '', 'text' => '', 'symbol' => '' ];
     ?>
+      <div class="mns-formula-component" data-index="<?php echo esc_attr( $i ); ?>" style="border:1px solid #eee;border-radius:6px;padding:10px;margin-bottom:10px;">
+        <?php
+        // نام کامپوننت
+        Fields::text(
+          "_mns_navasan_plus_formula_components[{$i}][name]",
+          "mns_navasan_plus_formula_components_{$i}_name",
+          $component['name'],
+          __( 'Component Name', 'mns-navasan-plus' )
+        );
 
-    <p class="description" style="margin:6px 0;">
-      <?php _e( 'Total:', 'mns-navasan-plus' ); ?>
-      <strong><span class="mns-component-total">—</span></strong>
-      <?php if ( ! empty( $component['symbol'] ) ) : ?>
-        <span class="mns-component-total-symbol"><?php echo ' ' . esc_html( $component['symbol'] ); ?></span>
-      <?php endif; ?>
-    </p>
+        // عبارت کامپوننت — کلید ذخیره‌سازی: text
+        // کلاس mns-component-expression برای محاسبه لحظه‌ای
+        Fields::textarea(
+          "_mns_navasan_plus_formula_components[{$i}][text]",
+          "mns_navasan_plus_formula_components_{$i}_text",
+          $component['text'],
+          __( 'Component Expression', 'mns-navasan-plus' ),
+          [ 'class' => 'mns-component-expression' ]
+        );
 
-    <p style="margin:6px 0 0;">
-      <button type="button" class="button remove-formula-component">
-        <?php _e( 'Remove Component', 'mns-navasan-plus' ); ?>
-      </button>
-    </p>
+        // نماد (اختیاری – برای نمایش کنار total)
+        Fields::text(
+          "_mns_navasan_plus_formula_components[{$i}][symbol]",
+          "mns_navasan_plus_formula_components_{$i}_symbol",
+          $component['symbol'],
+          __( 'Component Symbol', 'mns-navasan-plus' )
+        );
+        ?>
 
-    <hr/>
+        <div class="mns-component-total-row" style="margin-top:6px;">
+          <strong><?php esc_html_e( 'Total:', 'mns-navasan-plus' ); ?></strong>
+          <span class="mns-component-total">—</span>
+          <span class="mns-component-total-symbol"><?php echo $component['symbol'] ? ' ' . esc_html( $component['symbol'] ) : ''; ?></span>
+        </div>
+
+        <div class="mns-component-actions" style="margin-top:8px;">
+          <a href="#" class="button button-secondary add-formula-component"><?php esc_html_e( 'Add Component', 'mns-navasan-plus' ); ?></a>
+          <a href="#" class="button remove-formula-component" style="margin-inline-start:6px;"><?php esc_html_e( 'Remove', 'mns-navasan-plus' ); ?></a>
+        </div>
+      </div>
+    <?php endfor; ?>
   </div>
-  <?php endfor; ?>
-</div>
 
-<p>
-  <button type="button" class="button add-formula-component">
-    <?php _e( 'Add Component', 'mns-navasan-plus' ); ?>
-  </button>
-</p>
+  <input type="hidden" name="_mns_navasan_plus_formula_components_counter" value="<?php echo esc_attr( $total ); ?>" />
+</div>

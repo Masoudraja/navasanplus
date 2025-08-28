@@ -411,3 +411,56 @@ class MetaBoxes {
         return $value;
     }
 }
+
+add_action('save_post_mnswmc-formula', function($post_id, $post){
+    if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) return;
+    if ( ! $post || $post->post_type !== 'mnswmc-formula' ) return;
+    if ( ! current_user_can('manage_woocommerce') ) return;
+    if ( empty($_POST['_mns_navasan_plus_formula_nonce']) 
+      || ! wp_verify_nonce($_POST['_mns_navasan_plus_formula_nonce'], 'mns_navasan_plus_formula') ) return;
+
+    $db = \MNS\NavasanPlus\DB::instance();
+
+    $expr = isset($_POST['_mns_navasan_plus_formula_expression'])
+        ? wp_kses_post( wp_unslash($_POST['_mns_navasan_plus_formula_expression']) )
+        : '';
+    $db->update_post_meta($post_id, 'formula_expression', $expr);
+
+    $vars_in  = $_POST['_mns_navasan_plus_formula_variables'] ?? [];
+    $vars_out = [];
+    if ( is_array($vars_in) ) {
+        foreach ($vars_in as $code => $v){
+            $code = sanitize_key($code);
+            if ($code === '') continue;
+            $vars_out[$code] = [
+                'name'         => sanitize_text_field($v['name'] ?? ''),
+                'type'         => ( ($v['type'] ?? 'custom') === 'currency' ) ? 'currency' : 'custom',
+                'currency_id'  => (int)($v['currency_id'] ?? 0),
+                'unit'         => (float)($v['unit'] ?? 0),
+                'unit_symbol'  => sanitize_text_field($v['unit_symbol'] ?? ''),
+                'value'        => (float)($v['value'] ?? 0),
+                'value_symbol' => sanitize_text_field($v['value_symbol'] ?? ''),
+            ];
+        }
+    }
+    $db->update_post_meta($post_id, 'formula_variables', $vars_out);
+
+    $comps_in  = $_POST['_mns_navasan_plus_formula_components'] ?? [];
+    $comps_out = [];
+    if ( is_array($comps_in) ) {
+        foreach ($comps_in as $i => $c){
+            $name   = sanitize_text_field($c['name'] ?? ($c['label'] ?? ''));
+            $text   = wp_kses_post( wp_unslash($c['text'] ?? ($c['expression'] ?? '')) );
+            $symbol = sanitize_text_field($c['symbol'] ?? '');
+            if ($name === '' && trim((string)$text) === '' && $symbol === '') continue;
+
+            $comps_out[(int)$i] = [
+                'label'      => $name,
+                'expression' => $text,
+                'symbol'     => $symbol,
+            ];
+        }
+        ksort($comps_out);
+    }
+    $db->update_post_meta($post_id, 'formula_components', $comps_out);
+}, 10, 2);
