@@ -46,15 +46,17 @@ $total      = max( 1, $counter, count( $components ) );
       __( 'Component Name', 'mns-navasan-plus' )
     );
 
-    // متن/برچسب کامپوننت (می‌تونه عبارت ریاضی کوتاه هم باشد)
+    // عبارت/متن کامپوننت (برای محاسبه زنده کلاس زیر لازم است)
     Fields::text(
       "_mns_navasan_plus_formula_components[{$i}][text]",
       "mns_navasan_plus_formula_components_{$i}_text",
       $component['text'],
-      __( 'Component Text', 'mns-navasan-plus' )
+      __( 'Component Text / Expression', 'mns-navasan-plus' ),
+      '',
+      [ 'class' => 'mns-component-expression' ]
     );
 
-    // نماد
+    // نماد (اختیاری – فقط نمایش کنار حاصل)
     Fields::text(
       "_mns_navasan_plus_formula_components[{$i}][symbol]",
       "mns_navasan_plus_formula_components_{$i}_symbol",
@@ -63,7 +65,15 @@ $total      = max( 1, $counter, count( $components ) );
     );
     ?>
 
-    <p style="margin-top:6px">
+    <p class="description" style="margin:6px 0;">
+      <?php _e( 'Total:', 'mns-navasan-plus' ); ?>
+      <strong><span class="mns-component-total">—</span></strong>
+      <?php if ( ! empty( $component['symbol'] ) ) : ?>
+        <span class="mns-component-total-symbol"><?php echo ' ' . esc_html( $component['symbol'] ); ?></span>
+      <?php endif; ?>
+    </p>
+
+    <p style="margin:6px 0 0;">
       <button type="button" class="button remove-formula-component">
         <?php _e( 'Remove Component', 'mns-navasan-plus' ); ?>
       </button>

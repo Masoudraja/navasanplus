@@ -18,7 +18,7 @@ class MetaBoxes {
         add_action( 'save_post',      [ $this, 'formula_save' ] );
 
         // —— CHART SECTION DISABLED (not used for now) ——
-        // add_action( 'save_post',      [ $this, 'chart_save' ] );
+        // add_action( 'save_post',   [ $this, 'chart_save' ] );
     }
 
     public function register() {
@@ -32,18 +32,20 @@ class MetaBoxes {
             'default',
             [ 'meta' => 'options' ]
         );
+
+        // Chart metabox is optional (behind a filter)
         $enable_chart = (bool) apply_filters( 'mnsnp/enable_currency_chart_metabox', false );
-            if ( $enable_chart ) {
-                add_meta_box(
-                    'mns_navasan_plus_currency_chart',
-                    __( 'Currency Chart', 'mns-navasan-plus' ),
-                    [ $this, 'currency_output' ],
-                    'mnswmc',
-                    'normal',
-                    'default',
-                    [ 'meta' => 'chart' ]
-                );
-            }
+        if ( $enable_chart ) {
+            add_meta_box(
+                'mns_navasan_plus_currency_chart',
+                __( 'Currency Chart', 'mns-navasan-plus' ),
+                [ $this, 'currency_output' ],
+                'mnswmc',
+                'normal',
+                'default',
+                [ 'meta' => 'chart' ]
+            );
+        }
 
         // ----- Formula (CPT: mnswmc-formula) -----
         add_meta_box(
@@ -55,6 +57,7 @@ class MetaBoxes {
             'default',
             [ 'meta' => 'variables' ]
         );
+
         add_meta_box(
             'mns_navasan_plus_formula_components',
             __( 'Formula Components', 'mns-navasan-plus' ),
@@ -91,6 +94,10 @@ class MetaBoxes {
     // -------------------- Outputs --------------------
 
     public function currency_output( $post, $args ) {
+        // Enqueue admin assets on currency editor (for consistent UI)
+        wp_enqueue_style( 'mns-navasan-plus-admin' );
+        wp_enqueue_script( 'mns-navasan-plus-admin' );
+
         $id = (int) $post->ID;
 
         $currency = [
@@ -119,9 +126,32 @@ class MetaBoxes {
     }
 
     public function formula_output( $post, $args ) {
+        // Enqueue only on formula editor: parser + our admin UI
+        wp_enqueue_style( 'mns-navasan-plus-admin' );
+
+        // Ensure formula-parser is registered in admin too (fallback if not registered by Loader)
+        if ( ! wp_script_is( 'mns-navasan-plus-formula-parser', 'registered' ) ) {
+            $use_min = ! ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG );
+            $rel     = $use_min ? 'assets/js/formula-parser.min.js' : 'assets/js/formula-parser.js';
+            $src     = \MNS\NavasanPlus\Helpers::plugin_url( $rel );
+            wp_register_script(
+                'mns-navasan-plus-formula-parser',
+                $src,
+                [],
+                \MNS\NavasanPlus\Plugin::instance()->version(),
+                true
+            );
+        }
+        if ( ! wp_script_is( 'mns-navasan-plus-formula-parser', 'enqueued' ) ) {
+            wp_enqueue_script( 'mns-navasan-plus-formula-parser' );
+        }
+
+        wp_enqueue_script( 'mns-navasan-plus-admin' );
+
         $id = (int) $post->ID;
 
         $formula = [
+            // legacy key 'formul' (we keep saving into 'formula_formul')
             'formul'             => DB::instance()->read_post_meta( $id, 'formula_formul', '' ),
             'variables_counter'  => (int) DB::instance()->read_post_meta( $id, 'formula_variables_counter', 1 ),
             'variables'          => DB::instance()->read_post_meta( $id, 'formula_variables', [] ),
@@ -137,26 +167,6 @@ class MetaBoxes {
         }
     }
 
-    // CHART output currently unused
-    /*
-    public function chart_output( $post, $args ) {
-        $id = (int) $post->ID;
-
-        $chart = [
-            'items'         => DB::instance()->read_post_meta( $id, 'chart_items', [] ),
-            'items_counter' => (int) DB::instance()->read_post_meta( $id, 'chart_items_counter', 1 ),
-            'options'       => DB::instance()->read_post_meta( $id, 'chart_options', [] ),
-        ];
-
-        $meta = $args['args']['meta'] ?? 'options';
-        if ( $meta === 'options' ) {
-            Snippets::load_template( 'metaboxes/chart', [ 'chart' => $chart ] );
-        } else {
-            Snippets::load_template( 'metaboxes/chart-items', [ 'chart' => $chart ] );
-        }
-    }
-    */
-
     // -------------------- Saves --------------------
 
     public function currency_save( $post_id ) {
@@ -170,6 +180,8 @@ class MetaBoxes {
         if ( isset( $_POST['_mns_navasan_plus_currency_rate_symbol'] ) ) {
             $val = sanitize_text_field( wp_unslash( $_POST['_mns_navasan_plus_currency_rate_symbol'] ) );
             $db->update_post_meta( $post_id, 'currency_rate_symbol', $val );
+            // Optional: mirror for legacy readers
+            // $db->update_post_meta( $post_id, 'currency_symbol', $val );
         } else {
             $db->delete_post_meta( $post_id, 'currency_rate_symbol' );
         }
@@ -241,15 +253,26 @@ class MetaBoxes {
     }
 
     public function formula_save( $post_id ) {
-        if ( ! $this->is_valid_save( $post_id, 'mnswmc-formula', '_mns_navasan_plus_formula_nonce', 'mns_navasan_plus_formula' ) ) {
-            return;
-        }
+        // Validate: post type + caps + any accepted nonce (new or legacy)
+        if ( wp_is_post_autosave( $post_id ) || wp_is_post_revision( $post_id ) ) return;
+        if ( get_post_type( $post_id ) !== 'mnswmc-formula' ) return;
+        if ( ! current_user_can( 'edit_post', $post_id ) ) return;
+
+        $nonce_ok =
+            ( isset( $_POST['_mns_navasan_plus_formula_nonce'] ) && wp_verify_nonce( $_POST['_mns_navasan_plus_formula_nonce'], 'mns_navasan_plus_formula' ) )
+            ||
+            ( isset( $_POST['_mnsnp_formula_nonce'] ) && wp_verify_nonce( $_POST['_mnsnp_formula_nonce'], 'mnsnp_save_formula' ) );
+
+        if ( ! $nonce_ok ) return;
 
         $db = DB::instance();
 
-        // ---- Expression (with/without leading underscore support)
-        $expr_in = $this->post_val( '_mns_navasan_plus_formula_formul', 'mns_navasan_plus_formula_formul', '' );
-        $expr    = sanitize_textarea_field( trim( wp_unslash( (string) $expr_in ) ) );
+        // ---- Expression: support both keys; save to 'formula_formul'
+        $expr_in = $this->post_val( '_mns_navasan_plus_formula_expression', 'mns_navasan_plus_formula_expression', null );
+        if ( $expr_in === null ) {
+            $expr_in = $this->post_val( '_mns_navasan_plus_formula_formul', 'mns_navasan_plus_formula_formul', '' );
+        }
+        $expr = sanitize_textarea_field( trim( wp_unslash( (string) $expr_in ) ) );
         if ( $expr !== '' ) {
             $db->update_post_meta( $post_id, 'formula_formul', $expr );
         } else {
@@ -258,10 +281,10 @@ class MetaBoxes {
 
         // ---- Variables counter
         $vc_in = $this->post_val( '_mns_navasan_plus_formula_variables_counter', 'mns_navasan_plus_formula_variables_counter', 1 );
-        $vc    = (int) $vc_in;
-        $db->update_post_meta( $post_id, 'formula_variables_counter', max( 1, $vc ) );
+        $vc    = max( 1, (int) $vc_in );
+        $db->update_post_meta( $post_id, 'formula_variables_counter', $vc );
 
-        // ---- Variables array (support both keys)
+        // ---- Variables (support both keys)
         $vars_in = $this->post_val( '_mns_navasan_plus_formula_variables', 'mns_navasan_plus_formula_variables', [] );
         $vars_in = is_array( $vars_in ) ? wp_unslash( $vars_in ) : [];
         $vars    = [];
@@ -270,37 +293,52 @@ class MetaBoxes {
             $safe_code = preg_replace( '/[^A-Za-z0-9_]/', '', (string) $code );
             if ( $safe_code === '' ) continue;
 
-            $unit  = Helpers::sanitize_number( $vals['unit']  ?? 1 );
-            $value = Helpers::sanitize_number( $vals['value'] ?? 0 );
+            // type & currency_id (posted)
+            $type = isset( $vals['type'] ) && in_array( $vals['type'], [ 'custom', 'currency' ], true )
+                ? $vals['type'] : 'custom';
+            $currency_id = isset( $vals['currency_id'] ) ? (int) $vals['currency_id'] : 0;
+            if ( $type === 'currency' && $currency_id <= 0 ) {
+                // اگر currency انتخاب نشده بود، به custom برگرد
+                $type = 'custom';
+            }
+
+            $name         = sanitize_text_field( $vals['name'] ?? '' );
+            $unit         = Helpers::sanitize_number( $vals['unit'] ?? 1 );
+            $unit_symbol  = sanitize_text_field( $vals['unit_symbol']  ?? Helpers::get_currency_symbol() );
+            $value        = Helpers::sanitize_number( $vals['value'] ?? ( $type === 'currency' ? 1 : 0 ) );
+            $value_symbol = sanitize_text_field( $vals['value_symbol'] ?? '' );
 
             $vars[ $safe_code ] = [
-                'type'         => Helpers::get_code_type( $safe_code ),
-                'name'         => sanitize_text_field( $vals['name'] ?? '' ),
+                'type'         => $type,
+                'currency_id'  => $currency_id,
+                'name'         => $name,
                 'unit'         => $unit,
-                'unit_symbol'  => sanitize_text_field( $vals['unit_symbol']  ?? Helpers::get_currency_symbol() ),
+                'unit_symbol'  => $unit_symbol,
                 'value'        => $value,
-                'value_symbol' => sanitize_text_field( $vals['value_symbol'] ?? Helpers::get_currency_symbol() ),
+                'value_symbol' => $value_symbol,
             ];
         }
         $db->update_post_meta( $post_id, 'formula_variables', $vars );
 
         // ---- Components counter
         $cc_in = $this->post_val( '_mns_navasan_plus_formula_components_counter', 'mns_navasan_plus_formula_components_counter', 1 );
-        $cc    = (int) $cc_in;
-        $db->update_post_meta( $post_id, 'formula_components_counter', max( 1, $cc ) );
+        $cc    = max( 1, (int) $cc_in );
+        $db->update_post_meta( $post_id, 'formula_components_counter', $cc );
 
-        // ---- Components array (support both keys)
+        // ---- Components (support both keys)
         $comps_in = $this->post_val( '_mns_navasan_plus_formula_components', 'mns_navasan_plus_formula_components', [] );
         $comps_in = is_array( $comps_in ) ? wp_unslash( $comps_in ) : [];
         $comps    = [];
 
         foreach ( $comps_in as $i => $vals ) {
             $comps[ (int) $i ] = [
+                // legacy keys we already use in templates/admin.js
                 'name'   => sanitize_text_field( $vals['name']   ?? '' ),
                 'text'   => sanitize_textarea_field( $vals['text'] ?? '' ),
                 'symbol' => sanitize_text_field( $vals['symbol'] ?? '' ),
             ];
         }
+        ksort( $comps );
         $db->update_post_meta( $post_id, 'formula_components', $comps );
     }
 
