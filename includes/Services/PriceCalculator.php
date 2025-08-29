@@ -1,365 +1,202 @@
 <?php
 namespace MNS\NavasanPlus\Services;
 
-use MNS\NavasanPlus\DB;
-use MNS\NavasanPlus\Services\FormulaEngine;
-use MNS\NavasanPlus\PublicNS\Formula as FormulaModel;
-
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-/**
- * PriceCalculator (Advanced, Navasan-compatible)
- *
- * Flow:
- *   1) Base  ← currency or formula (with FormulaEngine)
- *   2) Profit_base / Charge_base ← from formula components (profit/charge) if dep=formula,
- *      otherwise from (percent|fixed) meta
- *   3) Discounts only on Profit & Charge ← DiscountService::apply()
- *   4) price = Base + Profit + Charge
- *   5) Rounding / Bounds (ceil/floor/round | zero/integer + side)
- *
- * Result: ['price'=>float, 'base'=>float, 'profit'=>float, 'charge'=>float]
- */
+use MNS\NavasanPlus\DB;
+
 final class PriceCalculator {
-
-    /** @var self|null */
-    private static $instance = null;
-
-    /** Singleton */
+    private static ?self $instance = null;
     public static function instance(): self {
-        if ( null === self::$instance ) {
-            self::$instance = new self();
-        }
-        return self::$instance;
+        return self::$instance ?? ( self::$instance = new self() );
     }
-
     private function __construct() {}
 
-    /**
-     * Calculate final price for a product/variation.
-     *
-     * @param int $product_id
-     * @return array{price:float, base:float, profit:float, charge:float}
-     */
-    public function calculate( int $product_id ): array {
-        // فعال بودن (سازگار با حالت‌های قدیمی/جدید)
-        $rawActive = (string) $this->get_meta_with_fallback( $product_id, 'active', '1' );
-        $active    = in_array( strtolower( (string) $rawActive ), ['1','yes','true','on'], true );
+    /** استفادهٔ عمومی (وقتی فقط ID داری) */
+    public function calculate( int $product_id ) {
+        $product = wc_get_product( $product_id );
+        return $product ? $this->calculate_for_product( $product ) : 0.0;
+    }
+
+    /** محاسبه روی خود آبجکت محصول (برای زمان ذخیره، متاهای تازه ست‌شده هم قابل خوندن‌اند) */
+    public function calculate_for_product( \WC_Product $product ) {
+        $db  = DB::instance();
+        $get = fn(string $k, $def='') => $product->get_meta( $db->full_meta_key($k), true ) ?? $def;
+
+        // فعال‌بودن: اگر متا خالیه یعنی هنوز ذخیره نشده → پیش‌فرض «فعال»
+        $active_raw = (string) $get('active', '');
+        $active = ($active_raw === '')
+            ? true
+            : ( function_exists('wc_string_to_bool') ? wc_string_to_bool($active_raw) : in_array($active_raw, ['yes','1',1,true], true) );
         if ( ! $active ) {
-            return ['price'=>0.0, 'base'=>0.0, 'profit'=>0.0, 'charge'=>0.0];
+            $p = (float) $product->get_regular_price();
+            return $p > 0 ? $p : (float) $product->get_price();
         }
 
-        // 1) Base
-        $base = (float) $this->calculate_base( $product_id );
-        if ( ! $this->isFinite( $base ) || $base < 0 ) { $base = 0.0; }
-
-        // 2) Profit / Charge (قبل از تخفیف) — با فرمول یا با متا (fallback)
-        [ $profit_base, $charge_base ] = $this->calculate_components( $product_id, $base );
-
-        // 3) Discounts روی سود و اجرت
-        if ( class_exists( __NAMESPACE__ . '\\DiscountService' ) ) {
-            [ $profit, $charge ] = DiscountService::apply(
-                (float) $profit_base,
-                (float) $charge_base,
-                (int)   $product_id
-            );
+        $dep = strtolower( (string) $get('dependence_type','simple') );
+        if ( in_array($dep, ['advanced','formula'], true) ) {
+            $out = $this->calc_formula( $product, $db );
         } else {
-            $profit = (float) $profit_base;
-            $charge = (float) $charge_base;
+            $out = $this->calc_simple( $product, $db );
         }
 
-        // 4) Sum
-        $price = (float) $base + (float) $profit + (float) $charge;
-
-        // 5) Rounding & Bounds
-        $price = $this->apply_rounding_and_bounds( $product_id, $price );
-
-        $result = [
-            'price'  => max( 0.0, (float) $price ),
-            'base'   => max( 0.0, (float) $base ),
-            'profit' => max( 0.0, (float) $profit ),
-            'charge' => max( 0.0, (float) $charge ),
-        ];
-
-        return apply_filters( 'mnsnp/calculated_price', $result, $product_id );
+        if ( is_numeric($out) ) return (float) $out;
+        if ( is_array($out) ) {
+            if ( isset($out['price']) ) return (float) $out['price'];
+            if ( isset($out['profit'],$out['charge']) ) return (float)$out['profit'] + (float)$out['charge'];
+        }
+        return 0.0;
     }
 
-    // ------------------------------------------------------------------
-    // Base: currency | formula
-    // ------------------------------------------------------------------
-
-    /**
-     * Calculate Base by currency or formula (handles simple/advanced aliases).
-     */
-    protected function calculate_base( int $product_id ): float {
-        $db  = DB::instance();
-
-        // normalize dependence type
-        $depRaw = (string) $this->get_meta_with_fallback( $product_id, 'dependence_type', 'currency' );
-        $depRaw = strtolower( trim( $depRaw ) );
-        // legacy UI aliases
-        if ( $depRaw === 'advanced' ) { $dep = 'formula'; }
-        elseif ( $depRaw === 'simple' ) { $dep = 'currency'; }
-        else { $dep = $depRaw; } // 'currency' | 'formula'
-
-        // ===== Formula path =====
-        if ( $dep === 'formula' ) {
-            $formula_id = (int) $this->get_meta_with_fallback( $product_id, 'formula_id', 0 );
-            if ( $formula_id > 0 ) {
-                $post = get_post( $formula_id );
-                if ( $post && $post->post_type === 'mnswmc-formula' ) {
-                    $F    = new FormulaModel( $post );
-                    $expr = (string) $F->get_expression();
-
-                    // env (variables + overrides + rate + ratio + weight)
-                    $env = $this->build_formula_env( $product_id, $F, $formula_id );
-
-                    // Evaluate expression → base
-                    $eng  = new FormulaEngine();
-                    $base = (float) $eng->evaluate( $expr, $env );
-                    if ( ! $this->isFinite( $base ) ) { $base = 0.0; }
-
-                    return (float) apply_filters(
-                        'mnsnp/calc/base/formula/result',
-                        max( 0.0, $base ),
-                        $product_id,
-                        $formula_id,
-                        $env,
-                        $this
-                    );
-                }
-            }
-
-            // Fallback hook if formula invalid/missing
-            $fallback = apply_filters( 'mnsnp/calc/base/formula', null, $product_id, $this );
-            return is_numeric( $fallback ) ? (float) $fallback : 0.0;
-        }
-
-        // ===== Currency path =====
-        $currency_id = (int) $this->get_meta_with_fallback( $product_id, 'currency_id', 0 );
+    // ----------------- Simple -----------------
+    private function calc_simple( \WC_Product $product, DB $db ) {
+        $currency_id = (int) $product->get_meta( $db->full_meta_key('currency_id'), true );
         if ( $currency_id <= 0 ) {
-            $fallback = apply_filters( 'mnsnp/calc/base/no-currency', null, $product_id, $this );
-            return is_numeric( $fallback ) ? (float) $fallback : 0.0;
+            $manual = (float) $product->get_regular_price();
+            return $manual > 0 ? $manual : (float) $product->get_price();
         }
 
-        $value = (float) $db->read_post_meta( $currency_id, 'currency_value', 0 );
-        $ratio = (float) $this->get_meta_with_fallback( $product_id, 'ratio', 1 );
-        if ( $ratio <= 0 ) { $ratio = 1.0; }
+        $rate = (float) $db->read_post_meta( $currency_id, 'currency_value', 0 );
+        if ( $rate <= 0 ) {
+            $hist = $db->read_post_meta( $currency_id, 'currency_history', [] );
+            if ( is_array($hist) && $hist ) $rate = (float) end($hist);
+        }
+        if ( $rate <= 0 ) {
+            $manual = (float) $product->get_regular_price();
+            return $manual > 0 ? $manual : (float) $product->get_price();
+        }
 
-        $base = $value * $ratio;
+        $profit_type  = (string) ($product->get_meta( $db->full_meta_key('profit_type'), true ) ?: 'percent');
+        $profit_value = (float)  ($product->get_meta( $db->full_meta_key('profit_value'), true ) ?: 0);
 
-        return (float) apply_filters( 'mnsnp/calc/base', $base, $product_id, $currency_id, $this );
+        $base = $rate;
+        $profit_amount = ($profit_type === 'percent') ? $base * ($profit_value/100) : $profit_value;
+
+        $disc = $this->read_discounts($product,$db);
+        $profit_amount = $this->apply_discount_pair($profit_amount, $disc['profit_percent'], $disc['profit_fixed']);
+
+        $price = $base + $profit_amount;
+        $price = $this->round_and_bounds($price, $product, $db);
+        return max(0.0,(float)$price);
     }
 
-    // ------------------------------------------------------------------
-    // Profit / Charge before discounts
-    // ------------------------------------------------------------------
+    // ----------------- Formula -----------------
+    private function calc_formula( \WC_Product $product, DB $db ) {
+        $formula_id = (int) $product->get_meta( $db->full_meta_key('formula_id'), true );
+        if ( $formula_id <= 0 ) {
+            $manual = (float) $product->get_regular_price();
+            return $manual > 0 ? $manual : (float) $product->get_price();
+        }
 
-    /**
-     * Compute profit & charge base values.
-     * - If dependence = formula: read them from formula components (profit/charge).
-     * - Else fallback to meta (percent|fixed).
-     */
-    protected function calculate_components( int $product_id, float $base ): array {
-        // normalize dependence type (legacy aliases)
-        $depRaw = strtolower( (string) $this->get_meta_with_fallback( $product_id, 'dependence_type', 'currency' ) );
-        $dep    = ($depRaw === 'advanced') ? 'formula' : (($depRaw === 'simple') ? 'currency' : $depRaw);
+        $expr = (string) get_post_meta( $formula_id, $db->full_meta_key('formula_expression'), true );
+        $expr = trim($expr);
 
-        if ( $dep === 'formula' ) {
-            $formula_id = (int) $this->get_meta_with_fallback( $product_id, 'formula_id', 0 );
-            if ( $formula_id > 0 ) {
-                $post = get_post( $formula_id );
-                if ( $post && $post->post_type === 'mnswmc-formula' ) {
-                    $F   = new FormulaModel( $post );
-                    $env = $this->build_formula_env( $product_id, $F, $formula_id );
+        $vars_meta = get_post_meta( $formula_id, $db->full_meta_key('formula_variables'), true );
+        $vars_meta = is_array($vars_meta) ? $vars_meta : [];
 
-                    $profit = 0.0;
-                    $charge = 0.0;
+        $prod_vars = $product->get_meta( $db->full_meta_key('formula_variables'), true );
+        $prod_vars = is_array($prod_vars) ? $prod_vars : [];
 
-                    // نام‌ها/سیمبل‌های قابل‌قبول برای تشخیص کامپوننت‌ها
-                    $map = apply_filters( 'mnsnp/calc/formula_components_map', [
-                        'profit' => ['profit','سود'],
-                        'charge' => ['charge','اجرت'],
-                    ], $product_id, $formula_id, $this );
+        $vars = [];
+        foreach ( $vars_meta as $code => $row ) {
+            $code = sanitize_key($code);
+            if ( $code === '' ) continue;
 
-                    foreach ( (array) $F->get_components() as $component ) {
-                        if ( ! is_object( $component ) || ! method_exists( $component, 'execute' ) ) continue;
+            $type        = (string)($row['type'] ?? 'custom');
+            $currency_id = (int)   ($row['currency_id'] ?? 0);
+            $unit        = (float) ($row['unit'] ?? 0);
+            $value_def   = (float) ($row['value'] ?? 1);
 
-                        $name   = function_exists('mb_strtolower') ? mb_strtolower( trim( (string) $component->get_name() ) )   : strtolower( trim( (string) $component->get_name() ) );
-                        $symbol = function_exists('mb_strtolower') ? mb_strtolower( trim( (string) $component->get_symbol() ) ) : strtolower( trim( (string) $component->get_symbol() ) );
-
-                        $val = (float) $component->execute( $env );
-                        if ( ! $this->isFinite( $val ) ) $val = 0.0;
-
-                        if ( in_array( $name, (array) $map['profit'], true ) || in_array( $symbol, (array) $map['profit'], true ) ) {
-                            $profit += max(0.0, $val);
-                        }
-                        if ( in_array( $name, (array) $map['charge'], true ) || in_array( $symbol, (array) $map['charge'], true ) ) {
-                            $charge += max(0.0, $val);
-                        }
-                    }
-
-                    // اگر چیزی یافت شد، همان را به عنوان پایه سود/اجرت برمی‌گردانیم
-                    if ( $profit > 0.0 || $charge > 0.0 ) {
-                        $profit = (float) apply_filters( 'mnsnp/calc/profit_base', $profit, $product_id, $base, 'formula', null, $this );
-                        $charge = (float) apply_filters( 'mnsnp/calc/charge_base', $charge, $product_id, $base, 'formula', null, $this );
-                        return [ $profit, $charge ];
-                    }
+            if ( $type === 'currency' && $currency_id > 0 ) {
+                $unit = (float) $db->read_post_meta( $currency_id, 'currency_value', 0 );
+                if ( $unit <= 0 ) {
+                    $hist = $db->read_post_meta( $currency_id, 'currency_history', [] );
+                    if ( is_array($hist) && $hist ) $unit = (float) end($hist);
                 }
             }
-            // در غیر این صورت: fallback به درصد/ثابت
+
+            $override = $prod_vars[ $formula_id ][ $code ]['regular'] ?? '';
+            $value = ($override !== '') ? (float) $override : $value_def;
+
+            $vars[$code] = (float)$unit * (float)$value;
         }
 
-        // --- Fallback: percent|fixed روی base ---
-        $p_type = (string) $this->get_meta_with_fallback( $product_id, 'profit_type', 'percent' );
-        $p_val  = (float)  $this->get_meta_with_fallback( $product_id, 'profit_value', 0 );
-        $c_type = (string) $this->get_meta_with_fallback( $product_id, 'charge_type', 'percent' );
-        $c_val  = (float)  $this->get_meta_with_fallback( $product_id, 'charge_value', 0 );
+        if ( $expr === '' ) {
+            $comps = get_post_meta( $formula_id, $db->full_meta_key('formula_components'), true );
+            $comps = is_array($comps) ? $comps : [];
+            $sum = 0.0;
+            foreach ( $comps as $c ) {
+                $t = trim( (string) ($c['expression'] ?? '') );
+                if ( $t === '' ) continue;
+                $sum += $this->eval_expr($t, $vars);
+            }
+            $price = (float)$sum;
+        } else {
+            $price = (float)$this->eval_expr($expr, $vars);
+        }
 
-        $profit = ( $p_type === 'fixed' ) ? $p_val : ( $base * $p_val / 100 );
-        $charge = ( $c_type === 'fixed' ) ? $c_val : ( $base * $c_val / 100 );
-
-        $profit = (float) apply_filters( 'mnsnp/calc/profit_base', $profit, $product_id, $base, $p_type, $p_val, $this );
-        $charge = (float) apply_filters( 'mnsnp/calc/charge_base', $charge, $product_id, $base, $c_type, $c_val, $this );
-
-        return [ max(0.0, $profit), max(0.0, $charge) ];
+        $price = $this->round_and_bounds($price, $product, $db);
+        return max(0.0,(float)$price);
     }
 
-    /**
-     * Build formula environment (variables + overrides + rate + ratio [+weight])
-     */
-    private function build_formula_env( int $product_id, FormulaModel $F, int $formula_id ): array {
-        $db  = DB::instance();
+    // ----------------- Helpers -----------------
+    private function read_discounts( \WC_Product $product, DB $db ): array {
+        $g = fn(string $s) => (float) ($product->get_meta( $db->full_meta_key($s), true ) ?: 0);
+        return [
+            'profit_percent' => $g('discount_profit_percentage'),
+            'profit_fixed'   => $g('discount_profit_fixed'),
+            'charge_percent' => $g('discount_charge_percentage'),
+            'charge_fixed'   => $g('discount_charge_fixed'),
+        ];
+    }
+    private function apply_discount_pair( float $amount, float $percent, float $fixed ): float {
+        if ( $amount <= 0 ) return 0.0;
+        if ( $percent > 0 ) $amount -= $amount * ($percent/100);
+        if ( $fixed   > 0 ) $amount -= $fixed;
+        return max(0.0,$amount);
+    }
+    private function round_and_bounds( float $price, \WC_Product $product, DB $db ): float {
+        $type  = (string) $product->get_meta( $db->full_meta_key('rounding_type'), true );
+        $side  = (string) $product->get_meta( $db->full_meta_key('rounding_side'), true );
+        $value = (float)  ($product->get_meta( $db->full_meta_key('rounding_value'), true ) ?: 0);
 
-        // defaults from formula variables
-        $env = [];
-        foreach ( $F->get_variables() as $v ) {
-            $env[ $v->get_code() ] = (float) $v->get_value();
+        if ( $type === '' )  $type  = get_option('mns_navasan_plus_rounding_type','none');
+        if ( $side === '' )  $side  = get_option('mns_navasan_plus_rounding_side','close');
+        if ( $value <= 0 )   $value = (float) get_option('mns_navasan_plus_rounding_value',0);
+
+        if ( $type === 'integer' ) {
+            $price = (float) round($price);
+        } elseif ( $type === 'zero' && $value > 0 ) {
+            $m = (float)$value;
+            if ( $side === 'up' )      $price = ceil($price/$m)*$m;
+            elseif ( $side === 'down') $price = floor($price/$m)*$m;
+            else                       $price = round($price/$m)*$m;
         }
 
-        // product overrides (regular/sale)
-        $overrides = $db->read_post_meta( $product_id, 'formula_variables', [] );
-        if ( is_array( $overrides ) && ! empty( $overrides[ $formula_id ] ) ) {
-            $use_sale = false;
-            if ( function_exists( 'wc_get_product' ) ) {
-                $p = wc_get_product( $product_id );
-                if ( $p && method_exists( $p, 'is_on_sale' ) ) $use_sale = (bool) $p->is_on_sale();
-            }
-            foreach ( (array) $overrides[ $formula_id ] as $code => $pair ) {
-                if ( is_array( $pair ) ) {
-                    $val = $use_sale ? ($pair['sale'] ?? null) : ($pair['regular'] ?? null);
-                    if ( $val !== null && $val !== '' ) {
-                        $env[ $code ] = (float) $val;
-                    }
-                }
-            }
-        }
-
-        // currency rate
-        $currency_id = (int) $this->get_meta_with_fallback( $product_id, 'currency_id', 0 );
-        if ( $currency_id > 0 ) {
-            $env['rate'] = (float) $db->read_post_meta( $currency_id, 'currency_value', 0 );
-        }
-
-        // ratio
-        $env['ratio'] = (float) $this->get_meta_with_fallback( $product_id, 'ratio', 1 );
-        if ( $env['ratio'] <= 0 ) { $env['ratio'] = 1.0; }
-
-        // weight (optional)
-        if ( function_exists( 'wc_get_product' ) ) {
-            $p = wc_get_product( $product_id );
-            if ( $p ) {
-                $w = (float) $p->get_weight();
-                if ( $w > 0 ) { $env['weight'] = $w; }
-            }
-        }
-
-        // dev hook
-        return (array) apply_filters( 'mnsnp/calc/formula_env', $env, $product_id, $formula_id, $this );
+        $ceil  = $product->get_meta( $db->full_meta_key('ceil_price'), true );
+        $floor = $product->get_meta( $db->full_meta_key('floor_price'), true );
+        if ( $ceil  !== '' ) $price = min($price, (float)$ceil);
+        if ( $floor !== '' ) $price = max($price, (float)$floor);
+        return (float)$price;
     }
 
-    // ------------------------------------------------------------------
-    // Rounding & Bounds
-    // ------------------------------------------------------------------
-
-    protected function apply_rounding_and_bounds( int $product_id, float $price ): float {
-        $r_type = strtolower( (string) $this->get_meta_with_fallback( $product_id, 'rounding_type', 'none' ) );
-        $r_step = (float)  $this->get_meta_with_fallback( $product_id, 'rounding_value', 0 );
-        $r_side = strtolower( (string) $this->get_meta_with_fallback( $product_id, 'rounding_side', 'nearest' ) );
-        if ( $r_side === 'close' ) { $r_side = 'nearest'; } // legacy compat
-
-        // legacy: integer → step=1
-        if ( $r_type === 'integer' && $r_step <= 0 ) {
-            $r_step = 1.0;
+    private function eval_expr( string $expr, array $vars ): float {
+        if ( class_exists('\\MNS\\NavasanPlus\\Services\\FormulaEngine') ) {
+            try {
+                if ( method_exists('\\MNS\\NavasanPlus\\Services\\FormulaEngine','evaluate') )
+                    return (float) \MNS\NavasanPlus\Services\FormulaEngine::evaluate($expr,$vars);
+                if ( method_exists('\\MNS\\NavasanPlus\\Services\\FormulaEngine','calc') )
+                    return (float) \MNS\NavasanPlus\Services\FormulaEngine::calc($expr,$vars);
+            } catch (\Throwable $e) {}
         }
-
-        // legacy: zero → toward-zero rounding with step
-        if ( $r_type === 'zero' && $r_step > 0 ) {
-            $q = $price / $r_step;
-            $q = ( $q >= 0 ) ? floor( $q ) : ceil( $q );
-            $price = $q * $r_step;
+        $safe = $expr;
+        foreach ($vars as $k=>$v) {
+            $safe = preg_replace('/\b'.preg_quote($k,'/').'\b/u', (string)(float)$v, $safe);
         }
-        // new styles + legacy integer/round with side
-        elseif ( $r_step > 0 ) {
-            $q = $price / $r_step;
-            switch ( $r_type ) {
-                case 'ceil':
-                    $price = ceil( $q ) * $r_step;
-                    break;
-                case 'floor':
-                    $price = floor( $q ) * $r_step;
-                    break;
-                case 'round':
-                case 'integer': // treat like 'round' with step
-                    if ( $r_side === 'up' ) {
-                        $price = ceil( $q ) * $r_step;
-                    } elseif ( $r_side === 'down' ) {
-                        $price = floor( $q ) * $r_step;
-                    } else {
-                        $price = round( $q ) * $r_step; // nearest
-                    }
-                    break;
-                default:
-                    // none
-                    break;
-            }
+        if ( preg_match('/^[0-9\.\+\-\*\/\(\)\s]+$/u', $safe) ) {
+            try { $val = eval('return (float)('.$safe.');'); return is_numeric($val)?(float)$val:0.0; }
+            catch (\Throwable $e) { return 0.0; }
         }
-
-        $ceil  = (float) $this->get_meta_with_fallback( $product_id, 'ceil_price', 0 );
-        $floor = (float) $this->get_meta_with_fallback( $product_id, 'floor_price', 0 );
-
-        if ( $ceil  > 0 && $price > $ceil  ) { $price = $ceil;  }
-        if ( $floor > 0 && $price < $floor ) { $price = $floor; }
-
-        return (float) apply_filters( 'mnsnp/calc/rounded_price', $price, $product_id, $this );
-    }
-
-    // ------------------------------------------------------------------
-    // Utils
-    // ------------------------------------------------------------------
-
-    /**
-     * Read meta with variation→parent fallback.
-     */
-    protected function get_meta_with_fallback( int $post_id, string $key, $default = '' ) {
-        $db  = DB::instance();
-        $val = $db->read_post_meta( $post_id, $key, '' );
-
-        if ( $val === '' ) {
-            $parent_id = (int) wp_get_post_parent_id( $post_id );
-            if ( $parent_id ) {
-                $val = $db->read_post_meta( $parent_id, $key, '' );
-            }
-        }
-
-        return ( $val === '' ) ? $default : $val;
-    }
-
-    /** Finite-number check (safe for older PHP) */
-    private function isFinite( $n ): bool {
-        if ( ! is_numeric( $n ) ) return false;
-        if ( function_exists( 'is_infinite' ) && is_infinite( $n ) ) return false;
-        if ( function_exists( 'is_nan' ) && is_nan( $n ) ) return false;
-        return true;
+        return 0.0;
     }
 }

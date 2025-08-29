@@ -235,12 +235,19 @@ final class Loader {
         $ppm_file         = __DIR__ . '/Admin/PricePreviewMetaBox.php';
         $migrator_file    = __DIR__ . '/Admin/MigratorPage.php';
         $health_file      = __DIR__ . '/Admin/HealthCheckPage.php';
-
+        // Top-level admin menu
+        if ( class_exists( __NAMESPACE__ . '\\Admin\\Menu' ) ) {
+            ( new \MNS\NavasanPlus\Admin\Menu() )->run();
+        }
         if ( ! class_exists( __NAMESPACE__ . '\\Admin\\PostTypes' ) && file_exists( $post_types_file ) ) require_once $post_types_file;
         if ( ! class_exists( __NAMESPACE__ . '\\Admin\\MetaBoxes' ) && file_exists( $metaboxes_file ) )  require_once $metaboxes_file;
         if ( ! class_exists( __NAMESPACE__ . '\\Admin\\Settings' ) && file_exists( $settings_file ) )    require_once $settings_file;
         if ( ! class_exists( __NAMESPACE__ . '\\Admin\\WooCommerce' ) && file_exists( $wc_file ) )       require_once $wc_file;
         if ( ! class_exists( __NAMESPACE__ . '\\Admin\\PricePreviewMetaBox' ) && file_exists( $ppm_file ) ) require_once $ppm_file;
+        // Bulk assign formula page
+        if ( class_exists( __NAMESPACE__ . '\\Admin\\AssignFormulaPage' ) ) {
+            ( new \MNS\NavasanPlus\Admin\AssignFormulaPage() )->run();
+        }
 
         // CPTs
         if ( class_exists( __NAMESPACE__ . '\\Admin\\PostTypes' ) ) {

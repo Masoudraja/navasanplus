@@ -78,7 +78,8 @@ if ( isset( $formula['expression'] ) && $formula['expression'] !== '' ) {
     id="mns_navasan_plus_formula_expression"
     name="_mns_navasan_plus_formula_expression"
     rows="4"
-    class="widefat"
+    class="widefat mnsnp-ltr"
+    dir="ltr"
   ><?php echo esc_textarea( $initial_expression ); ?></textarea>
   <small class="description">
     <?php _e( 'Use variable codes (each code equals unit×value).', 'mns-navasan-plus' ); ?>

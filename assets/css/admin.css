@@ -351,3 +351,10 @@ body #woocommerce-product-data .options_group.mns-navasan-plus_simple_product_fi
 .mns-navasan-plus_variation_product_fields style {
     display: none !important;
 }
+/* MNSNP: force LTR for formula expression */
+.mnsnp-ltr{
+  direction: ltr !important;
+  text-align: left !important;
+  font-family: Menlo, Consolas, "Liberation Mono", monospace;
+  unicode-bidi: plaintext; /* تا اعداد/نمادها درست رفتار کنند */
+}

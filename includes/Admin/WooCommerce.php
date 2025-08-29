@@ -7,12 +7,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use MNS\NavasanPlus\Services\PriceCalculator;
 use MNS\NavasanPlus\DB;
+use MNS\NavasanPlus\Templates\Classes\Snippets;
 
 /**
  * WooCommerce integration for MNS Navasan Plus
  *
  * - Override WC prices with calculated prices (product/variation + matrix cache)
- * - Save ALL product/variation fields
+ * - Show & save product/variation fields
  * - Add WC_Order macro: get_currency_rate( $currency_id )
  */
 final class WooCommerce {
@@ -29,27 +30,78 @@ final class WooCommerce {
     ];
 
     public function run(): void {
-        // جایگزینی قیمت محصولات
+        // ---- UI: نمایش فیلدها در تب General و باکس قیمت وارییشن
+        add_action( 'woocommerce_product_options_general_product_data', [ $this, 'render_product_fields_simple' ], 25 );
+        add_action( 'woocommerce_variation_options_pricing',            [ $this, 'render_product_fields_variation' ], 10, 3 );
+
+        // ---- ذخیره‌ی فیلدهای محصول و ورییشن‌ها
+        add_action( 'woocommerce_admin_process_product_object',        [ $this, 'save_product_object' ] );
+        add_action( 'woocommerce_save_product_variation',              [ $this, 'save_product_variation' ], 10, 2 );
+
+        // ---- قیمت محصولات
         add_filter( 'woocommerce_product_get_price',                   [ $this, 'filter_product_price' ], 999, 2 );
         add_filter( 'woocommerce_product_get_regular_price',           [ $this, 'filter_product_price' ], 999, 2 );
         add_filter( 'woocommerce_product_get_sale_price',              [ $this, 'filter_product_price' ], 999, 2 );
 
-        // جایگزینی قیمت ورییشن‌ها
+        // ---- قیمت ورییشن‌ها
         add_filter( 'woocommerce_product_variation_get_price',         [ $this, 'filter_product_price' ], 999, 2 );
         add_filter( 'woocommerce_product_variation_get_regular_price', [ $this, 'filter_product_price' ], 999, 2 );
         add_filter( 'woocommerce_product_variation_get_sale_price',    [ $this, 'filter_product_price' ], 999, 2 );
 
-        // کش ماتریس قیمت ورییشن‌ها
+        // ---- کش ماتریس قیمت ورییشن‌ها
         add_filter( 'woocommerce_variation_prices_price',              [ $this, 'filter_variation_prices_matrix' ], 999, 3 );
         add_filter( 'woocommerce_variation_prices_regular_price',      [ $this, 'filter_variation_prices_matrix' ], 999, 3 );
         add_filter( 'woocommerce_variation_prices_sale_price',         [ $this, 'filter_variation_prices_matrix' ], 999, 3 );
 
-        // ذخیره‌ی فیلدهای محصول و ورییشن‌ها
-        add_action( 'woocommerce_admin_process_product_object',        [ $this, 'save_product_object' ] );
-        add_action( 'woocommerce_save_product_variation',              [ $this, 'save_product_variation' ], 10, 2 );
-
-        // ماکروی سفارش
+        // ---- ماکروی سفارش
         add_action( 'init',                                            [ $this, 'add_order_macros' ] );
+    }
+
+    // ---------------------------------------------------------------------
+    // UI: Render fields
+    // ---------------------------------------------------------------------
+
+    /** فیلدهای محصول ساده در تب General */
+    public function render_product_fields_simple(): void {
+        global $post, $product_object;
+
+        $product = ( $product_object instanceof \WC_Product )
+            ? $product_object
+            : ( $post ? wc_get_product( $post->ID ) : null );
+
+        if ( ! $product instanceof \WC_Product ) {
+            return;
+        }
+
+        // اطمینان از لود استایل/اسکریپت ادمین خودمان
+        wp_enqueue_style( 'mns-navasan-plus-admin' );
+        wp_enqueue_script( 'mns-navasan-plus-admin' );
+
+        // تمپلیت فیلدها
+        Snippets::load_template( 'metaboxes/product', [
+            'product' => $product,
+        ] );
+    }
+
+    /**
+     * فیلدهای ورییشن (داخل Pricing هر ورییشن)
+     *
+     * @param int        $loop
+     * @param array      $variation_data
+     * @param \WC_Product_Variation $variation
+     */
+    public function render_product_fields_variation( int $loop, array $variation_data, $variation ): void {
+        if ( ! $variation instanceof \WC_Product_Variation ) {
+            return;
+        }
+
+        wp_enqueue_style( 'mns-navasan-plus-admin' );
+        wp_enqueue_script( 'mns-navasan-plus-admin' );
+
+        Snippets::load_template( 'metaboxes/product', [
+            'product' => $variation,
+            'loop'    => $loop,
+        ] );
     }
 
     // ---------------------------------------------------------------------
@@ -61,7 +113,6 @@ final class WooCommerce {
         $key = DB::instance()->full_meta_key( $suffix );
         $raw = $product->get_meta( $key, true );
         if ( $raw === '' || $raw === null ) {
-            // اگر ورییشن بود و روی خودش ست نشده بود، از والد بخوان
             if ( $product instanceof \WC_Product_Variation ) {
                 $parent = $product->get_parent_id() ? wc_get_product( $product->get_parent_id() ) : null;
                 if ( $parent ) {
@@ -72,16 +123,13 @@ final class WooCommerce {
         if ( $raw === '' || $raw === null ) {
             return $default;
         }
-        // 'yes'/'no' → bool
-        if ( function_exists( 'wc_string_to_bool' ) ) {
-            return wc_string_to_bool( (string) $raw );
-        }
-        return $raw === 'yes' || $raw === '1' || $raw === 1 || $raw === true;
+        return function_exists( 'wc_string_to_bool' )
+            ? wc_string_to_bool( (string) $raw )
+            : ( $raw === 'yes' || $raw === '1' || $raw === 1 || $raw === true );
     }
 
     /** هِلپر: خواندن مقدار ورییشن از POST هم با کلید پایه و هم با پیشوند _variable */
     private function vpost( string $base_key, int $i ) {
-        // مثال base_key: '_mns_navasan_plus_active'
         if ( isset( $_POST[ $base_key ][ $i ] ) ) {
             return wp_unslash( $_POST[ $base_key ][ $i ] );
         }
@@ -96,13 +144,6 @@ final class WooCommerce {
     // قیمت
     // ---------------------------------------------------------------------
 
-    /**
-     * فیلتر مشترک قیمت (محصول و ورییشن)
-     *
-     * @param string|float $price
-     * @param \WC_Product  $product
-     * @return float|string
-     */
     public function filter_product_price( $price, $product ) {
         if ( ! $product instanceof \WC_Product ) {
             return $price;
@@ -135,7 +176,6 @@ final class WooCommerce {
         return $price;
     }
 
-    /** اعمال فیلتر روی ماتریس قیمت ورییشن‌ها (کش داخلی ووکامرس) */
     public function filter_variation_prices_matrix( $price, $variation, $parent ) {
         if ( ! $variation instanceof \WC_Product_Variation ) {
             return $price;
@@ -143,10 +183,6 @@ final class WooCommerce {
         return $this->filter_product_price( $price, $variation );
     }
 
-    /**
-     * محاسبه‌ی قیمت نهایی با PriceCalculator
-     * اولویت: اگر 'price' باشد همان → در غیر اینصورت profit+charge
-     */
     protected function calculate_final_price( \WC_Product $product ): ?float {
         if ( class_exists( PriceCalculator::class ) && method_exists( PriceCalculator::class, 'instance' ) ) {
             $result = PriceCalculator::instance()->calculate( (int) $product->get_id() );
@@ -166,6 +202,27 @@ final class WooCommerce {
         return null;
     }
 
+    /** مقداردهی «قیمت عادی» ووکامرس از خروجی PriceCalculator (Simple) */
+    private function fill_wc_regular_price_from_calc( \WC_Product $product ): void {
+        try {
+            // پیش‌فرض true تا بار اول که هنوز متا ذخیره نشده هم محاسبه انجام شود
+            if ( ! $this->product_meta_bool( $product, 'active', true ) ) {
+                return;
+            }
+            // مهم: روی خود آبجکت محصول محاسبه کن تا متاهای تازه‌ست‌شده لحاظ شوند
+            if ( class_exists( PriceCalculator::class ) ) {
+                $calc = PriceCalculator::instance()->calculate_for_product( $product );
+                if ( is_numeric( $calc ) && $calc > 0 ) {
+                    $val = wc_format_decimal( $calc, 6 );
+                    $product->set_regular_price( $val );
+                    $product->set_price( $val );
+                }
+            }
+        } catch ( \Throwable $e ) {
+            // بی‌صدا
+        }
+    }
+
     // ---------------------------------------------------------------------
     // ذخیره‌ی فیلدهای محصول (ساده/والدِ ورییشن)
     // ---------------------------------------------------------------------
@@ -179,7 +236,7 @@ final class WooCommerce {
 
         // --- تخفیف‌ها ---
         foreach ( self::DISCOUNT_FIELDS as $suffix ) {
-            $post_key = 'mns_' . $suffix;
+            $post_key = 'mns_' . $suffix; // مثال: mns_discount_profit_percentage
             $meta_key = $db->full_meta_key( $suffix );
             if ( isset( $_POST[ $post_key ] ) ) {
                 $raw = wp_unslash( $_POST[ $post_key ] );
@@ -233,7 +290,7 @@ final class WooCommerce {
             }
         }
 
-        // --- قیمت‌های معمولی/حراج (اختیاری) ---
+        // --- قیمت‌های دستی (اختیاریِ ادمین) ---
         if ( isset( $_POST['_mns_navasan_plus_regular_price'] ) ) {
             $product->set_regular_price( wc_format_decimal( wp_unslash( $_POST['_mns_navasan_plus_regular_price'] ), 6 ) );
         }
@@ -265,6 +322,10 @@ final class WooCommerce {
             $product->update_meta_data( $db->full_meta_key( 'formula_variables' ), $vars );
         }
 
+        // --- پر کردن قیمت عادی از محاسبه (با محاسبه روی همین آبجکت) ---
+        $this->fill_wc_regular_price_from_calc( $product );
+
+        // ذخیرهٔ نهایی
         $product->save();
     }
 
@@ -272,10 +333,6 @@ final class WooCommerce {
     // ذخیره‌ی فیلدهای ورییشن
     // ---------------------------------------------------------------------
 
-    /**
-     * @param int $variation_id
-     * @param int $i ایندکس ورییشن در فرم
-     */
     public function save_product_variation( int $variation_id, int $i ): void {
         if ( ! current_user_can( 'edit_product', $variation_id ) ) {
             return;
@@ -304,7 +361,7 @@ final class WooCommerce {
 
         // --- چک‌باکس‌ها: active, price_alert (yes/no) ---
         foreach ( [ 'active', 'price_alert' ] as $key ) {
-            $base = "_mns_navasan_plus_{$key}";
+            $base   = "_mns_navasan_plus_{$key}";
             $exists = isset( $_POST[ $base ][ $i ] ) || isset( $_POST[ '_variable' . $base ][ $i ] );
             update_post_meta( $variation_id, $db->full_meta_key( $key ), $exists ? 'yes' : 'no' );
         }
@@ -386,17 +443,8 @@ final class WooCommerce {
                 foreach ( (array) $codes as $code => $vals ) {
                     $code = sanitize_key( $code );
 
-                    // هر دو حالت: مقادیر آرایه‌ای [i] یا تک‌مقدار
-                    if ( is_array( $vals['regular'] ?? null ) ) {
-                        $reg = $vals['regular'][ $i ] ?? '';
-                    } else {
-                        $reg = $vals['regular'] ?? '';
-                    }
-                    if ( is_array( $vals['sale'] ?? null ) ) {
-                        $sal = $vals['sale'][ $i ] ?? '';
-                    } else {
-                        $sal = $vals['sale'] ?? '';
-                    }
+                    $reg = is_array( $vals['regular'] ?? null ) ? ( $vals['regular'][ $i ] ?? '' ) : ( $vals['regular'] ?? '' );
+                    $sal = is_array( $vals['sale'] ?? null )    ? ( $vals['sale'][ $i ]    ?? '' ) : ( $vals['sale']    ?? '' );
 
                     $vars[ $fid ][ $code ] = [
                         'regular' => wc_format_decimal( wp_unslash( $reg ), 6 ),
@@ -405,6 +453,23 @@ final class WooCommerce {
                 }
             }
             update_post_meta( $variation_id, $db->full_meta_key( 'formula_variables' ), $vars );
+        }
+
+        // --- پر کردن قیمت عادی ورییشن از محاسبه (با محاسبه روی همین آبجکت) ---
+        try {
+            $v = wc_get_product( $variation_id );
+            if ( $v instanceof \WC_Product_Variation && $this->product_meta_bool( $v, 'active', true ) ) {
+                if ( class_exists( PriceCalculator::class ) ) {
+                    $calc = PriceCalculator::instance()->calculate_for_product( $v );
+                    if ( is_numeric( $calc ) && $calc > 0 ) {
+                        $val = wc_format_decimal( $calc, 6 );
+                        update_post_meta( $variation_id, '_regular_price', $val );
+                        update_post_meta( $variation_id, '_price',         $val );
+                    }
+                }
+            }
+        } catch ( \Throwable $e ) {
+            // بی‌صدا
         }
     }
 
@@ -420,14 +485,12 @@ final class WooCommerce {
                 $currency_id = (int) $currency_id;
                 $key = \MNS\NavasanPlus\DB::instance()->full_meta_key( 'currency_' . $currency_id . '_rate' );
 
-                // ابتدا بین fee items
                 foreach ( $this->get_items( 'fee' ) as $item ) {
                     $rate = $item->get_meta( $key, true );
                     if ( $rate !== '' ) {
                         return (float) $rate;
                     }
                 }
-                // سپس بین سایر آیتم‌ها
                 foreach ( $this->get_items() as $item ) {
                     $rate = $item->get_meta( $key, true );
                     if ( $rate !== '' ) {

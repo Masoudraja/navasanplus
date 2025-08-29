@@ -1,105 +1,116 @@
 <?php
 /**
- * Product‐Formula Meta‐box template (Navasan Plus)
+ * Product → Formula picker + per-product variable overrides
  *
- * Inputs:
- *  - $post_id
- *  - $name_prefix      '' برای ساده | '_variable' برای ورییشن‌ها
- *  - $name_suffix      '' برای ساده | مثل '[3]' برای ورییشن 3
- *  - $formula_data     [fid => ['label'=>..., 'variables'=>[code => ['name','unit_symbol']]]]
- *  - $product_data     [fid => [code => ['regular'=>float]]]
+ * Expects:
+ * @var int    $post_id
+ * @var string $name_prefix
+ * @var string $name_suffix
+ * @var array  $formula_data [fid => ['label'=>..., 'variables'=> [code => ['code','name','unit_symbol']]]]
+ * @var array  $product_data [fid => [code => ['regular' => '...']]]
  */
+if ( ! defined('ABSPATH') ) exit;
 
-if ( ! defined( 'ABSPATH' ) ) exit;
+use MNS\NavasanPlus\DB;
 
-use MNS\NavasanPlus\Templates\Classes\Fields;
+$post_id      = isset($post_id) ? (int) $post_id : 0;
+$formula_data = is_array($formula_data ?? null) ? $formula_data : [];
+$product_data = is_array($product_data ?? null) ? $product_data : [];
 
-// post id
-if ( empty( $post_id ) ) {
-    $post_id = (int) get_the_ID();
-}
+// فرمول انتخابی فعلی
+$current_fid = (int) get_post_meta( $post_id, DB::instance()->full_meta_key('formula_id'), true );
 
-// selected formula
-$selected_formula_id = (int) get_post_meta( $post_id, '_mns_navasan_plus_formula_id', true );
-
-// nonce
-wp_nonce_field( 'mns_navasan_plus_product_formula', '_mns_navasan_plus_product_formula_nonce' );
-
-// normalize
-$formula_data = is_array( $formula_data ?? null ) ? $formula_data : [];
-$product_data = is_array( $product_data ?? null ) ? $product_data : [];
+// سلکت فرمول
 ?>
-
 <p class="form-field">
-  <label for="<?php echo esc_attr( $name_prefix . '_mns_navasan_plus_formula_id' . $name_suffix ); ?>">
-    <?php _e( 'Select Formula', 'mns-navasan-plus' ); ?>
-  </label>
-  <select
-    id="<?php echo esc_attr( $name_prefix . '_mns_navasan_plus_formula_id' . $name_suffix ); ?>"
-    name="<?php echo esc_attr( $name_prefix . '_mns_navasan_plus_formula_id' . $name_suffix ); ?>"
-    class="short"
-  >
-    <option value="0"><?php _e( '-- None --', 'mns-navasan-plus' ); ?></option>
-    <?php foreach ( $formula_data as $fid => $fdata ) : ?>
-      <option value="<?php echo esc_attr( $fid ); ?>" <?php selected( $selected_formula_id, $fid ); ?>>
-        <?php echo esc_html( $fdata['label'] ?? ( '#' . $fid ) ); ?>
+  <label for="mns_navasan_plus_formula_id"><?php esc_html_e('Formula', 'mns-navasan-plus'); ?></label>
+  <select id="mns_navasan_plus_formula_id"
+          name="<?php echo esc_attr($name_prefix . '_mns_navasan_plus_formula_id' . $name_suffix); ?>"
+          class="mnsnp-w100">
+    <option value="0">— <?php esc_html_e('select', 'mns-navasan-plus'); ?> —</option>
+    <?php foreach ($formula_data as $fid => $row): ?>
+      <option value="<?php echo (int) $fid; ?>" <?php selected($current_fid, $fid); ?>>
+        <?php echo esc_html($row['label'] ?? ('#'.$fid)); ?>
       </option>
     <?php endforeach; ?>
   </select>
-  <span class="description">
-    <?php _e( 'Pick the formula used to compute base price for this product/variation.', 'mns-navasan-plus' ); ?>
-  </span>
+  <span class="description"><?php esc_html_e('Pick the formula to use for this product.', 'mns-navasan-plus'); ?></span>
 </p>
 
 <?php
-$has_vars = ( $selected_formula_id && ! empty( $formula_data[ $selected_formula_id ]['variables'] ) );
+// پنل متغیرها برای هر فرمول (فقط یکی نمایش داده می‌شود)
+foreach ($formula_data as $fid => $row):
+  $vars = (array) ($row['variables'] ?? []);
+  $vals = (array) ($product_data[$fid] ?? []);
+  $open = ($fid == $current_fid);
 ?>
-<div class="mns-navasan-plus-formula-variables" style="<?php echo $has_vars ? '' : 'display:none'; ?>">
-  <?php if ( $has_vars ) :
-    $variables   = (array) $formula_data[ $selected_formula_id ]['variables'];
-    $stored_vars = (array) ( $product_data[ $selected_formula_id ] ?? [] );
+<div class="mnsnp-formula-vars-panel" data-fid="<?php echo (int) $fid; ?>" style="<?php echo $open ? '' : 'display:none;'; ?>">
+  <h4 style="margin:10px 0;"><?php echo esc_html($row['label'] ?? ('#'.$fid)); ?> — <?php esc_html_e('Variables (per product)', 'mns-navasan-plus'); ?></h4>
 
-    foreach ( $variables as $code => $var ) :
-        $code  = (string) $code;
-        $label = trim( (string) ( $var['name'] ?? $code ) );
-        $unit  = (string) ( $var['unit_symbol'] ?? '' );
-        $reg   = isset( $stored_vars[ $code ]['regular'] ) ? $stored_vars[ $code ]['regular'] : '';
-  ?>
-    <fieldset class="form-field">
-      <legend>
-        <?php
-          echo esc_html( $label );
-          if ( $unit !== '' ) echo ' (' . esc_html( $unit ) . ')';
-        ?>
-        <span style="margin-left:.5em;color:#666">code: <code><?php echo esc_html( $code ); ?></code></span>
-      </legend>
+  <?php if (empty($vars)) : ?>
+    <p class="description"><?php esc_html_e('This formula has no variables.', 'mns-navasan-plus'); ?></p>
+  <?php else: ?>
+    <table class="widefat striped" style="max-width:680px;">
+      <thead>
+        <tr>
+          <th style="width:30%;"><?php esc_html_e('Variable', 'mns-navasan-plus'); ?></th>
+          <th style="width:20%;"><?php esc_html_e('Code', 'mns-navasan-plus'); ?></th>
+          <th style="width:30%;"><?php esc_html_e('Value for this product', 'mns-navasan-plus'); ?></th>
+          <th style="width:20%;"><?php esc_html_e('Unit', 'mns-navasan-plus'); ?></th>
+        </tr>
+      </thead>
+      <tbody>
+      <?php foreach ($vars as $code => $meta):
+          $code   = (string) $code;
+          $name   = (string) ($meta['name'] ?? $code);
+          $symbol = (string) ($meta['unit_symbol'] ?? '');
 
-      <?php
-      // نکته: $name_suffix فوراً بعد از کلید اصلی می‌آید تا آرایه‌ی ورییشن درست پُست شود
-      $base_name = "{$name_prefix}_mns_navasan_plus_formula_variables{$name_suffix}";
-      Fields::number(
-        // name
-        "{$base_name}[{$selected_formula_id}][{$code}][regular]",
-        // id
-        "{$name_prefix}_mns_navasan_plus_formula_variables{$name_suffix}_{$selected_formula_id}_{$code}_regular",
-        $reg,
-        __( 'Value', 'mns-navasan-plus' ),
-        [ 'step' => '0.0001', 'class' => 'short' ]
-      );
+          $reg    = $vals[$code]['regular'] ?? ''; // override ذخیره‌شده برای این محصول
       ?>
-    </fieldset>
-  <?php endforeach; endif; ?>
+        <tr>
+          <td>
+            <strong><?php echo esc_html($name); ?></strong>
+          </td>
+          <td>
+            <code><?php echo esc_html($code); ?></code>
+          </td>
+          <td>
+            <input type="number"
+                   step="0.0001"
+                   class="short mnsnp-w100"
+                   name="<?php echo esc_attr($name_prefix . '_mns_navasan_plus_formula_variables' . $name_suffix . '[' . (int)$fid . '][' . $code . '][regular]'); ?>"
+                   value="<?php echo esc_attr($reg); ?>"
+                   placeholder="e.g. 1" />
+          </td>
+          <td>
+            <?php echo $symbol !== '' ? esc_html($symbol) : '—'; ?>
+          </td>
+        </tr>
+      <?php endforeach; ?>
+      </tbody>
+    </table>
+    <p class="description" style="margin-top:6px;">
+      <?php esc_html_e('Each code in the expression equals: Unit × Value (the value you set here per product).', 'mns-navasan-plus'); ?>
+    </p>
+  <?php endif; ?>
 </div>
+<?php endforeach; ?>
 
 <script>
-document.addEventListener('DOMContentLoaded', function(){
-  var selId  = '<?php echo esc_js( $name_prefix . '_mns_navasan_plus_formula_id' . $name_suffix ); ?>';
-  var select = document.getElementById(selId);
-  var varsDiv = document.currentScript.previousElementSibling;
-  if (select && varsDiv) {
-    function toggle(){ varsDiv.style.display = (select.value && select.value !== '0') ? '' : 'none'; }
-    select.addEventListener('change', toggle);
-    toggle();
-  }
-});
+(function($){
+  $(function(){
+    var $sel  = $('#mns_navasan_plus_formula_id');
+    var $pans = $('.mnsnp-formula-vars-panel');
+    $sel.on('change', function(){
+      var fid = parseInt($(this).val(), 10) || 0;
+      $pans.hide();
+      $pans.filter('[data-fid="'+fid+'"]').show();
+    });
+  });
+})(jQuery);
 </script>
+
+<style>
+.mnsnp-w100{ width:100%; max-width:480px; }
+.mnsnp-formula-vars-panel table input.short{ width:100%; }
+</style>

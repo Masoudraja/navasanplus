@@ -18,15 +18,19 @@ final class Settings {
     }
 
     public function add_menu(): void {
-        add_submenu_page(
-            'woocommerce',
-            __( 'Navasan Plus Settings', 'mns-navasan-plus' ),
-            __( 'Navasan Plus', 'mns-navasan-plus' ),
-            'manage_woocommerce',
-            'mns-navasan-plus-settings',
-            [ $this, 'settings_page_callback' ]
-        );
-    }
+    $parent = class_exists('\MNS\NavasanPlus\Admin\Menu') 
+        ? \MNS\NavasanPlus\Admin\Menu::SLUG 
+        : 'woocommerce'; // فالبک امن
+
+    add_submenu_page(
+        $parent,
+        __( 'Navasan Plus Settings', 'mns-navasan-plus' ),
+        __( 'Settings', 'mns-navasan-plus' ),
+        'manage_woocommerce',
+        'mns-navasan-plus-settings',
+        [ $this, 'settings_page_callback' ]
+    );
+}
 
     /** لیست سرویس‌های نرخ (قابل توسعه با فیلتر) */
     private function get_services(): array {

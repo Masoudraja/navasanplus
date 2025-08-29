@@ -15,14 +15,19 @@ final class MigratorPage {
     }
 
     public function menu(): void {
-        add_management_page(
-            __( 'Migrate from Navasan', 'mns-navasan-plus' ),
-            __( 'Navasan → Plus Migration', 'mns-navasan-plus' ),
-            'manage_options',
-            self::SLUG,
-            [ $this, 'render' ]
-        );
-    }
+    $parent = class_exists('\MNS\NavasanPlus\Admin\Menu')
+        ? \MNS\NavasanPlus\Admin\Menu::SLUG
+        : 'tools.php'; // قبلاً add_management_page بود
+
+    add_submenu_page(
+        $parent,
+        __( 'Migrate from Navasan', 'mns-navasan-plus' ),
+        __( 'Migration', 'mns-navasan-plus' ),
+        'manage_options',
+        self::SLUG,
+        [ $this, 'render' ]
+    );
+}
 
     public function render(): void {
         if ( ! current_user_can( 'manage_options' ) ) {

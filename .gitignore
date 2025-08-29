@@ -1,1 +1,7 @@
 mns-navasan-plus.zip
+/.vscode
+/.counter
+/.VSCodeCounter
+/thunder-tests
+/vendor
+/node_modules

@@ -15,14 +15,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 class PostTypes {
 
     /**
-     * Hook into WP to register CPTs, list‐table callbacks, and WC submenus.
+     * Hook into WP to register CPTs, list‐table callbacks, and products filters.
      */
     public function run() {
         // Register CPTs
         add_action( 'init', [ __CLASS__, 'register_post_types' ] );
-
-        // Add Currencies / Formulas under WooCommerce menu
-        add_action( 'admin_menu', [ __CLASS__, 'add_wc_submenus' ], 99 );
 
         // Currency list‐table
         add_filter( 'manage_mnswmc_posts_columns',              [ __CLASS__, 'currency_columns' ] );
@@ -49,27 +46,32 @@ class PostTypes {
      * Register the three custom post types.
      */
     public static function register_post_types() {
+        // Parent menu: our top-level menu if available; fallback WooCommerce
+        $parent_menu = class_exists( '\MNS\NavasanPlus\Admin\Menu' )
+            ? \MNS\NavasanPlus\Admin\Menu::SLUG
+            : 'woocommerce';
+
         // Currency CPT
         register_post_type( 'mnswmc', [
             'label'               => __( 'Currency', 'mns-navasan-plus' ),
             'description'         => __( 'Rate Based Currencies', 'mns-navasan-plus' ),
             'labels'              => [
-                'name'                  => _x( 'Currencies', 'Post Type General Name',   'mns-navasan-plus' ),
-                'singular_name'         => _x( 'Currency',  'Post Type Singular Name', 'mns-navasan-plus' ),
-                'menu_name'             => __( 'Currencies',                 'mns-navasan-plus' ),
-                'name_admin_bar'        => __( 'Currency',                   'mns-navasan-plus' ),
-                'all_items'             => __( 'Currencies',                 'mns-navasan-plus' ),
-                'add_new_item'          => __( 'Add New Currency',           'mns-navasan-plus' ),
-                'edit_item'             => __( 'Edit Currency',              'mns-navasan-plus' ),
-                'view_item'             => __( 'View Currency',              'mns-navasan-plus' ),
-                'search_items'          => __( 'Search Currency',            'mns-navasan-plus' ),
-                'not_found'             => __( 'Not found',                  'mns-navasan-plus' ),
-                'not_found_in_trash'    => __( 'Not found in Trash',         'mns-navasan-plus' ),
+                'name'               => _x( 'Currencies', 'Post Type General Name',   'mns-navasan-plus' ),
+                'singular_name'      => _x( 'Currency',  'Post Type Singular Name',  'mns-navasan-plus' ),
+                'menu_name'          => __( 'Currencies',                 'mns-navasan-plus' ),
+                'name_admin_bar'     => __( 'Currency',                   'mns-navasan-plus' ),
+                'all_items'          => __( 'Currencies',                 'mns-navasan-plus' ),
+                'add_new_item'       => __( 'Add New Currency',           'mns-navasan-plus' ),
+                'edit_item'          => __( 'Edit Currency',              'mns-navasan-plus' ),
+                'view_item'          => __( 'View Currency',              'mns-navasan-plus' ),
+                'search_items'       => __( 'Search Currency',            'mns-navasan-plus' ),
+                'not_found'          => __( 'Not found',                  'mns-navasan-plus' ),
+                'not_found_in_trash' => __( 'Not found in Trash',         'mns-navasan-plus' ),
             ],
             'supports'            => [ 'title', 'thumbnail' ],
             'public'              => false,
             'show_ui'             => true,
-            'show_in_menu'        => false, // زیرمنو را خودمان به WooCommerce اضافه می‌کنیم
+            'show_in_menu'        => $parent_menu,
             'has_archive'         => false,
             'exclude_from_search' => true,
         ] );
@@ -79,98 +81,62 @@ class PostTypes {
             'label'               => __( 'Formula', 'mns-navasan-plus' ),
             'description'         => __( 'Rate Based Formulas', 'mns-navasan-plus' ),
             'labels'              => [
-                'name'                  => _x( 'Formulas', 'Post Type General Name',   'mns-navasan-plus' ),
-                'singular_name'         => _x( 'Formula',  'Post Type Singular Name','mns-navasan-plus' ),
-                'menu_name'             => __( 'Formulas',                'mns-navasan-plus' ),
-                'name_admin_bar'        => __( 'Formula',                 'mns-navasan-plus' ),
-                'all_items'             => __( 'Formulas',                'mns-navasan-plus' ),
-                'add_new_item'          => __( 'Add New Formula',         'mns-navasan-plus' ),
-                'edit_item'             => __( 'Edit Formula',            'mns-navasan-plus' ),
-                'view_item'             => __( 'View Formula',            'mns-navasan-plus' ),
-                'search_items'          => __( 'Search Formula',          'mns-navasan-plus' ),
-                'not_found'             => __( 'Not found',               'mns-navasan-plus' ),
-                'not_found_in_trash'    => __( 'Not found in Trash',      'mns-navasan-plus' ),
+                'name'               => _x( 'Formulas', 'Post Type General Name',   'mns-navasan-plus' ),
+                'singular_name'      => _x( 'Formula',  'Post Type Singular Name',  'mns-navasan-plus' ),
+                'menu_name'          => __( 'Formulas',                'mns-navasan-plus' ),
+                'name_admin_bar'     => __( 'Formula',                 'mns-navasan-plus' ),
+                'all_items'          => __( 'Formulas',                'mns-navasan-plus' ),
+                'add_new_item'       => __( 'Add New Formula',         'mns-navasan-plus' ),
+                'edit_item'          => __( 'Edit Formula',            'mns-navasan-plus' ),
+                'view_item'          => __( 'View Formula',            'mns-navasan-plus' ),
+                'search_items'       => __( 'Search Formula',          'mns-navasan-plus' ),
+                'not_found'          => __( 'Not found',               'mns-navasan-plus' ),
+                'not_found_in_trash' => __( 'Not found in Trash',      'mns-navasan-plus' ),
             ],
             'supports'            => [ 'title', 'thumbnail' ],
             'public'              => false,
             'show_ui'             => true,
-            'show_in_menu'        => false, // زیرمنو را خودمان به WooCommerce اضافه می‌کنیم
+            'show_in_menu'        => $parent_menu,
             'has_archive'         => false,
             'exclude_from_search' => true,
         ] );
 
-        // Chart CPT (ثبت می‌شود ولی زیرمنو نمی‌گذاریم)
+        // Chart CPT (ثبت می‌شود ولی در منو نمایش نمی‌دهیم)
         register_post_type( 'mnswmc-chart', [
             'label'               => __( 'Chart', 'mns-navasan-plus' ),
             'description'         => __( 'Rate Based Charts', 'mns-navasan-plus' ),
             'labels'              => [
-                'name'                  => _x( 'Charts', 'Post Type General Name',   'mns-navasan-plus' ),
-                'singular_name'         => _x( 'Chart',  'Post Type Singular Name', 'mns-navasan-plus' ),
-                'menu_name'             => __( 'Charts',                 'mns-navasan-plus' ),
-                'name_admin_bar'        => __( 'Chart',                  'mns-navasan-plus' ),
-                'all_items'             => __( 'Charts',                 'mns-navasan-plus' ),
-                'add_new_item'          => __( 'Add New Chart',          'mns-navasan-plus' ),
-                'edit_item'             => __( 'Edit Chart',             'mns-navasan-plus' ),
-                'view_item'             => __( 'View Chart',             'mns-navasan-plus' ),
-                'search_items'          => __( 'Search Chart',           'mns-navasan-plus' ),
-                'not_found'             => __( 'Not found',              'mns-navasan-plus' ),
-                'not_found_in_trash'    => __( 'Not found in Trash',     'mns-navasan-plus' ),
+                'name'               => _x( 'Charts', 'Post Type General Name',   'mns-navasan-plus' ),
+                'singular_name'      => _x( 'Chart',  'Post Type Singular Name',  'mns-navasan-plus' ),
+                'menu_name'          => __( 'Charts',                 'mns-navasan-plus' ),
+                'name_admin_bar'     => __( 'Chart',                  'mns-navasan-plus' ),
+                'all_items'          => __( 'Charts',                 'mns-navasan-plus' ),
+                'add_new_item'       => __( 'Add New Chart',          'mns-navasan-plus' ),
+                'edit_item'          => __( 'Edit Chart',             'mns-navasan-plus' ),
+                'view_item'          => __( 'View Chart',             'mns-navasan-plus' ),
+                'search_items'       => __( 'Search Chart',           'mns-navasan-plus' ),
+                'not_found'          => __( 'Not found',              'mns-navasan-plus' ),
+                'not_found_in_trash' => __( 'Not found in Trash',     'mns-navasan-plus' ),
             ],
             'supports'            => [ 'title', 'thumbnail' ],
             'public'              => false,
             'show_ui'             => true,
-            'show_in_menu'        => false,
+            'show_in_menu'        => false, // عمداً پنهان
             'has_archive'         => false,
             'exclude_from_search' => true,
             'show_in_rest'        => true,
         ] );
     }
 
-    /**
-     * Add "Currencies" & "Formulas" under WooCommerce menu.
-     */
-    public static function add_wc_submenus() {
-        if ( ! current_user_can( 'manage_woocommerce' ) ) {
-            return;
-        }
-
-        add_submenu_page(
-            'woocommerce',
-            __( 'Currencies', 'mns-navasan-plus' ),
-            __( 'Currencies', 'mns-navasan-plus' ),
-            'manage_woocommerce',
-            'edit.php?post_type=mnswmc'
-        );
-
-        add_submenu_page(
-            'woocommerce',
-            __( 'Formulas', 'mns-navasan-plus' ),
-            __( 'Formulas', 'mns-navasan-plus' ),
-            'manage_woocommerce',
-            'edit.php?post_type=mnswmc-formula'
-        );
-
-        // برای چارت‌ها اگر لازم شد:
-        /*
-        add_submenu_page(
-            'woocommerce',
-            __( 'Charts', 'mns-navasan-plus' ),
-            __( 'Charts', 'mns-navasan-plus' ),
-            'manage_woocommerce',
-            'edit.php?post_type=mnswmc-chart'
-        );
-        */
-    }
-
     // ===== Currency list table =====
 
     public static function currency_columns( $columns ) {
         unset( $columns['date'] );
-        $columns['currency_id']           = __( 'ID',                 'mns-navasan-plus' );
-        $columns['currency_rate']         = __( 'Final Rate',         'mns-navasan-plus' );
-        $columns['currency_attributes']   = __( 'Attributes',         'mns-navasan-plus' );
-        $columns['currency_check_time']   = __( 'Last check time',    'mns-navasan-plus' );
-        $columns['currency_update_time']  = __( 'Last update time',   'mns-navasan-plus' );
+        $columns['currency_id']           = __( 'ID',               'mns-navasan-plus' );
+        $columns['currency_rate']         = __( 'Final Rate',       'mns-navasan-plus' );
+        $columns['currency_attributes']   = __( 'Attributes',       'mns-navasan-plus' );
+        $columns['currency_check_time']   = __( 'Last check time',  'mns-navasan-plus' );
+        $columns['currency_update_time']  = __( 'Last update time', 'mns-navasan-plus' );
         return $columns;
     }
 

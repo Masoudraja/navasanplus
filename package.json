@@ -8,7 +8,7 @@
     "build:parser": "terser assets/js/formula-parser.js -c -m -o assets/js/formula-parser.min.js --source-map",
     "build:js": "terser assets/js/admin.js -c -m -o assets/js/admin.min.js --source-map && terser assets/js/public.js -c -m -o assets/js/public.min.js --source-map && terser assets/js/common.js -c -m -o assets/js/common.min.js --source-map && terser assets/js/persist.js -c -m -o assets/js/persist.min.js --source-map",
     "build:css": "cleancss -o assets/css/admin.min.css assets/css/admin.css && cleancss -o assets/css/public.min.css assets/css/public.css && cleancss -o assets/css/common.min.css assets/css/common.css",
-    "build": "run-s build:parser build:js build:css"
+    "build": "npm run build:parser && npm run build:js && npm run build:css"
   },
   "keywords": [],
   "author": "",
