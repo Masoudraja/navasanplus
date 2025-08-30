@@ -179,6 +179,18 @@ final class Loader {
             $this->ver_for( $plugin_dir . '/' . $admin_rel ),
             true
         );
+
+        // داخل register_admin_assets()
+        $parser_rel = $use_min && file_exists( $plugin_dir . '/assets/js/formula-parser.min.js' )
+            ? 'assets/js/formula-parser.min.js'
+            : 'assets/js/formula-parser.js';
+        wp_register_script(
+            'mns-navasan-plus-formula-parser',
+            Helpers::plugin_url( $parser_rel ),
+            [],
+            $this->ver_for( $plugin_dir . '/' . $parser_rel ),
+            true
+        );
     }
 
     /** Boot modules shared by admin/public */
@@ -296,6 +308,9 @@ final class Loader {
 
             if ( ! $is_ours ) {
                 return;
+            }
+            if ( $screen && $screen->post_type === 'mnswmc-formula' ) {
+                wp_enqueue_script( 'mns-navasan-plus-formula-parser' );
             }
 
             wp_enqueue_style( 'mns-navasan-plus-admin' );

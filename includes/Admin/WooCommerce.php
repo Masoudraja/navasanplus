@@ -30,9 +30,9 @@ final class WooCommerce {
     ];
 
     public function run(): void {
-        // ---- UI: نمایش فیلدها در تب General و باکس قیمت وارییشن
-        add_action( 'woocommerce_product_options_general_product_data', [ $this, 'render_product_fields_simple' ], 25 );
-        add_action( 'woocommerce_variation_options_pricing',            [ $this, 'render_product_fields_variation' ], 10, 3 );
+        // IMPORTANT: UI for product fields must NOT be hooked here. Use Admin\MetaBoxes only.
+        // add_action( 'woocommerce_product_options_general_product_data', [ $this, 'render_product_fields_simple' ], 25 );
+        // add_action( 'woocommerce_variation_options_pricing',            [ $this, 'render_product_fields_variation' ], 10, 3 );
 
         // ---- ذخیره‌ی فیلدهای محصول و ورییشن‌ها
         add_action( 'woocommerce_admin_process_product_object',        [ $this, 'save_product_object' ] );

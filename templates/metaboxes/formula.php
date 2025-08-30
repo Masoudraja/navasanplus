@@ -114,11 +114,16 @@ if ( isset( $formula['expression'] ) && $formula['expression'] !== '' ) {
           'value_symbol' => '',
           'type'         => '',
           'currency_id'  => 0,
+          'role'         => 'none',
       ];
 
       // نوع: اگر currency_id داشت → currency، در غیر اینصورت custom
       $type        = $var['type'] ?: ( ! empty( $var['currency_id'] ) ? 'currency' : 'custom' );
       $currency_id = (int) ( $var['currency_id'] ?? 0 );
+      $role        = isset( $var['role'] ) ? (string) $var['role'] : 'none';
+      if ( ! in_array( $role, ['none','profit','charge'], true ) ) {
+          $role = 'none';
+      }
 
       // پیدا کردن ارز انتخاب‌شده (اگر هست)
       $currSel = null;
@@ -245,6 +250,20 @@ if ( isset( $formula['expression'] ) && $formula['expression'] !== '' ) {
         (string) ( $var['value_symbol'] ?? '' ),
         __( 'Value Symbol', 'mns-navasan-plus' ),
         [ 'class' => 'mns-value-symbol' ]
+    );
+
+    // نقش (برای اعمال تخفیف‌ها روی profit/charge)
+    Fields::select(
+        "mns_navasan_plus_formula_variables_{$code}_role",
+        "_mns_navasan_plus_formula_variables[{$code}][role]",
+        [
+            'none'   => __( 'None',   'mns-navasan-plus' ),
+            'profit' => __( 'Profit (سود)',  'mns-navasan-plus' ),
+            'charge' => __( 'Charge (اجرت)', 'mns-navasan-plus' ),
+        ],
+        $role,
+        __( 'Role (discount target)', 'mns-navasan-plus' ),
+        [ 'class' => 'mns-var-role' ]
     );
     ?>
 
