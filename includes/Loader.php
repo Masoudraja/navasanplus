@@ -247,6 +247,7 @@ final class Loader {
         $ppm_file         = __DIR__ . '/Admin/PricePreviewMetaBox.php';
         $migrator_file    = __DIR__ . '/Admin/MigratorPage.php';
         $health_file      = __DIR__ . '/Admin/HealthCheckPage.php';
+        $discount_file   = __DIR__ . '/Admin/DiscountMetaBoxes.php';
         // Top-level admin menu
         if ( class_exists( __NAMESPACE__ . '\\Admin\\Menu' ) ) {
             ( new \MNS\NavasanPlus\Admin\Menu() )->run();
@@ -256,6 +257,7 @@ final class Loader {
         if ( ! class_exists( __NAMESPACE__ . '\\Admin\\Settings' ) && file_exists( $settings_file ) )    require_once $settings_file;
         if ( ! class_exists( __NAMESPACE__ . '\\Admin\\WooCommerce' ) && file_exists( $wc_file ) )       require_once $wc_file;
         if ( ! class_exists( __NAMESPACE__ . '\\Admin\\PricePreviewMetaBox' ) && file_exists( $ppm_file ) ) require_once $ppm_file;
+        if ( ! class_exists( __NAMESPACE__ . '\\Admin\\DiscountMetaBoxes' ) && file_exists( $discount_file ) ) require_once $discount_file;
         // Bulk assign formula page
         if ( class_exists( __NAMESPACE__ . '\\Admin\\AssignFormulaPage' ) ) {
             ( new \MNS\NavasanPlus\Admin\AssignFormulaPage() )->run();
@@ -276,6 +278,11 @@ final class Loader {
         // Price preview meta box
         if ( class_exists( __NAMESPACE__ . '\\Admin\\PricePreviewMetaBox' ) ) {
             ( new \MNS\NavasanPlus\Admin\PricePreviewMetaBox() )->run();
+        }
+
+        // Discount meta boxes (profit/charge discounts on product edit)
+        if ( class_exists( __NAMESPACE__ . '\\Admin\\DiscountMetaBoxes' ) ) {
+            ( new \MNS\NavasanPlus\Admin\DiscountMetaBoxes() )->run();
         }
 
         // Settings
