@@ -1,0 +1,34 @@
+{
+  "name": "mns/navasan-plus",
+  "description": "Enhanced Navasan plugin for dynamic WooCommerce pricing with discount fields",
+  "type": "wordpress-plugin",
+  "license": "GPL-3.0-or-later",
+  "require": {
+    "php": "^7.4 || ^8.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "MNS\\NavasanPlus\\": "includes/",
+      "MNS\\NavasanPlus\\Templates\\Classes\\": "templates/classes/"
+    }
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "sort-packages": true
+  },
+  "archive": {
+    "exclude": [
+      "/node_modules",
+      "/.git",
+      "/.github",
+      "/.idea",
+      "/.vscode",
+      "/tests",
+      "/composer.lock",
+      "/package-lock.json",
+      "/.DS_Store",
+      "/assets/**/*.map",
+      "/**/.DS_Store"
+    ]
+  }
+}

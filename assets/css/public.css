@@ -1,0 +1,186 @@
+/* Public Styles for MNS Navasan Plus
+   Safe tweaks: RTL-friendly, focus-visible, minor grouping, no markup change */
+
+/* Container box-sizing scope */
+.mns-formula-calculator,
+.mns-formula-order,
+.mns-price-calculator,
+.mns-rate-converter {
+  background: #ffffff;
+  border: 1px solid #ddd;
+  padding: 16px;
+  margin: 20px 0;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;
+}
+.mns-formula-calculator *,
+.mns-formula-order *,
+.mns-price-calculator *,
+.mns-rate-converter * {
+  box-sizing: inherit;
+}
+
+/* Rows */
+.mns-formula-calculator-row,
+.mns-formula-order .mns-formula-field,
+.mns-price-calculator-row,
+.mns-rate-converter-row {
+  margin-bottom: 12px;
+}
+
+/* Labels */
+.mns-formula-calculator label,
+.mns-formula-order label,
+.mns-price-calculator label,
+.mns-rate-converter label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 4px;
+  color: #333;
+}
+
+/* Inputs & Selects */
+.mns-formula-calculator input,
+.mns-formula-order input,
+.mns-price-calculator input,
+.mns-rate-converter input,
+.mns-formula-calculator select,
+.mns-formula-order select,
+.mns-price-calculator select,
+.mns-rate-converter select,
+.mns-formula-calculator textarea,
+.mns-formula-order textarea {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+/* Input focus (keyboard-friendly) */
+.mns-formula-calculator input:focus-visible,
+.mns-formula-order input:focus-visible,
+.mns-price-calculator input:focus-visible,
+.mns-rate-converter input:focus-visible,
+.mns-formula-calculator select:focus-visible,
+.mns-formula-order select:focus-visible,
+.mns-price-calculator select:focus-visible,
+.mns-rate-converter select:focus-visible,
+.mns-formula-calculator textarea:focus-visible,
+.mns-formula-order textarea:focus-visible {
+  outline: none;
+  border-color: #0073aa;
+  box-shadow: 0 0 0 2px rgba(0,115,170,.15);
+}
+
+/* Buttons */
+.mns-formula-calc-btn,
+.mns-formula-order .mns-formula-calc-btn,
+.mns-price-calculator-btn,
+.mns-rate-converter-btn {
+  display: inline-block;
+  background: #0073aa;
+  color: #fff;
+  padding: 10px 16px;
+  font-size: 14px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 8px;
+  transition: background-color .15s ease, box-shadow .15s ease, transform .02s ease;
+}
+.mns-formula-calc-btn:hover,
+.mns-price-calculator-btn:hover,
+.mns-rate-converter-btn:hover {
+  background: #005177;
+}
+.mns-formula-calc-btn:focus-visible,
+.mns-price-calculator-btn:focus-visible,
+.mns-rate-converter-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0,115,170,.25);
+}
+.mns-formula-calc-btn:active,
+.mns-price-calculator-btn:active,
+.mns-rate-converter-btn:active {
+  transform: translateY(1px);
+}
+
+/* Formula result */
+.mns-formula-calculator .mns-formula-result,
+.mns-formula-order .mns-formula-result-text,
+.mns-price-calculator .mns-price-calculator-result,
+.mns-rate-converter .mns-rate-converter-result {
+  margin-top: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #222;
+}
+
+/* Formula fields */
+.mns-formula-calculator .mns-formula-field,
+.mns-formula-order .mns-formula-field {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Tables */
+.mns-formula-values-table,
+.mns-currencies-table,
+.mns-currencies-advanced-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+.mns-formula-values-table th,
+.mns-currencies-table th,
+.mns-currencies-advanced-table th {
+  background: #f1f1f1;
+  padding: 10px;
+  text-align: start; /* RTL-friendly */
+  border-bottom: 1px solid #ddd;
+}
+.mns-formula-values-table td,
+.mns-currencies-table td,
+.mns-currencies-advanced-table td {
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+  text-align: start; /* RTL-friendly */
+}
+
+/* Formula components */
+.mns-formula-components {
+  margin-top: 16px;
+}
+.mns-formula-components .mns-formula-component {
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+}
+.mns-formula-components .mns-component-name {
+  font-weight: bold;
+}
+.mns-formula-components .mns-component-value {
+  color: #0073aa;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .mns-formula-calculator,
+  .mns-formula-order,
+  .mns-price-calculator,
+  .mns-rate-converter {
+    padding: 12px;
+  }
+  .mns-formula-calc-btn,
+  .mns-price-calculator-btn,
+  .mns-rate-converter-btn {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
