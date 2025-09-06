@@ -87,5 +87,5 @@ final class RecalculateCommand {
         $progress->finish();
         \WP_CLI::success( "Process complete. {$updated_count} products updated. {$error_count} products failed." );
     }
-\WP_CLI::add_command( 'mnsnp', \MNS\NavasanPlus\CLI\RecalculateCommand::class );
 }
+\WP_CLI::add_command( 'mnsnp', \MNS\NavasanPlus\CLI\RecalculateCommand::class );
