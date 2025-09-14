@@ -254,5 +254,12 @@ final class Loader {
         if ( class_exists( __NAMESPACE__ . '\\PublicNS\\ConditionalDiscounts' ) ) {
             ( new \MNS\NavasanPlus\PublicNS\ConditionalDiscounts() )->run();
         }
+            $discount_display_file = __DIR__ . '/PublicNS/DiscountDisplay.php';
+        if ( ! class_exists( __NAMESPACE__ . '\\PublicNS\\DiscountDisplay' ) && file_exists( $discount_display_file ) ) {
+            require_once $discount_display_file;
+        }
+        if ( class_exists( __NAMESPACE__ . '\\PublicNS\\DiscountDisplay' ) ) {
+            ( new \MNS\NavasanPlus\PublicNS\DiscountDisplay() )->run();
+        }
     }
 }
