@@ -3,48 +3,50 @@
 /* Main container - Override WooCommerce grid completely */
 .options_group.mns-navasan-plus_simple_product_fields,
 .mns-navasan-plus_variation_product_fields {
-    direction: ltr !important;
-    text-align: left !important;
-    background: #fff !important;
-    border: 1px solid #e5e7ea !important;
-    border-radius: 8px !important;
-    padding: 20px !important;
-    margin: 12px 0 !important;
-    display: block !important;
-    width: 100% !important;
-    max-width: none !important;
-    grid-template-columns: none !important;
-    gap: 0 !important;
-    clear: both !important;
-    overflow: hidden !important;
-    box-sizing: border-box !important;
+  direction: ltr !important;
+  text-align: left !important;
+  background: #fff !important;
+  border: 1px solid #e5e7ea !important;
+  border-radius: 8px !important;
+  padding: 20px !important;
+  margin: 12px 0 !important;
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  grid-template-columns: none !important;
+  gap: 0 !important;
+  clear: both !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
 }
 
 /* Remove extra padding from WooCommerce container */
 #general_product_data .options_group.mns-navasan-plus_simple_product_fields {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
 }
 
 /* Clear floats */
 .options_group.mns-navasan-plus_simple_product_fields:after,
 .mns-navasan-plus_variation_product_fields:after {
-    content: "" !important;
-    display: table !important;
-    clear: both !important;
+  content: "" !important;
+  display: table !important;
+  clear: both !important;
 }
 
 /* Force ALL child elements to single column - but don't force display on hidden elements */
-.options_group.mns-navasan-plus_simple_product_fields>*:not(.hidden):not(script):not(style),
-.mns-navasan-plus_variation_product_fields>*:not(.hidden):not(script):not(style) {
-    display: block !important;
-    clear: both !important;
-    float: none !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    position: relative !important;
+.options_group.mns-navasan-plus_simple_product_fields
+  > *:not(.hidden):not(script):not(style),
+.mns-navasan-plus_variation_product_fields
+  > *:not(.hidden):not(script):not(style) {
+  display: block !important;
+  clear: both !important;
+  float: none !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  position: relative !important;
 }
 
 /* All form fields - Override everything */
@@ -58,62 +60,64 @@
 .mns-navasan-plus_variation_product_fields .form-row-first,
 .mns-navasan-plus_variation_product_fields .form-row-last,
 .mns-navasan-plus_variation_product_fields .form-row-full {
-    display: block !important;
-    clear: both !important;
-    float: none !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 0 20px 0 !important;
-    padding: 0 !important;
-    box-sizing: border-box !important;
-    position: relative !important;
-    left: auto !important;
-    right: auto !important;
-    top: auto !important;
+  display: block !important;
+  clear: both !important;
+  float: none !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 0 20px 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  position: relative !important;
+  left: auto !important;
+  right: auto !important;
+  top: auto !important;
 }
 
 /* Override conditional show/hide classes - but respect their visibility state */
-.options_group.mns-navasan-plus_simple_product_fields [class*="show_if_"]:not(.hidden),
+.options_group.mns-navasan-plus_simple_product_fields
+  [class*="show_if_"]:not(.hidden),
 .mns-navasan-plus_variation_product_fields [class*="show_if_"]:not(.hidden) {
-    clear: both !important;
-    float: none !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
+  clear: both !important;
+  float: none !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
 }
 
 /* Hidden elements - only target elements with .hidden class */
 .options_group.mns-navasan-plus_simple_product_fields .hidden,
 .mns-navasan-plus_variation_product_fields .hidden {
-    display: none !important;
+  display: none !important;
 }
 
 /* Labels - Full width, above field */
 .options_group.mns-navasan-plus_simple_product_fields label,
 .mns-navasan-plus_variation_product_fields label {
-    float: none !important;
-    width: 100% !important;
-    display: block !important;
-    margin: 0 0 8px 0 !important;
-    padding: 0 !important;
-    font-weight: 600 !important;
-    font-size: 14px !important;
-    line-height: 1.4 !important;
-    text-align: left !important;
-    color: #23282d !important;
-    clear: both !important;
+  float: none !important;
+  width: 100% !important;
+  display: block !important;
+  margin: 0 0 8px 0 !important;
+  padding: 0 !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  line-height: 1.4 !important;
+  text-align: left !important;
+  color: #23282d !important;
+  clear: both !important;
 }
 
 /* Input wrapper - Full width */
-.options_group.mns-navasan-plus_simple_product_fields .woocommerce-input-wrapper,
+.options_group.mns-navasan-plus_simple_product_fields
+  .woocommerce-input-wrapper,
 .mns-navasan-plus_variation_product_fields .woocommerce-input-wrapper {
-    display: block !important;
-    width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    float: none !important;
-    clear: both !important;
+  display: block !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  float: none !important;
+  clear: both !important;
 }
 
 /* All inputs, selects, textareas - Full width */
@@ -129,20 +133,20 @@
 .mns-navasan-plus_variation_product_fields input[type="url"],
 .mns-navasan-plus_variation_product_fields select,
 .mns-navasan-plus_variation_product_fields textarea {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-height: 40px !important;
-    padding: 8px 12px !important;
-    border: 1px solid #c3c4c7 !important;
-    border-radius: 4px !important;
-    background: #fff !important;
-    box-sizing: border-box !important;
-    font-size: 14px !important;
-    outline: 0 !important;
-    transition: border-color .15s ease, box-shadow .15s ease !important;
-    margin: 0 !important;
-    float: none !important;
-    display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-height: 40px !important;
+  padding: 8px 12px !important;
+  border: 1px solid #c3c4c7 !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+  box-sizing: border-box !important;
+  font-size: 14px !important;
+  outline: 0 !important;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+  margin: 0 !important;
+  float: none !important;
+  display: block !important;
 }
 
 /* Focus states */
@@ -152,8 +156,8 @@
 .mns-navasan-plus_variation_product_fields input:focus,
 .mns-navasan-plus_variation_product_fields select:focus,
 .mns-navasan-plus_variation_product_fields textarea:focus {
-    border-color: #2271b1 !important;
-    box-shadow: 0 0 0 1px #2271b1 !important;
+  border-color: #2271b1 !important;
+  box-shadow: 0 0 0 1px #2271b1 !important;
 }
 
 /* Description text */
@@ -161,198 +165,464 @@
 .mns-navasan-plus_variation_product_fields .description,
 .options_group.mns-navasan-plus_simple_product_fields span.description,
 .mns-navasan-plus_variation_product_fields span.description {
-    display: block !important;
-    margin-top: 6px !important;
-    font-size: 13px !important;
-    color: #666 !important;
-    font-style: italic !important;
-    clear: both !important;
-    width: 100% !important;
+  display: block !important;
+  margin-top: 6px !important;
+  font-size: 13px !important;
+  color: #666 !important;
+  font-style: italic !important;
+  clear: both !important;
+  width: 100% !important;
 }
 
 /* Checkbox special handling - Keep horizontal */
 .options_group.mns-navasan-plus_simple_product_fields .mnsnp-checkbox,
 .mns-navasan-plus_variation_product_fields .mnsnp-checkbox {
-    display: flex !important;
-    align-items: center !important;
-    gap: 12px !important;
-    margin-bottom: 20px !important;
-    width: 100% !important;
-    clear: both !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  margin-bottom: 20px !important;
+  width: 100% !important;
+  clear: both !important;
 }
 
-.mnsnp-checkbox>label:first-child {
-    margin: 0 !important;
-    font-weight: 600 !important;
-    width: auto !important;
-    flex-shrink: 0 !important;
+.mnsnp-checkbox > label:first-child {
+  margin: 0 !important;
+  font-weight: 600 !important;
+  width: auto !important;
+  flex-shrink: 0 !important;
 }
 
 .mnsnp-checkbox .woocommerce-input-wrapper {
-    display: flex !important;
-    align-items: center !important;
-    gap: 8px !important;
-    width: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  width: auto !important;
 }
 
 .mnsnp-checkbox input[type="checkbox"] {
-    margin: 0 !important;
-    width: 18px !important;
-    height: 18px !important;
-    min-height: auto !important;
+  margin: 0 !important;
+  width: 18px !important;
+  height: 18px !important;
+  min-height: auto !important;
 }
 
 /* Formula variables container */
-.options_group.mns-navasan-plus_simple_product_fields .mns-navasan-plus-formula-variables,
+.options_group.mns-navasan-plus_simple_product_fields
+  .mns-navasan-plus-formula-variables,
 .mns-navasan-plus_variation_product_fields .mns-navasan-plus-formula-variables {
-    margin: 20px 0 !important;
-    border: 1px solid #dcdcde !important;
-    background: #f6f7f7 !important;
-    border-radius: 4px !important;
-    padding: 15px !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-    clear: both !important;
-    display: block !important;
-    float: none !important;
+  margin: 20px 0 !important;
+  border: 1px solid #dcdcde !important;
+  background: #f6f7f7 !important;
+  border-radius: 4px !important;
+  padding: 15px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  clear: both !important;
+  display: block !important;
+  float: none !important;
 }
 
 /* Hide formula variables container if empty or when formula not selected */
-.options_group.mns-navasan-plus_simple_product_fields .mns-navasan-plus-formula-variables:empty,
-.mns-navasan-plus_variation_product_fields .mns-navasan-plus-formula-variables:empty,
-.options_group.mns-navasan-plus_simple_product_fields .mns-navasan-plus-formula-variables.hidden,
-.mns-navasan-plus_variation_product_fields .mns-navasan-plus-formula-variables.hidden {
-    display: none !important;
+.options_group.mns-navasan-plus_simple_product_fields
+  .mns-navasan-plus-formula-variables:empty,
+.mns-navasan-plus_variation_product_fields
+  .mns-navasan-plus-formula-variables:empty,
+.options_group.mns-navasan-plus_simple_product_fields
+  .mns-navasan-plus-formula-variables.hidden,
+.mns-navasan-plus_variation_product_fields
+  .mns-navasan-plus-formula-variables.hidden {
+  display: none !important;
 }
 
 .mns-navasan-plus-formula-variables fieldset.form-field {
-    display: block !important;
-    border: 1px dashed #c3c4c7 !important;
-    border-radius: 4px !important;
-    padding: 12px !important;
-    margin: 12px 0 !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-    float: none !important;
-    clear: both !important;
+  display: block !important;
+  border: 1px dashed #c3c4c7 !important;
+  border-radius: 4px !important;
+  padding: 12px !important;
+  margin: 12px 0 !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  float: none !important;
+  clear: both !important;
 }
 
 .mns-navasan-plus-formula-variables fieldset.form-field legend {
-    display: block !important;
-    font-weight: 600 !important;
-    font-size: 14px !important;
-    text-align: left !important;
-    margin: 0 0 10px !important;
-    padding: 0 8px !important;
-    background: #f6f7f7 !important;
-    color: #23282d !important;
+  display: block !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  text-align: left !important;
+  margin: 0 0 10px !important;
+  padding: 0 8px !important;
+  background: #f6f7f7 !important;
+  color: #23282d !important;
 }
 
 /* Select2 compatibility */
 .options_group.mns-navasan-plus_simple_product_fields .select2-container,
 .mns-navasan-plus_variation_product_fields .select2-container {
-    width: 100% !important;
-    max-width: 100% !important;
-    display: block !important;
-    float: none !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  display: block !important;
+  float: none !important;
 }
 
-.options_group.mns-navasan-plus_simple_product_fields .select2-container .select2-selection--single,
-.mns-navasan-plus_variation_product_fields .select2-container .select2-selection--single {
-    height: 40px !important;
-    line-height: 38px !important;
+.options_group.mns-navasan-plus_simple_product_fields
+  .select2-container
+  .select2-selection--single,
+.mns-navasan-plus_variation_product_fields
+  .select2-container
+  .select2-selection--single {
+  height: 40px !important;
+  line-height: 38px !important;
 }
 
-/* Preview section */
+/* Modern minimal preview section with smaller width and center alignment */
 .mnsnp-admin-preview-wrap {
-    margin-top: 20px !important;
-    padding: 15px !important;
-    background: #f0f0f1 !important;
-    border: 1px solid #c3c4c7 !important;
-    border-radius: 4px !important;
-    clear: both !important;
-    width: 100% !important;
-    display: block !important;
+  margin: 32px auto 0 auto !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  clear: both !important;
+  width: 70% !important;
+  max-width: 800px !important;
+  display: block !important;
+}
+.mnsnp-admin-preview-wrap {
+  margin: 32px 0 0 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  clear: both !important;
+  width: 100% !important;
+  display: block !important;
 }
 
 .mnsnp-admin-preview-wrap hr.mnsnp-sep {
-    border: none !important;
-    border-top: 1px solid #dcdcde !important;
-    margin: 15px 0 !important;
+  border: none !important;
+  border-top: 2px solid #e5e7ea !important;
+  margin: 24px 0 20px 0 !important;
+  position: relative !important;
+}
+
+.mnsnp-admin-preview-wrap hr.mnsnp-sep::after {
+  content: "PREVIEW" !important;
+  position: absolute !important;
+  top: -10px !important;
+  left: 0 !important;
+  background: #ffffff !important;
+  padding: 0 12px !important;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  color: #646970 !important;
+  letter-spacing: 0.8px !important;
 }
 
 .mnsnp-preview-title {
-    font-size: 14px !important;
-    font-weight: 600 !important;
-    margin: 10px 0 !important;
-    color: #23282d !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  margin: 0 0 20px 0 !important;
+  color: #1d2327 !important;
+  padding: 0 0 12px 0 !important;
+  border-bottom: 1px solid #f0f0f1 !important;
 }
 
 .mnsnp-preview-total {
-    font-size: 14px !important;
-    margin: 12px 0 !important;
+  font-size: 14px !important;
+  margin: 24px 0 0 0 !important;
+  padding: 16px 20px !important;
+  background: #f0f6ff !important;
+  border: 1px solid #dbeafe !important;
+  border-left: 4px solid #3b82f6 !important;
+  border-radius: 0 6px 6px 0 !important;
 }
 
-/* Last child margin */
-.options_group.mns-navasan-plus_simple_product_fields>*:last-child,
-.mns-navasan-plus_variation_product_fields>*:last-child {
-    margin-bottom: 0 !important;
+/* Section 1: Summary card with clear separation */
+.mnsnp-admin-preview-wrap .mnsnp-admin-breakdown-summary {
+  margin: 0 0 32px 0 !important;
+  padding: 24px !important;
+  border: 1px solid #e5e7ea !important;
+  border-radius: 8px !important;
+  background: #ffffff !important;
+  font-size: 13px !important;
+  line-height: 1.6 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06) !important;
+  position: relative !important;
+  color: #1d2327 !important;
+}
+
+.mnsnp-admin-preview-wrap .mnsnp-admin-breakdown-summary::before {
+  content: "SUMMARY" !important;
+  position: absolute !important;
+  top: -8px !important;
+  left: 16px !important;
+  background: #ffffff !important;
+  padding: 0 8px !important;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  color: #646970 !important;
+  letter-spacing: 0.6px !important;
+}
+
+.mnsnp-admin-preview-wrap .mnsnp-admin-breakdown-summary strong {
+  color: #1d2327 !important;
+  font-weight: 600 !important;
+}
+
+.mnsnp-admin-preview-wrap .mnsnp-admin-breakdown-summary br {
+  line-height: 2.2 !important;
+}
+
+/* Section 2: Details table with clear separation */
+.mnsnp-admin-preview-wrap .mnsnp-admin-breakdown-table {
+  margin: 0 0 32px 0 !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06) !important;
+  border: 1px solid #e5e7ea !important;
+  width: 100% !important;
+  border-collapse: collapse !important;
+  background: #ffffff !important;
+  position: relative !important;
+}
+
+.mnsnp-admin-preview-wrap .mnsnp-admin-breakdown-table::before {
+  content: "BREAKDOWN DETAILS" !important;
+  position: absolute !important;
+  top: -8px !important;
+  left: 16px !important;
+  background: #ffffff !important;
+  padding: 0 8px !important;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  color: #646970 !important;
+  letter-spacing: 0.6px !important;
+  z-index: 1 !important;
+}
+
+.mnsnp-admin-preview-wrap .mnsnp-admin-breakdown-table th {
+  background: #f9fafb !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  color: #646970 !important;
+  padding: 14px 16px !important;
+  text-align: left !important;
+  border-bottom: 1px solid #e5e7ea !important;
+  vertical-align: middle !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.3px !important;
+}
+
+.mnsnp-admin-preview-wrap .mnsnp-admin-breakdown-table td {
+  font-size: 13px !important;
+  padding: 14px 16px !important;
+  color: #1d2327 !important;
+  background: #ffffff !important;
+  border-bottom: 1px solid #f3f4f6 !important;
+  vertical-align: middle !important;
+}
+
+.mnsnp-admin-preview-wrap .mnsnp-admin-breakdown-table tbody tr:last-child td {
+  border-bottom: none !important;
+}
+
+.mnsnp-admin-preview-wrap .mnsnp-admin-breakdown-table tbody tr:hover td {
+  background: #f9fafb !important;
+  transition: background-color 0.15s ease !important;
+}
+
+/* Modern code and value styling */
+.mnsnp-admin-preview-wrap .mnsnp-admin-breakdown-table code {
+  background: #f3f4f6 !important;
+  padding: 4px 8px !important;
+  border-radius: 6px !important;
+  font-size: 11px !important;
+  font-family: "SF Mono", "Monaco", "Cascadia Code", "Menlo", monospace !important;
+  color: #5b21b6 !important;
+  border: none !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  display: inline-block !important;
+  max-width: 200px !important;
+}
+
+.mnsnp-admin-preview-wrap .mnsnp-admin-breakdown-table strong {
+  color: #059669 !important;
+  font-weight: 600 !important;
+}
+
+/* Clean table layout */
+.mnsnp-admin-preview-wrap .mnsnp-admin-breakdown-table th:last-child,
+.mnsnp-admin-preview-wrap .mnsnp-admin-breakdown-table td:last-child {
+  text-align: right !important;
+  min-width: 120px !important;
+}
+
+/* Modern price styling */
+.mnsnp-admin-preview-wrap .woocommerce-Price-amount {
+  font-weight: 600 !important;
+  color: #1d4ed8 !important;
+}
+
+.mnsnp-admin-preview-wrap .woocommerce-Price-currencySymbol {
+  font-size: 0.9em !important;
+  opacity: 0.8 !important;
+}
+
+/* Enhanced final row styling with clear distinction */
+.mnsnp-admin-preview-wrap .mnsnp-admin-breakdown-table tbody tr:last-child {
+  background: #f8fafc !important;
+  border-top: 2px solid #e2e8f0 !important;
+}
+
+.mnsnp-admin-preview-wrap .mnsnp-admin-breakdown-table tbody tr:last-child td {
+  background: #f8fafc !important;
+  font-weight: 700 !important;
+  color: #1e293b !important;
+  font-size: 14px !important;
+  padding: 18px 16px !important;
+}
+
+.mnsnp-admin-preview-wrap
+  .mnsnp-admin-breakdown-table
+  tbody
+  tr:last-child
+  td:first-child {
+  position: relative !important;
+}
+
+.mnsnp-admin-preview-wrap
+  .mnsnp-admin-breakdown-table
+  tbody
+  tr:last-child
+  td:first-child::before {
+  content: "🧮" !important;
+  margin-right: 8px !important;
+  font-size: 12px !important;
+}
+
+/* Section 3: Final result with clear visual separation */
+.mnsnp-admin-preview-wrap .mnsnp-preview-total {
+  position: relative !important;
+}
+
+.mnsnp-admin-preview-wrap .mnsnp-preview-total::before {
+  content: "FINAL RESULT" !important;
+  position: absolute !important;
+  top: -8px !important;
+  left: 16px !important;
+  background: #ffffff !important;
+  padding: 0 8px !important;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  color: #646970 !important;
+  letter-spacing: 0.6px !important;
+}
+
+/* Enhanced visual separators between sections */
+.mnsnp-admin-preview-wrap
+  .mnsnp-admin-breakdown-summary
+  + .mnsnp-admin-breakdown-table {
+  margin-top: 40px !important;
+}
+
+.mnsnp-admin-preview-wrap .mnsnp-admin-breakdown-table + .mnsnp-preview-total {
+  margin-top: 40px !important;
+}
+
+/* Role badges with better visual distinction */
+.mnsnp-admin-preview-wrap .mnsnp-admin-breakdown-table td:nth-child(3) {
+  font-size: 11px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.3px !important;
+  font-weight: 500 !important;
+  color: #6b7280 !important;
+}
+
+/* Add spacing between table sections */
+.mnsnp-admin-preview-wrap
+  .mnsnp-admin-breakdown-table
+  tbody
+  tr:nth-last-child(2)
+  td {
+  border-bottom: 2px solid #e5e7ea !important;
+  padding-bottom: 16px !important;
+}
+
+.mnsnp-admin-preview-wrap .mnsnp-admin-breakdown-table tbody tr:last-child td {
+  padding-top: 16px !important;
+}
+.options_group.mns-navasan-plus_simple_product_fields > *:last-child,
+.mns-navasan-plus_variation_product_fields > *:last-child {
+  margin-bottom: 0 !important;
 }
 
 /* WooCommerce help tips */
 .options_group.mns-navasan-plus_simple_product_fields .woocommerce-help-tip,
 .mns-navasan-plus_variation_product_fields .woocommerce-help-tip {
-    margin-left: 4px !important;
+  margin-left: 4px !important;
 }
 
 /* Override WooCommerce panel specific styles */
 #woocommerce-product-data .options_group.mns-navasan-plus_simple_product_fields,
 #woocommerce-product-data .mns-navasan-plus_variation_product_fields {
-    padding-left: 20px !important;
-    padding-right: 20px !important;
+  padding-left: 20px !important;
+  padding-right: 20px !important;
 }
 
-#woocommerce-product-data .options_group.mns-navasan-plus_simple_product_fields .form-field,
+#woocommerce-product-data
+  .options_group.mns-navasan-plus_simple_product_fields
+  .form-field,
 #woocommerce-product-data .mns-navasan-plus_variation_product_fields .form-row {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
 }
 
 /* Specific fix for advanced formula field */
-.options_group.mns-navasan-plus_simple_product_fields .show_if_mns_navasan_plus_dependence_type_advanced,
-.mns-navasan-plus_variation_product_fields .show_if_mns_navasan_plus_dependence_type_advanced {
-    clear: both !important;
-    float: none !important;
-    width: 100% !important;
-    display: block !important;
-    margin-top: 0 !important;
-    margin-bottom: 20px !important;
-    position: relative !important;
+.options_group.mns-navasan-plus_simple_product_fields
+  .show_if_mns_navasan_plus_dependence_type_advanced,
+.mns-navasan-plus_variation_product_fields
+  .show_if_mns_navasan_plus_dependence_type_advanced {
+  clear: both !important;
+  float: none !important;
+  width: 100% !important;
+  display: block !important;
+  margin-top: 0 !important;
+  margin-bottom: 20px !important;
+  position: relative !important;
 }
 
 /* Fix for any floating issues with high specificity */
-body #woocommerce-product-data .options_group.mns-navasan-plus_simple_product_fields .form-field,
-body #woocommerce-product-data .options_group.mns-navasan-plus_simple_product_fields .form-row {
-    clear: both !important;
-    float: none !important;
-    width: 100% !important;
+body
+  #woocommerce-product-data
+  .options_group.mns-navasan-plus_simple_product_fields
+  .form-field,
+body
+  #woocommerce-product-data
+  .options_group.mns-navasan-plus_simple_product_fields
+  .form-row {
+  clear: both !important;
+  float: none !important;
+  width: 100% !important;
 }
 
 /* Remove debug output and script tags that shouldn't be visible */
 .options_group.mns-navasan-plus_simple_product_fields script,
 .mns-navasan-plus_variation_product_fields script {
-    display: none !important;
+  display: none !important;
 }
 
 /* Hide any inline JavaScript or style tags */
 .options_group.mns-navasan-plus_simple_product_fields style,
 .mns-navasan-plus_variation_product_fields style {
-    display: none !important;
+  display: none !important;
 }
 /* MNSNP: force LTR for formula expression */
-.mnsnp-ltr{
+.mnsnp-ltr {
   direction: ltr !important;
   text-align: left !important;
   font-family: Menlo, Consolas, "Liberation Mono", monospace;

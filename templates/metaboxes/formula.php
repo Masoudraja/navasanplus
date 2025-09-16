@@ -121,7 +121,7 @@ if ( isset( $formula['expression'] ) && $formula['expression'] !== '' ) {
       $type        = $var['type'] ?: ( ! empty( $var['currency_id'] ) ? 'currency' : 'custom' );
       $currency_id = (int) ( $var['currency_id'] ?? 0 );
       $role        = isset( $var['role'] ) ? (string) $var['role'] : 'none';
-      if ( ! in_array( $role, ['none','profit','charge'], true ) ) {
+      if ( ! in_array( $role, ['none','profit','charge','weight'], true ) ) {
           $role = 'none';
       }
 
@@ -147,7 +147,7 @@ if ( isset( $formula['expression'] ) && $formula['expression'] !== '' ) {
           ? (string) $var['value']
           : ( $type === 'currency' ? '1' : '' );
 
-      // در حالت currency → readonly روی unit و unit_symbol
+      // در حالت currency → readonly روی unit فقط
       $readonly_attrs = ( $type === 'currency' ) ? [ 'readonly' => 'readonly' ] : [];
   ?>
   <div class="mns-formula-variable" data-code="<?php echo esc_attr( $code ); ?>">
@@ -209,7 +209,6 @@ if ( isset( $formula['expression'] ) && $formula['expression'] !== '' ) {
     </div>
 
     <?php
-    // نام متغیر
     Fields::text(
         "mns_navasan_plus_formula_variables_{$code}_name",
         "_mns_navasan_plus_formula_variables[{$code}][name]",
@@ -218,7 +217,6 @@ if ( isset( $formula['expression'] ) && $formula['expression'] !== '' ) {
         [ 'data-name' => "_mns_navasan_plus_formula_variables[{$code}][name]" ]
     );
 
-    // مقدار واحد (برای currency readonly و توسط JS نیز به‌روزرسانی می‌شود)
     Fields::number(
         "mns_navasan_plus_formula_variables_{$code}_unit",
         "_mns_navasan_plus_formula_variables[{$code}][unit]",
@@ -230,19 +228,15 @@ if ( isset( $formula['expression'] ) && $formula['expression'] !== '' ) {
         )
     );
 
-    // نماد واحد (برای currency readonly)
+    // نماد واحد (editable for all types)
     Fields::text(
         "mns_navasan_plus_formula_variables_{$code}_unit_symbol",
         "_mns_navasan_plus_formula_variables[{$code}][unit_symbol]",
         $unit_sym,
         __( 'Unit Symbol', 'mns-navasan-plus' ),
-        array_merge(
-            [ 'class' => 'mns-unit-symbol', 'data-name' => "_mns_navasan_plus_formula_variables[{$code}][unit_symbol]" ],
-            $readonly_attrs
-        )
+        [ 'class' => 'mns-unit-symbol', 'data-name' => "_mns_navasan_plus_formula_variables[{$code}][unit_symbol]" ]
     );
 
-    // مقدار (برای currency آزاد؛ پیش‌فرض 1 اگر ذخیره نشده بود)
     Fields::number(
         "mns_navasan_plus_formula_variables_{$code}_value",
         "_mns_navasan_plus_formula_variables[{$code}][value]",
@@ -251,7 +245,6 @@ if ( isset( $formula['expression'] ) && $formula['expression'] !== '' ) {
         [ 'step' => '0.0001', 'class' => 'mns-value', 'data-name' => "_mns_navasan_plus_formula_variables[{$code}][value]" ]
     );
 
-    // نماد مقدار
     Fields::text(
         "mns_navasan_plus_formula_variables_{$code}_value_symbol",
         "_mns_navasan_plus_formula_variables[{$code}][value_symbol]",
@@ -260,7 +253,6 @@ if ( isset( $formula['expression'] ) && $formula['expression'] !== '' ) {
         [ 'class' => 'mns-value-symbol', 'data-name' => "_mns_navasan_plus_formula_variables[{$code}][value_symbol]" ]
     );
 
-    // نقش (برای اعمال تخفیف‌ها روی profit/charge)
     Fields::select(
         "mns_navasan_plus_formula_variables_{$code}_role",
         "_mns_navasan_plus_formula_variables[{$code}][role]",
@@ -268,6 +260,7 @@ if ( isset( $formula['expression'] ) && $formula['expression'] !== '' ) {
             'none'   => __( 'None', 'mns-navasan-plus' ),
             'profit' => __( 'Profit (سود)',  'mns-navasan-plus' ),
             'charge' => __( 'Charge (اجرت)', 'mns-navasan-plus' ),
+            'weight' => __( 'Weight (وزن)', 'mns-navasan-plus' ),
         ],
         $role,
         __( 'Role (discount target)', 'mns-navasan-plus' ),
@@ -320,7 +313,6 @@ if ( isset( $formula['expression'] ) && $formula['expression'] !== '' ) {
   </button>
 </p>
 
-<!-- اختیاری: تمپلیت خام برای ساخت آیتم جدید در JS (اگر admin.js از آن استفاده کند) -->
 <script type="text/template" id="mnsnp-variable-template">
   <div class="mns-formula-variable" data-code="{{CODE}}">
     <p class="form-field">
@@ -403,6 +395,7 @@ if ( isset( $formula['expression'] ) && $formula['expression'] !== '' ) {
         <option value="none"><?php echo esc_html__( 'None', 'mns-navasan-plus' ); ?></option>
         <option value="profit"><?php echo esc_html__( 'Profit', 'mns-navasan-plus' ); ?></option>
         <option value="charge"><?php echo esc_html__( 'Charge', 'mns-navasan-plus' ); ?></option>
+        <option value="weight"><?php echo esc_html__( 'Weight', 'mns-navasan-plus' ); ?></option>
       </select>
     </p>
 

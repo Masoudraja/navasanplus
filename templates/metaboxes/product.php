@@ -271,16 +271,16 @@ if ( is_admin() && current_user_can('manage_woocommerce')
 
     $wrapper = new \MNS\NavasanPlus\PublicNS\Product( $product );
 
-    echo '<div class="mnsnp-admin-preview-wrap options_group">';
-    echo '<hr class="mnsnp-sep" style="margin:12px 0" />';
-    echo '<h4 class="mnsnp-preview-title" style="margin:6px 0;">' . esc_html__( 'Price Breakdown (preview)', 'mns-navasan-plus' ) . '</h4>';
+    echo '<div class="mnsnp-admin-preview-wrap">';
+    echo '<hr class="mnsnp-sep" />';
+    echo '<h4 class="mnsnp-preview-title">' . esc_html__( 'Price Breakdown (preview)', 'mns-navasan-plus' ) . '</h4>';
 
     \MNS\NavasanPlus\Templates\Classes\Snippets::load_template(
         'product-formula-components-advanced',
         [ 'product' => $wrapper, 'value' => 1 ]
     );
 
-    echo '<p class="mnsnp-preview-total" style="margin:8px 0;"><strong>' . esc_html__( 'Final price (preview):', 'mns-navasan-plus' ) . '</strong> ';
+    echo '<p class="mnsnp-preview-total"><strong>' . esc_html__( 'Final price (preview):', 'mns-navasan-plus' ) . '</strong> ';
     $dec_filter = function(){ return 0; }; add_filter('wc_get_price_decimals',$dec_filter,1000);
     if ( class_exists('\MNS\NavasanPlus\Services\PriceCalculator') ) {
         try {

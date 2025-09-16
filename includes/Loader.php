@@ -261,5 +261,12 @@ final class Loader {
         if ( class_exists( __NAMESPACE__ . '\\PublicNS\\DiscountDisplay' ) ) {
             ( new \MNS\NavasanPlus\PublicNS\DiscountDisplay() )->run();
         }
+            $price_breakdown_file = __DIR__ . '/PublicNS/PriceBreakdown.php';
+        if ( ! class_exists( __NAMESPACE__ . '\\PublicNS\\PriceBreakdown' ) && file_exists( $price_breakdown_file ) ) {
+            require_once $price_breakdown_file;
+        }
+        if ( class_exists( __NAMESPACE__ . '\\PublicNS\\PriceBreakdown' ) ) {
+            ( new \MNS\NavasanPlus\PublicNS\PriceBreakdown() )->run();
+        }
     }
 }
