@@ -23,3 +23,5 @@
 .gitkeep
 .gitlab-ci.yml
 .gitignore
+.package-lock.json
+.package.json
