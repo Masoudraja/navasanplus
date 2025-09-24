@@ -287,16 +287,7 @@
   width: 70% !important;
   max-width: 800px !important;
   display: block !important;
-}
-.mnsnp-admin-preview-wrap {
-  margin: 32px 0 0 0 !important;
-  padding: 0 !important;
-  background: transparent !important;
-  border: none !important;
-  border-radius: 0 !important;
-  clear: both !important;
-  width: 100% !important;
-  display: block !important;
+  box-shadow: none !important;
 }
 
 .mnsnp-admin-preview-wrap hr.mnsnp-sep {

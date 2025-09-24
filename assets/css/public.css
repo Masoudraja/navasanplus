@@ -11,7 +11,7 @@
   padding: 16px;
   margin: 20px 0;
   border-radius: 4px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   font-family: Arial, sans-serif;
   box-sizing: border-box;
 }
@@ -57,7 +57,7 @@
   font-size: 14px;
   border: 1px solid #ccc;
   border-radius: 3px;
-  transition: border-color .15s ease, box-shadow .15s ease;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 /* Input focus (keyboard-friendly) */
@@ -73,7 +73,7 @@
 .mns-formula-order textarea:focus-visible {
   outline: none;
   border-color: #0073aa;
-  box-shadow: 0 0 0 2px rgba(0,115,170,.15);
+  box-shadow: 0 0 0 2px rgba(0, 115, 170, 0.15);
 }
 
 /* Buttons */
@@ -91,7 +91,8 @@
   cursor: pointer;
   text-align: center;
   margin-top: 8px;
-  transition: background-color .15s ease, box-shadow .15s ease, transform .02s ease;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease,
+    transform 0.02s ease;
 }
 .mns-formula-calc-btn:hover,
 .mns-price-calculator-btn:hover,
@@ -102,7 +103,7 @@
 .mns-price-calculator-btn:focus-visible,
 .mns-rate-converter-btn:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px rgba(0,115,170,.25);
+  box-shadow: 0 0 0 2px rgba(0, 115, 170, 0.25);
 }
 .mns-formula-calc-btn:active,
 .mns-price-calculator-btn:active,
@@ -183,4 +184,63 @@
     width: 100%;
     box-sizing: border-box;
   }
+}
+
+/* Price Breakdown Box Styles */
+.mnsnp-price-breakdown-box {
+  margin-top: 20px !important;
+  margin-bottom: 20px !important;
+  padding: 20px !important;
+  border-radius: 8px !important;
+  background: #ffffff !important;
+  color: #333333 !important;
+  text-align: right !important;
+  max-width: 800px !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  direction: rtl !important;
+}
+
+.mnsnp-price-breakdown-box * {
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+}
+
+.mnsnp-price-breakdown-box,
+.mnsnp-price-breakdown-box:before,
+.mnsnp-price-breakdown-box:after {
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+}
+
+.mnsnp-breakdown-table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  font-size: 14px !important;
+  direction: rtl !important;
+}
+
+.mnsnp-breakdown-table th {
+  padding: 12px 15px !important;
+  text-align: right !important;
+  font-weight: 600 !important;
+  color: #34495e !important;
+  background: #f8f9fa !important;
+  direction: rtl !important;
+}
+
+.mnsnp-breakdown-table td {
+  padding: 12px 15px !important;
+  color: #2c3e50 !important;
+  font-weight: 500 !important;
+  text-align: right !important;
+  direction: rtl !important;
+}
+
+.mnsnp-breakdown-table td:nth-child(2) {
+  color: #27ae60 !important;
+  font-weight: 600 !important;
 }
