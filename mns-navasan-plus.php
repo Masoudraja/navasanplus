@@ -3,7 +3,7 @@
  * Plugin Name: MNS Navasan Plus
  * Description: افزونه‌ی پیشرفته قیمت‌گذاری ووکامرس بر پایه نرخ ارز/فلزات با فیلدهای تخفیف سود و اجرت
  * Version:     1.0.1
- * Author:      Masoud
+ * Author:      Masoudraja@gmail.com
  * Text Domain: mns-navasan-plus
  * Domain Path: /languages
  */
