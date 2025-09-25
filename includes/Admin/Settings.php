@@ -135,6 +135,24 @@ final class Settings {
             [ $this, 'api_section_callback' ],
             'mns-navasan-plus-settings'
         );
+        
+        // Language Settings
+        add_settings_section(
+            'mns_navasan_plus_language',
+            __( 'Language Settings', 'mns-navasan-plus' ),
+            function() {
+                echo '<p>' . esc_html__( 'Configure the plugin language (overrides WordPress default).', 'mns-navasan-plus' ) . '</p>';
+            },
+            'mns-navasan-plus-settings'
+        );
+        
+        add_settings_field(
+            'force_locale',
+            __( 'Plugin Language', 'mns-navasan-plus' ),
+            [ $this, 'force_locale_callback' ],
+            'mns-navasan-plus-settings',
+            'mns_navasan_plus_language'
+        );
     }
 
     public function sanitize_options( $input ): array {
@@ -165,6 +183,9 @@ final class Settings {
         // Back-compat keys (اختیاری)
         $output['tabangohar_username'] = $tg_user;
         $output['tabangohar_password'] = $tg_pass;
+        
+        // Language setting
+        $output['force_locale'] = isset( $input['force_locale'] ) ? sanitize_text_field( $input['force_locale'] ) : '';
 
         return $output;
     }
@@ -246,6 +267,28 @@ final class Settings {
             '<input type="password" name="mns_navasan_plus_options[services][tabangohar][password]" value="%s" class="regular-text" autocomplete="current-password" />',
             esc_attr( $val )
         );
+    }
+    
+    public function force_locale_callback(): void {
+        $opts = get_option( 'mns_navasan_plus_options', [] );
+        $current = $opts['force_locale'] ?? '';
+        $languages = [
+            '' => __( 'Use WordPress Default', 'mns-navasan-plus' ),
+            'en_US' => __( 'English', 'mns-navasan-plus' ),
+            'fa_IR' => __( 'Persian (فارسی)', 'mns-navasan-plus' ),
+        ];
+        
+        echo '<select name="mns_navasan_plus_options[force_locale]" class="regular-text">';
+        foreach ( $languages as $code => $label ) {
+            printf(
+                '<option value="%s" %s>%s</option>',
+                esc_attr( $code ),
+                selected( $current, $code, false ),
+                esc_html( $label )
+            );
+        }
+        echo '</select>';
+        echo '<p class="description">' . esc_html__( 'Force plugin to use a specific language regardless of WordPress settings. Save and reload the page to see changes.', 'mns-navasan-plus' ) . '</p>';
     }
 
     /** سکشن API: نمایش Endpoint و توکن + دکمهٔ Regenerate */

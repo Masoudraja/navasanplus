@@ -1,569 +1,1444 @@
-# Copyright (C) 2024 MNS Navasan Plus
-# This file is distributed under the same license as the MNS Navasan Plus package.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: MNS Navasan Plus 1.0.1\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mns-navasan-plus\n"
-"POT-Creation-Date: 2024-09-24 12:00+0000\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-25 09:34+0330\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"X-Generator: Manual 1.0\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: includes/Admin/Menu.php:15
-#: includes/Admin/Menu.php:16
-#: includes/Admin/Menu.php:26
+#: translation-test.php:36 translation-test.php:37 includes/Admin/Menu.php:15
+#: includes/Admin/Menu.php:16 includes/Admin/Menu.php:29 includes/Loader.php:92
+#: debug-translations.php:84
 msgid "Navasan Plus"
 msgstr ""
 
-#: includes/Admin/Menu.php:25
-#: includes/Admin/AssignFormulaPage.php:34
-#: includes/Admin/AssignFormulaPage.php:116
-msgid "Access denied."
+#: translation-test.php:41 translation-test.php:42
+#: includes/Admin/Settings.php:28
+msgid "Settings"
 msgstr ""
 
-#: includes/Admin/Menu.php:27
-msgid "Use the left submenu: Settings, Tools, Currencies, Formulas."
+#: translation-test.php:46 translation-test.php:47
+#: templates/metaboxes/product.php:276
+msgid "Price Breakdown (preview)"
 msgstr ""
 
-#: includes/Admin/PostTypes.php:47
-msgctxt "Post Type General Name"
-msgid "Currencies"
+#: translation-test.php:51 translation-test.php:52
+#: includes/Admin/MigratorPage.php:25
+msgid "Migration"
 msgstr ""
 
-#: includes/Admin/PostTypes.php:48
-msgctxt "Post Type Singular Name"
-msgid "Currency"
+#: translation-test.php:56 translation-test.php:57
+#: includes/Admin/HealthCheckPage.php:24
+msgid "Health Check"
 msgstr ""
 
-#: includes/Admin/PostTypes.php:72
-msgctxt "Post Type General Name"
-msgid "Formulas"
+#: includes/REST/RatesController.php:74
+msgid "API token is not configured."
 msgstr ""
 
-#: includes/Admin/PostTypes.php:73
-msgctxt "Post Type Singular Name"
-msgid "Formula"
+#: includes/REST/RatesController.php:77
+msgid "Invalid API token."
 msgstr ""
 
-#: includes/Admin/PostTypes.php:97
-msgctxt "Post Type General Name"
-msgid "Charts"
+#: includes/REST/RatesController.php:88
+msgid "Invalid payload: rates must be array."
 msgstr ""
 
-#: includes/Admin/PostTypes.php:98
-msgctxt "Post Type Singular Name"
-msgid "Chart"
+#: includes/Admin/DiscountMetaBoxes.php:22
+msgid "Navasan Plus — Discounts (Side Box)"
 msgstr ""
 
-#: includes/Admin/AssignFormulaPage.php:24
-#: includes/Admin/AssignFormulaPage.php:59
-msgid "Assign Formula to Products"
+#: includes/Admin/DiscountMetaBoxes.php:44
+#: includes/Admin/CategoryDiscountFields.php:17
+#: templates/metaboxes/product-quick-edit.php:18
+msgid "Discount on Profit (%)"
 msgstr ""
 
-#: includes/Admin/AssignFormulaPage.php:25
-msgid "Tools: Assign Formula"
+#: includes/Admin/DiscountMetaBoxes.php:48
+#: includes/Admin/CategoryDiscountFields.php:18
+#: templates/metaboxes/product-quick-edit.php:31
+msgid "Discount on Profit (Fixed)"
 msgstr ""
 
-#: includes/Admin/AssignFormulaPage.php:55
-msgid "Done."
+#: includes/Admin/DiscountMetaBoxes.php:52
+#: includes/Admin/CategoryDiscountFields.php:19
+#: templates/metaboxes/product-quick-edit.php:47
+msgid "Discount on Charge (%)"
 msgstr ""
 
-#: includes/Admin/AssignFormulaPage.php:55
-msgid "Failed."
+#: includes/Admin/DiscountMetaBoxes.php:56
+#: includes/Admin/CategoryDiscountFields.php:20
+#: templates/metaboxes/product-quick-edit.php:60
+msgid "Discount on Charge (Fixed)"
 msgstr ""
 
-#: includes/Admin/AssignFormulaPage.php:67
-msgid "Formula"
+#: includes/Admin/MigratorPage.php:24
+msgid "Migrate from Navasan"
 msgstr ""
 
-#: includes/Admin/AssignFormulaPage.php:69
-msgid "— Select —"
+#: includes/Admin/MigratorPage.php:34
+msgid "You do not have permission."
 msgstr ""
 
-#: includes/Admin/AssignFormulaPage.php:76
-msgid "Product IDs"
+#: includes/Admin/MigratorPage.php:63
+msgid "Migrator class not available."
 msgstr ""
 
-#: includes/Admin/AssignFormulaPage.php:78
-msgid "Optional. Comma-separated. Ranges allowed (10-15)."
+#: includes/Admin/MigratorPage.php:78
+msgid "Migration from Navasan"
 msgstr ""
 
-#: includes/Admin/AssignFormulaPage.php:82
-msgid "Categories"
+#: includes/Admin/MigratorPage.php:79
+msgid "This tool migrates specific variable values (like weight and fee) from the old Navasan plugin to the new Navasan Plus structure."
 msgstr ""
 
-#: includes/Admin/AssignFormulaPage.php:88
-msgid "Tags"
+#: includes/Admin/MigratorPage.php:89
+msgid "Migration finished. See the report below."
 msgstr ""
 
-#: includes/Admin/AssignFormulaPage.php:94
-msgid "Options"
+#: includes/Admin/MigratorPage.php:90
+msgid "Migration failed. See the report below."
 msgstr ""
 
-#: includes/Admin/AssignFormulaPage.php:96
+#: includes/Admin/MigratorPage.php:102
+msgid "Migration Settings"
+msgstr ""
+
+#: includes/Admin/MigratorPage.php:106
+msgid "New Plugin (Navasan Plus) Info"
+msgstr ""
+
+#: includes/Admin/MigratorPage.php:107
+msgid "New Formula ID"
+msgstr ""
+
+#: includes/Admin/MigratorPage.php:109
+msgid "Enter the ID of the formula you created in the new plugin."
+msgstr ""
+
+#: includes/Admin/MigratorPage.php:112
+msgid "New \"Weight\" Variable Code"
+msgstr ""
+
+#: includes/Admin/MigratorPage.php:114
+msgid "Enter the variable code for \"weight\" from your new formula."
+msgstr ""
+
+#: includes/Admin/MigratorPage.php:117
+msgid "New \"Fee\" Variable Code"
+msgstr ""
+
+#: includes/Admin/MigratorPage.php:119
+msgid "Enter the variable code for \"fee\" from your new formula."
+msgstr ""
+
+#: includes/Admin/MigratorPage.php:123
+msgid "Old Plugin (Navasan) Info"
+msgstr ""
+
+#: includes/Admin/MigratorPage.php:124
+msgid "Old \"Weight\" Meta Key"
+msgstr ""
+
+#: includes/Admin/MigratorPage.php:126
+msgid "The exact meta_key for the old weight value in the wp_postmeta table."
+msgstr ""
+
+#: includes/Admin/MigratorPage.php:129
+msgid "Old \"Fee\" Meta Key"
+msgstr ""
+
+#: includes/Admin/MigratorPage.php:131
+msgid "The exact meta_key for the old fee value in the wp_postmeta table."
+msgstr ""
+
+#: includes/Admin/MigratorPage.php:138 includes/Admin/AssignFormulaPage.php:97
 msgid "Dry run (no changes)"
 msgstr ""
 
-#: includes/Admin/AssignFormulaPage.php:98
-msgid "Enable rate-based pricing"
+#: includes/Admin/MigratorPage.php:139
+msgid "Run Migration"
 msgstr ""
 
-#: includes/Admin/AssignFormulaPage.php:100
-msgid "Set dependency to Advanced (Formula)"
+#: includes/Admin/MigratorPage.php:147
+#: templates/product-formula-components-advanced.php:101
+msgid "Summary"
 msgstr ""
 
-#: includes/Admin/AssignFormulaPage.php:102
-msgid "Overwrite existing assigned formula (if any)"
+#: includes/Admin/MigratorPage.php:148
+msgid "Products Scanned"
 msgstr ""
 
-#: includes/Admin/AssignFormulaPage.php:104
-msgid "Copy formula variables defaults into product overrides"
+#: includes/Admin/MigratorPage.php:149
+msgid "Products to be Updated"
 msgstr ""
 
-#: includes/Admin/AssignFormulaPage.php:106
-msgid "Clear simple pricing fields"
+#: includes/Admin/MigratorPage.php:150
+msgid "Found \"Weight\" Values"
 msgstr ""
 
-#: includes/Admin/AssignFormulaPage.php:110
-msgid "Assign Now"
+#: includes/Admin/MigratorPage.php:151
+msgid "Found \"Fee\" Values"
 msgstr ""
 
-#: includes/Admin/AssignFormulaPage.php:131
-msgid "Please select a valid formula."
+#: includes/Admin/MigratorPage.php:154
+msgid "Item"
 msgstr ""
 
-#: includes/Admin/AssignFormulaPage.php:156
-msgid "No products matched."
+#: includes/Admin/MigratorPage.php:155
+msgid "Count / Details"
 msgstr ""
 
-#: includes/Admin/AssignFormulaPage.php:220
-msgid "Dry run: matched=%1$d, would_update=%2$d, skipped_existing=%3$d"
+#: includes/Admin/MigratorPage.php:164
+msgid "Error:"
 msgstr ""
 
-#: includes/Admin/AssignFormulaPage.php:228
-msgid "Assigned to %1$d products. Skipped existing: %2$d"
-msgstr ""
-
-#: includes/Admin/CategoryDiscountFields.php:16
-msgid "Discount on Profit (%)"
-msgstr ""
-
-#: includes/Admin/CategoryDiscountFields.php:17
-msgid "Discount on Profit (Fixed)"
-msgstr ""
-
-#: includes/Admin/CategoryDiscountFields.php:18
-msgid "Discount on Charge (%)"
-msgstr ""
-
-#: includes/Admin/CategoryDiscountFields.php:19
-msgid "Discount on Charge (Fixed)"
-msgstr ""
-
-#: includes/Admin/CategoryDiscountFields.php:36
-msgid "Navasan Plus - Category Discounts"
-msgstr ""
-
-#: includes/Admin/CategoryDiscountFields.php:37
-msgid "These discounts will be applied to products in this category upon creation."
-msgstr ""
-
-#: includes/Admin/CategoryDiscountFields.php:63
-msgid "Navasan Plus - Bulk Edit Discounts"
-msgstr ""
-
-#: includes/Admin/CategoryDiscountFields.php:66
-msgid "IMPORTANT: When you update the category, these values will be applied to ALL products in this category, overwriting their current discounts and recalculating their final prices."
-msgstr ""
-
-#: includes/Admin/CategoryDiscountFields.php:78
-msgid "Clear Discounts Action"
-msgstr ""
-
-#: includes/Admin/CategoryDiscountFields.php:80
-msgid "Are you sure you want to clear these discounts for the category AND all its products?"
-msgstr ""
-
-#: includes/Admin/CategoryDiscountFields.php:81
-msgid "Clear All Discounts for This Category"
-msgstr ""
-
-#: includes/Admin/CategoryDiscountFields.php:83
-msgid "This will remove the saved discounts from this category and all products within it."
-msgstr ""
-
-#: includes/Admin/DiscountMetaBoxes.php:43
-msgid "Discount on Profit (%)"
-msgstr ""
-
-#: includes/Admin/DiscountMetaBoxes.php:47
-msgid "Discount on Profit (Fixed)"
-msgstr ""
-
-#: includes/Admin/DiscountMetaBoxes.php:51
-msgid "Discount on Charge (%)"
-msgstr ""
-
-#: includes/Admin/DiscountMetaBoxes.php:55
-msgid "Discount on Charge (Fixed)"
-msgstr ""
-
-#: includes/Admin/HealthCheckPage.php:33
-msgid "Navasan Plus Health Check"
-msgstr ""
-
-#: includes/Admin/HealthCheckPage.php:34
-msgid "Run automated checks to verify the plugin is wired correctly."
-msgstr ""
-
-#: includes/Admin/HealthCheckPage.php:38
-msgid "Run Checks"
-msgstr ""
-
-#: includes/Admin/HealthCheckPage.php:47
-msgid "Check"
-msgstr ""
-
-#: includes/Admin/HealthCheckPage.php:48
-msgid "Result"
-msgstr ""
-
-#: includes/Admin/HealthCheckPage.php:49
-msgid "Details"
-msgstr ""
-
-#: includes/Admin/PostTypes.php:168
-msgid "Manual update"
-msgstr ""
-
-#: includes/Admin/PricePreviewMetaBox.php:19
+#: includes/Admin/PricePreviewMetaBox.php:21
 msgid "Navasan Plus – Price Preview"
 msgstr ""
 
-#: includes/Admin/PricePreviewMetaBox.php:36
+#: includes/Admin/PricePreviewMetaBox.php:43
 msgid "Calculating…"
 msgstr ""
 
-#: includes/Admin/PricePreviewMetaBox.php:37
+#: includes/Admin/PricePreviewMetaBox.php:44
 msgid "Updated."
 msgstr ""
 
-#: includes/Admin/PricePreviewMetaBox.php:38
+#: includes/Admin/PricePreviewMetaBox.php:45
 msgid "Applied."
 msgstr ""
 
-#: includes/Admin/PricePreviewMetaBox.php:39
+#: includes/Admin/PricePreviewMetaBox.php:46
 msgid "Failed to calculate."
 msgstr ""
 
-#: includes/Admin/PricePreviewMetaBox.php:40
+#: includes/Admin/PricePreviewMetaBox.php:47
 msgid "Failed to apply."
 msgstr ""
 
-#: includes/Admin/PricePreviewMetaBox.php:75
+#: includes/Admin/PricePreviewMetaBox.php:48
+msgid "Request failed."
+msgstr ""
+
+#: includes/Admin/PricePreviewMetaBox.php:76
 msgid "Current calculated price"
 msgstr ""
 
-#: includes/Admin/PricePreviewMetaBox.php:83
+#: includes/Admin/PricePreviewMetaBox.php:84
+#: templates/metaboxes/formula.php:396
+#: templates/metaboxes/formula-components.php:55
 msgid "Profit"
 msgstr ""
 
-#: includes/Admin/PricePreviewMetaBox.php:89
+#: includes/Admin/PricePreviewMetaBox.php:90
+#: templates/metaboxes/formula.php:397
+#: templates/metaboxes/formula-components.php:56
 msgid "Charge"
 msgstr ""
 
-#: includes/Admin/PricePreviewMetaBox.php:97
+#: includes/Admin/PricePreviewMetaBox.php:98
 msgid "Recalculate now"
 msgstr ""
 
-#: includes/Admin/PricePreviewMetaBox.php:100
+#: includes/Admin/PricePreviewMetaBox.php:101
 msgid "Apply to product prices"
 msgstr ""
 
-#: includes/Admin/RecalculatePage.php:23
-msgid "Recalculate Prices"
-msgstr ""
-
-#: includes/Admin/RecalculatePage.php:24
-msgid "Tools: Recalculate Prices"
-msgstr ""
-
-#: includes/Admin/RecalculatePage.php:61
-msgid "1. What is WP-CLI and Why Use It?"
-msgstr ""
-
-#: includes/Admin/Core.php:100
-msgid "You've been using the %1$s plugin for more than a week. If you like it, please give us a %2$s rating."
-msgstr ""
-
-#: templates/tools/convert-products.php:105
-msgid "Assign Currency"
-msgstr ""
-
-#: templates/tools/convert-products.php:108
-msgid "-- Select Currency --"
-msgstr ""
-
-#: templates/tools/convert-products.php:116
-msgid "Choose the base currency for all converted products."
-msgstr ""
-
-#: templates/tools/convert-products.php:122
-msgid "Convert Products"
-msgstr ""
-
-#: includes/PublicNS/PriceBreakdown.php:15
-msgid "Price Breakdown"
-msgstr ""
-
-#: includes/PublicNS/DiscountDisplay.php:25
-msgid "Applied Discounts"
-msgstr ""
-
-#: includes/PublicNS/Chart.php:30
-msgid "Currency Chart"
-msgstr ""
-
-#: includes/Admin/RecalculatePage.php:32
+#: includes/Admin/PricePreviewMetaBox.php:191
+#: includes/Admin/PricePreviewMetaBox.php:301
+#: includes/Admin/AssignFormulaPage.php:35
+#: includes/Admin/AssignFormulaPage.php:117 includes/Admin/Settings.php:358
+#: includes/Admin/Settings.php:395 includes/Admin/Settings.php:430
+#: includes/Admin/Menu.php:27 includes/Admin/RecalculatePage.php:34
 #: includes/Admin/RecalculatePage.php:107
 msgid "Access denied."
 msgstr ""
 
-#: includes/Admin/CategoryDiscountFields.php:105
+#: includes/Admin/PricePreviewMetaBox.php:195
+#: includes/Admin/PricePreviewMetaBox.php:305
+msgid "Invalid product id."
+msgstr ""
+
+#: includes/Admin/PricePreviewMetaBox.php:234
+#: includes/Admin/PricePreviewMetaBox.php:335
+msgid "Calculator not available."
+msgstr ""
+
+#: includes/Admin/AssignFormulaPage.php:25
+#: includes/Admin/AssignFormulaPage.php:60
+msgid "Assign Formula to Products"
+msgstr ""
+
+#: includes/Admin/AssignFormulaPage.php:26
+msgid "Tools: Assign Formula"
+msgstr ""
+
+#: includes/Admin/AssignFormulaPage.php:56
+msgid "Done."
+msgstr ""
+
+#: includes/Admin/AssignFormulaPage.php:56
+msgid "Failed."
+msgstr ""
+
+#: includes/Admin/AssignFormulaPage.php:68 includes/Admin/PostTypes.php:70
+#: includes/Admin/PostTypes.php:76 includes/Admin/MetaBoxes.php:48
+#: templates/metaboxes/product-formula.php:26
+#: templates/metaboxes/currency.php:53
+msgid "Formula"
+msgstr ""
+
+#: includes/Admin/AssignFormulaPage.php:70
+msgid "— Select —"
+msgstr ""
+
+#: includes/Admin/AssignFormulaPage.php:77
+msgid "Product IDs"
+msgstr ""
+
+#: includes/Admin/AssignFormulaPage.php:79
+msgid "Optional. Comma-separated. Ranges allowed (10-15)."
+msgstr ""
+
+#: includes/Admin/AssignFormulaPage.php:83
+msgid "Categories"
+msgstr ""
+
+#: includes/Admin/AssignFormulaPage.php:89
+msgid "Tags"
+msgstr ""
+
+#: includes/Admin/AssignFormulaPage.php:95
+msgid "Options"
+msgstr ""
+
+#: includes/Admin/AssignFormulaPage.php:99
+msgid "Enable rate-based pricing"
+msgstr ""
+
+#: includes/Admin/AssignFormulaPage.php:101
+msgid "Set dependency to Advanced (Formula)"
+msgstr ""
+
+#: includes/Admin/AssignFormulaPage.php:103
+msgid "Overwrite existing assigned formula (if any)"
+msgstr ""
+
+#: includes/Admin/AssignFormulaPage.php:105
+msgid "Copy formula variables defaults into product overrides"
+msgstr ""
+
+#: includes/Admin/AssignFormulaPage.php:107
+msgid "Clear simple pricing fields"
+msgstr ""
+
+#: includes/Admin/AssignFormulaPage.php:111
+msgid "Assign Now"
+msgstr ""
+
+#: includes/Admin/AssignFormulaPage.php:132
+msgid "Please select a valid formula."
+msgstr ""
+
+#: includes/Admin/AssignFormulaPage.php:157
+msgid "No products matched."
+msgstr ""
+
+#: includes/Admin/AssignFormulaPage.php:221
+#, php-format
+msgid "Dry run: matched=%1$d, would_update=%2$d, skipped_existing=%3$d"
+msgstr ""
+
+#: includes/Admin/AssignFormulaPage.php:229
+#, php-format
+msgid "Assigned to %1$d products. Skipped existing: %2$d"
+msgstr ""
+
+#: includes/Admin/Settings.php:27 includes/Admin/Settings.php:325
+msgid "Navasan Plus Settings"
+msgstr ""
+
+#: includes/Admin/Settings.php:39
+msgid "Taban Gohar"
+msgstr ""
+
+#: includes/Admin/Settings.php:56
+msgid "General Settings"
+msgstr ""
+
+#: includes/Admin/Settings.php:58
+msgid "Configure the default rate service and caching."
+msgstr ""
+
+#: includes/Admin/Settings.php:65
+msgid "Default Rate Service"
+msgstr ""
+
+#: includes/Admin/Settings.php:73
+msgid "Cache Expiration (minutes)"
+msgstr ""
+
+#: includes/Admin/Settings.php:82
+msgid "Sync (Schedule)"
+msgstr ""
+
+#: includes/Admin/Settings.php:84
+msgid "Enable periodic sync from the selected service."
+msgstr ""
+
+#: includes/Admin/Settings.php:91
+msgid "Enable Scheduled Sync"
+msgstr ""
+
+#: includes/Admin/Settings.php:99
+msgid "Sync Interval (minutes)"
+msgstr ""
+
+#: includes/Admin/Settings.php:108
+msgid "Taban Gohar Credentials"
+msgstr ""
+
+#: includes/Admin/Settings.php:110
+msgid "Enter your Taban Gohar API username & password."
+msgstr ""
+
+#: includes/Admin/Settings.php:117
+msgid "Username"
+msgstr ""
+
+#: includes/Admin/Settings.php:125
+msgid "Password"
+msgstr ""
+
+#: includes/Admin/Settings.php:134
+msgid "API / Push Endpoint"
+msgstr ""
+
+#: includes/Admin/Settings.php:142
+msgid "Language Settings"
+msgstr ""
+
+#: includes/Admin/Settings.php:144
+msgid "Configure the plugin language (overrides WordPress default)."
+msgstr ""
+
+#: includes/Admin/Settings.php:151
+msgid "Plugin Language"
+msgstr ""
+
+#: includes/Admin/Settings.php:218
+msgid "1–1440 minutes."
+msgstr ""
+
+#: includes/Admin/Settings.php:228
+msgid "Enable periodic sync via WP-Cron"
+msgstr ""
+
+#: includes/Admin/Settings.php:237
+msgid "Last Sync"
+msgstr ""
+
+#: includes/Admin/Settings.php:250
+msgid "How often to sync (minutes)."
+msgstr ""
+
+#: includes/Admin/Settings.php:276
+msgid "Use WordPress Default"
+msgstr ""
+
+#: includes/Admin/Settings.php:277
+msgid "English"
+msgstr ""
+
+#: includes/Admin/Settings.php:278
+msgid "Persian (فارسی)"
+msgstr ""
+
+#: includes/Admin/Settings.php:291
+msgid "Force plugin to use a specific language regardless of WordPress settings. Save and reload the page to see changes."
+msgstr ""
+
+#: includes/Admin/Settings.php:300
+msgid "Use this endpoint to push rates into your site (POST JSON)."
+msgstr ""
+
+#: includes/Admin/Settings.php:302
+msgid "Or send the token via HTTP header: X-API-TOKEN"
+msgstr ""
+
+#: includes/Admin/Settings.php:305
+msgid "Regenerate Token"
+msgstr ""
+
+#: includes/Admin/Settings.php:342
+msgid "Create missing currencies if not found"
+msgstr ""
+
+#: includes/Admin/Settings.php:344
+msgid "Sync Rates Now"
+msgstr ""
+
+#: includes/Admin/Settings.php:350
+msgid "Test Connection (Taban Gohar)"
+msgstr ""
+
+#: includes/Admin/Settings.php:374
+msgid "Connection successful."
+msgstr ""
+
+#: includes/Admin/Settings.php:374
+msgid "Empty response received."
+msgstr ""
+
+#: includes/Admin/Settings.php:377
+msgid "Service class not available."
+msgstr ""
+
+#: includes/Admin/Settings.php:411
+#, php-format
+msgid "Synced. Updated: %1$d, Created: %2$d, Skipped: %3$d"
+msgstr ""
+
+#: includes/Admin/Settings.php:416
+msgid "Sync failed."
+msgstr ""
+
+#: includes/Admin/Settings.php:437
+msgid "API token regenerated."
+msgstr ""
+
+#: includes/Admin/Core.php:102
+#, php-format
+msgid "You've been using the %1$s plugin for more than a week. If you like it, please give us a %2$s rating."
+msgstr ""
+
+#: includes/Admin/CategoryDiscountFields.php:37
+msgid "Navasan Plus - Category Discounts"
+msgstr ""
+
+#: includes/Admin/CategoryDiscountFields.php:38
+msgid "These discounts will be applied to products in this category upon creation."
+msgstr ""
+
+#: includes/Admin/CategoryDiscountFields.php:64
+msgid "Navasan Plus - Bulk Edit Discounts"
+msgstr ""
+
+#: includes/Admin/CategoryDiscountFields.php:67
+msgid "IMPORTANT: When you update the category, these values will be applied to ALL products in this category, overwriting their current discounts and recalculating their final prices."
+msgstr ""
+
+#: includes/Admin/CategoryDiscountFields.php:79
+msgid "Clear Discounts Action"
+msgstr ""
+
+#: includes/Admin/CategoryDiscountFields.php:81
+msgid "Are you sure you want to clear these discounts for the category AND all its products?"
+msgstr ""
+
+#: includes/Admin/CategoryDiscountFields.php:82
+msgid "Clear All Discounts for This Category"
+msgstr ""
+
+#: includes/Admin/CategoryDiscountFields.php:84
+msgid "This will remove the saved discounts from this category and all products within it."
+msgstr ""
+
+#: includes/Admin/CategoryDiscountFields.php:106
 msgid "Invalid request."
 msgstr ""
 
-#: includes/Admin/HealthCheckPage.php:58
+#: includes/Admin/PostTypes.php:45 includes/Admin/PostTypes.php:51
+#: includes/Admin/MetaBoxes.php:47 templates/price-calculator.php:40
+#: templates/currencies-table.php:21 templates/metaboxes/product.php:194
+#: templates/metaboxes/order-rates.php:40
+msgid "Currency"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:46
+msgid "Rate Based Currencies"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:48
+msgctxt "Post Type General Name"
+msgid "Currencies"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:49
+msgctxt "Post Type Singular Name"
+msgid "Currency"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:50 includes/Admin/PostTypes.php:52
+msgid "Currencies"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:53
+msgid "Add New Currency"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:54
+msgid "Edit Currency"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:55
+msgid "View Currency"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:56
+msgid "Search Currency"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:57 includes/Admin/PostTypes.php:82
+#: includes/Admin/PostTypes.php:107
+msgid "Not found"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:58 includes/Admin/PostTypes.php:83
+#: includes/Admin/PostTypes.php:108
+msgid "Not found in Trash"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:71
+msgid "Rate Based Formulas"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:73
+msgctxt "Post Type General Name"
+msgid "Formulas"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:74
+msgctxt "Post Type Singular Name"
+msgid "Formula"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:75 includes/Admin/PostTypes.php:77
+msgid "Formulas"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:78
+msgid "Add New Formula"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:79
+msgid "Edit Formula"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:80
+msgid "View Formula"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:81
+msgid "Search Formula"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:95 includes/Admin/PostTypes.php:101
+msgid "Chart"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:96
+msgid "Rate Based Charts"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:98
+msgctxt "Post Type General Name"
+msgid "Charts"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:99
+msgctxt "Post Type Singular Name"
+msgid "Chart"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:100 includes/Admin/PostTypes.php:102
+msgid "Charts"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:103
+msgid "Add New Chart"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:104
+msgid "Edit Chart"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:105
+msgid "View Chart"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:106
+msgid "Search Chart"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:124 includes/Admin/PostTypes.php:199
+#: includes/Admin/PostTypes.php:243
+msgid "ID"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:125
+msgid "Final Rate"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:126
+msgid "Attributes"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:127
+msgid "Last check time"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:128
+msgid "Last update time"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:167
+msgid "Auto update"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:169
+msgid "Manual update"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:200
+msgid "Variables"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:201
+#: templates/product-formula-components-advanced.php:111
+msgid "Components"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:231
+msgid "No variables"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:234
+msgid "No components"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:244
+msgid "Items"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:245
+msgid "Shortcode"
+msgstr ""
+
+#: includes/Admin/PostTypes.php:274
+msgid "Products"
+msgstr ""
+
+#: includes/Admin/MetaBoxes.php:49
+msgid "Formula Components"
+msgstr ""
+
+#: includes/Admin/HealthCheckPage.php:23 includes/Admin/HealthCheckPage.php:34
+msgid "Navasan Plus Health Check"
+msgstr ""
+
+#: includes/Admin/HealthCheckPage.php:35
+msgid "Run automated checks to verify the plugin is wired correctly."
+msgstr ""
+
+#: includes/Admin/HealthCheckPage.php:39
+msgid "Run Checks"
+msgstr ""
+
+#: includes/Admin/HealthCheckPage.php:48
+msgid "Check"
+msgstr ""
+
+#: includes/Admin/HealthCheckPage.php:49
+msgid "Result"
+msgstr ""
+
+#: includes/Admin/HealthCheckPage.php:50
+msgid "Details"
+msgstr ""
+
+#: includes/Admin/HealthCheckPage.php:59
 msgid "PASS"
 msgstr ""
 
-#: includes/Admin/HealthCheckPage.php:60
+#: includes/Admin/HealthCheckPage.php:61
 msgid "FAIL"
 msgstr ""
 
-#: templates/currencies-table.php:18
-msgid "Currency"
+#: includes/Admin/Menu.php:30
+msgid "Use the left submenu: Settings, Tools, Currencies, Formulas."
 msgstr ""
 
-#: templates/currencies-table.php:19
-msgid "Current Rate"
+#: includes/Admin/RecalculatePage.php:24
+msgid "Recalculate Prices"
 msgstr ""
 
-#: templates/currencies-table.php:20
-msgid "Change"
+#: includes/Admin/RecalculatePage.php:25
+msgid "Tools: Recalculate Prices"
 msgstr ""
 
-#: templates/rate-converter.php:52
-msgid "From"
+#: includes/Admin/RecalculatePage.php:42
+msgid "Recalculate All Product Prices"
 msgstr ""
 
-#: templates/rate-converter.php:68
-msgid "To"
+#: includes/Admin/RecalculatePage.php:45
+msgid "Method 1: Update via Browser (for few products)"
 msgstr ""
 
-#: templates/rate-converter.php:85
-msgid "Convert"
+#: includes/Admin/RecalculatePage.php:46
+msgid "Use this tool to recalculate and apply the formula-based price for all published products. This may take a long time for sites with many products and could time out."
 msgstr ""
 
-#: templates/price-calculator.php:39
-msgid "Currency"
+#: includes/Admin/RecalculatePage.php:51
+msgid "Start Recalculation Now"
 msgstr ""
 
-#: templates/price-calculator.php:56
-msgid "Currency #%s"
+#: includes/Admin/RecalculatePage.php:52
+msgid "This can be a slow process and cannot be undone. Are you sure you want to continue?"
 msgstr ""
 
-#: templates/price-calculator.php:66
-msgid "Calculate"
+#: includes/Admin/RecalculatePage.php:58
+msgid "Method 2: Update via Command Line (Recommended for many products)"
 msgstr ""
 
-#: templates/price-calculator.php:70
-msgid "Result:"
+#: includes/Admin/RecalculatePage.php:62
+msgid "1. What is WP-CLI and Why Use It?"
 msgstr ""
 
-#: templates/price-calculator.php:74
-msgid "No currencies available to convert."
+#: includes/Admin/RecalculatePage.php:63
+msgid "WP-CLI is a command-line interface for WordPress. It allows you to perform administrative tasks directly from the server's terminal. We use this method for updating prices because it is much faster than other methods and, most importantly, it does not encounter the execution time limit (timeout) that exists in web admin pages. This method is the only reliable way for sites with thousands of products."
 msgstr ""
 
-#: templates/tools/convert-products.php:84
-msgid "Filter by Category"
+#: includes/Admin/RecalculatePage.php:65
+msgid "2. Prerequisites"
 msgstr ""
 
-#: templates/tools/convert-products.php:88
-msgid "-- All Categories --"
+#: includes/Admin/RecalculatePage.php:67
+msgid "SSH access to the site server."
 msgstr ""
 
-#: templates/tools/convert-products.php:96
-msgid "Only products in this category will be converted."
+#: includes/Admin/RecalculatePage.php:68
+msgid "WP-CLI installed on the server (usually all good WordPress hosts have it)."
 msgstr ""
 
-#: templates/tools/convert-products.php:51
+#: includes/Admin/RecalculatePage.php:69
+msgid "The \"MNS Navasan Plus\" plugin must be active."
+msgstr ""
+
+#: includes/Admin/RecalculatePage.php:72
+msgid "3. Execution Steps"
+msgstr ""
+
+#: includes/Admin/RecalculatePage.php:75
+msgid "Connect to the server:"
+msgstr ""
+
+#: includes/Admin/RecalculatePage.php:75
+msgid "Using a terminal application (like Terminal on Mac or PuTTY on Windows), connect to your server via SSH."
+msgstr ""
+
+#: includes/Admin/RecalculatePage.php:79
+msgid "Navigate to the WordPress root folder:"
+msgstr ""
+
+#: includes/Admin/RecalculatePage.php:79
+msgid "Go to the path where the main WordPress files (like wp-config.php) are located. This path is usually public_html or your domain name."
+msgstr ""
+
+#: includes/Admin/RecalculatePage.php:80
+msgid "# Example: cd public_html"
+msgstr ""
+
+#: includes/Admin/RecalculatePage.php:83
+msgid "Run the command:"
+msgstr ""
+
+#: includes/Admin/RecalculatePage.php:83
+msgid "Copy and run the following command completely in the terminal:"
+msgstr ""
+
+#: includes/Admin/RecalculatePage.php:87
+msgid "Observe the output:"
+msgstr ""
+
+#: includes/Admin/RecalculatePage.php:87
+msgid "After running the command, you will see an output similar to the following. A progress bar shows you the status of the operation."
+msgstr ""
+
+#: includes/Admin/RecalculatePage.php:95
+msgid "4. Troubleshooting"
+msgstr ""
+
+#: includes/Admin/RecalculatePage.php:97
+msgid "If you encounter the error `Error: 'mnsnp' is not a registered wp command`, make sure the 'MNS Navasan Plus' plugin is active."
+msgstr ""
+
+#: includes/Admin/RecalculatePage.php:98
+msgid "If you see a warning error for a specific product during execution, note down the product ID and check it manually in the admin panel."
+msgstr ""
+
+#: includes/Admin/RecalculatePage.php:151
+#, php-format
+msgid "Process complete. %d products updated, %d products failed."
+msgstr ""
+
+#: includes/Services/ComponentBreakdown.php:91
+msgid "Residual"
+msgstr ""
+
+#: includes/Services/RateSync.php:46
+#, php-format
+msgid "Every %d minutes (Navasan Plus)"
+msgstr ""
+
+#: includes/PublicNS/DiscountDisplay.php:72
+#, php-format
+msgid "سود شما: %s"
+msgstr ""
+
+#: includes/PublicNS/PriceBreakdown.php:163
+msgid "Product Details"
+msgstr ""
+
+#: includes/PublicNS/PriceBreakdown.php:169
+msgid "grams"
+msgstr ""
+
+#: includes/PublicNS/Chart.php:120
+#, php-format
+msgid "%s Rate"
+msgstr ""
+
+#: includes/PublicNS/Chart.php:136
+#, php-format
+msgid "SMA(%d)"
+msgstr ""
+
+#: includes/Webservices/Rates/TabanGohar.php:35
+msgid "Recommended for gold and jewelry"
+msgstr ""
+
+#: includes/Webservices/Rates/TabanGohar.php:66
+msgid "Missing TabanGohar credentials."
+msgstr ""
+
+#: includes/Webservices/Rates/TabanGohar.php:89
+msgid "Webservice returned empty or invalid payload."
+msgstr ""
+
+#: templates/tools/convert-products.php:17
+msgid "Convert Products to Rate-Based Pricing"
+msgstr ""
+
+#: templates/tools/convert-products.php:59
+#, php-format
 msgid "Converted %d product."
 msgid_plural "Converted %d products."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/Admin/RecalculatePage.php:62
-msgid "Method 2: Update via Command Line (Recommended for many products)"
+#: templates/tools/convert-products.php:85
+msgid "Filter by Category"
 msgstr ""
 
-#: includes/Admin/RecalculatePage.php:67
-msgid "WP-CLI is a command-line interface for WordPress. It allows you to perform administrative tasks directly from the server's terminal. We use this method for updating prices because it is much faster than other methods and, most importantly, it does not encounter the execution time limit (timeout) that exists in web admin pages. This method is the only reliable way for sites with thousands of products."
+#: templates/tools/convert-products.php:90
+msgid "-- All Categories --"
 msgstr ""
 
-#: includes/Admin/RecalculatePage.php:70
-msgid "2. Prerequisites"
+#: templates/tools/convert-products.php:98
+msgid "Only products in this category will be converted."
 msgstr ""
 
-#: includes/Admin/RecalculatePage.php:72
-msgid "SSH access to the site server."
+#: templates/tools/convert-products.php:106
+msgid "Assign Currency"
 msgstr ""
 
-#: includes/Admin/RecalculatePage.php:73
-msgid "WP-CLI installed on the server (usually all good WordPress hosts have it)."
+#: templates/tools/convert-products.php:111
+msgid "-- Select Currency --"
 msgstr ""
 
-#: includes/Admin/RecalculatePage.php:74
-msgid "The \"MNS Navasan Plus\" plugin must be active."
+#: templates/tools/convert-products.php:119
+msgid "Choose the base currency for all converted products."
 msgstr ""
 
-#: includes/Admin/RecalculatePage.php:77
-msgid "3. Execution Steps"
+#: templates/tools/convert-products.php:125
+msgid "Convert Products"
 msgstr ""
 
-#: includes/Admin/RecalculatePage.php:80
-msgid "Connect to the server:"
+#: templates/rate-converter.php:41 templates/price-calculator.php:25
+msgid "Amount"
 msgstr ""
 
-#: includes/Admin/RecalculatePage.php:80
-msgid "Using a terminal application (like Terminal on Mac or PuTTY on Windows), connect to your server via SSH."
+#: templates/rate-converter.php:54
+msgid "From"
 msgstr ""
 
-#: includes/Admin/RecalculatePage.php:84
-msgid "Navigate to the WordPress root folder:"
+#: templates/rate-converter.php:73
+msgid "To"
 msgstr ""
 
-#: includes/Admin/RecalculatePage.php:84
-msgid "Go to the path where the main WordPress files (like wp-config.php) are located. This path is usually public_html or your domain name."
+#: templates/rate-converter.php:91
+msgid "Convert"
 msgstr ""
 
-#: includes/Admin/RecalculatePage.php:86
-msgid "# Example: cd public_html"
+#: templates/rate-converter.php:95 templates/price-calculator.php:73
+#: templates/formula-calculator.php:44
+msgid "Result:"
 msgstr ""
 
-#: includes/Admin/RecalculatePage.php:89
-msgid "Run the command:"
+#: templates/formula-order.php:32
+msgid "Payable amount"
 msgstr ""
 
-#: includes/Admin/RecalculatePage.php:89
-msgid "Copy and run the following command completely in the terminal:"
+#: templates/formula-order.php:33
+msgid "Place order"
 msgstr ""
 
-#: includes/Admin/MigratorPage.php:104
-msgid "New Plugin (Navasan Plus) Info"
+#: templates/formula-order.php:143 templates/product-formula-values.php:28
+#: templates/metaboxes/product-formula.php:56
+msgid "Variable"
 msgstr ""
 
-#: includes/Admin/MigratorPage.php:107
-msgid "Enter the ID of the formula you created in the new plugin."
-msgstr ""
-
-#: templates/currencies-table-advanced.php:76
-msgid "%s ago"
-msgstr ""
-
-#: templates/currencies-table-advanced.php:86
-msgid "%1$s at %2$s"
-msgstr ""
-
-#: templates/metaboxes/currency-chart.php:67
-msgid "Date"
-msgstr ""
-
-#: templates/metaboxes/currency-chart.php:71
-msgid "Rate"
-msgstr ""
-
-#: templates/product-formula-components-advanced.php:99
-msgid "Summary"
-msgstr ""
-
-#: templates/product-formula-components-advanced.php:107
-msgid "Components"
-msgstr ""
-
-#: templates/product-formula-components-advanced.php:110
-msgid "Name"
-msgstr ""
-
-#: templates/product-formula-components-advanced.php:111
-msgid "Expression"
-msgstr ""
-
-#: templates/product-formula-components-advanced.php:112
-msgid "Role"
-msgstr ""
-
-#: templates/product-formula-components-advanced.php:113
+#: templates/formula-order.php:144 templates/product-formula-values.php:30
+#: templates/product-formula-components-advanced.php:118
+#: templates/metaboxes/formula.php:244 templates/metaboxes/formula.php:375
+#: templates/metaboxes/currency.php:47
 msgid "Value"
 msgstr ""
 
-#: templates/product-formula-components-advanced.php:122
-msgid "profit"
+#: templates/price-calculator.php:60
+#, php-format
+msgid "Currency #%s"
 msgstr ""
 
-#: templates/product-formula-components-advanced.php:122
-msgid "charge"
+#: templates/price-calculator.php:68 templates/formula-calculator.php:40
+msgid "Calculate"
 msgstr ""
 
-#: assets/js/admin.js:254
-msgid "No currencies found."
+#: templates/price-calculator.php:78
+msgid "No currencies available to convert."
 msgstr ""
 
-#: assets/js/admin.js:260
-msgid "Add Currency Variable"
+#: templates/currencies-table.php:22 templates/metaboxes/order-rates.php:42
+msgid "Current Rate"
 msgstr ""
 
-#: assets/js/admin.js:264
+#: templates/currencies-table.php:23 templates/metaboxes/order-rates.php:43
+msgid "Change"
+msgstr ""
+
+#: templates/currencies-table-advanced.php:76
+#, php-format
+msgid "%s ago"
+msgstr ""
+
+#: templates/currencies-table-advanced.php:91
+#, php-format
+msgid "%1$s at %2$s"
+msgstr ""
+
+#: templates/product-formula-values.php:29
+#: templates/metaboxes/product-formula.php:59
+msgid "Unit"
+msgstr ""
+
+#: templates/product-formula-values.php:31
+msgid "Total"
+msgstr ""
+
+#: templates/product-formula-components-advanced.php:24
+msgid "No components defined for this formula."
+msgstr ""
+
+#: templates/product-formula-components-advanced.php:103
+msgid "Profit: "
+msgstr ""
+
+#: templates/product-formula-components-advanced.php:104
+msgid "Charge: "
+msgstr ""
+
+#: templates/product-formula-components-advanced.php:105
+msgid "Other: "
+msgstr ""
+
+#: templates/product-formula-components-advanced.php:106
+msgid "Final: "
+msgstr ""
+
+#: templates/product-formula-components-advanced.php:115
+msgid "Name"
+msgstr ""
+
+#: templates/product-formula-components-advanced.php:116
+msgid "Expression"
+msgstr ""
+
+#: templates/product-formula-components-advanced.php:117
+msgid "Role"
+msgstr ""
+
+#: templates/product-formula-components-advanced.php:131
+msgid "Final Total"
+msgstr ""
+
+#: templates/metaboxes/currency-chart.php:73
+msgid "Date"
+msgstr ""
+
+#: templates/metaboxes/currency-chart.php:77
+msgid "Rate"
+msgstr ""
+
+#: templates/metaboxes/product.php:85 templates/metaboxes/formula.php:182
 msgid "— select —"
 msgstr ""
 
-#: assets/js/admin.js:276
-msgid "Add"
+#: templates/metaboxes/product.php:160
+msgid "Rate Based"
 msgstr ""
 
-#: assets/js/admin.js:277
-msgid "Cancel"
+#: templates/metaboxes/product.php:161
+msgid "Enable rate‐based pricing for this product."
 msgstr ""
 
-#: templates/product-formula-components-advanced.php:88
-msgid "Section"
+#: templates/metaboxes/product.php:172
+msgid "Simple"
 msgstr ""
 
-#: templates/product-formula-components-advanced.php:89
-msgid "Details"
+#: templates/metaboxes/product.php:172
+msgid "Advanced (Formula)"
 msgstr ""
 
-#: templates/metaboxes/order-rates.php:39
+#: templates/metaboxes/product.php:174
+msgid "Dependency Type"
+msgstr ""
+
+#: templates/metaboxes/product.php:176
+msgid "Choose how to calculate this product’s price."
+msgstr ""
+
+#: templates/metaboxes/product.php:202
+msgid "Percent"
+msgstr ""
+
+#: templates/metaboxes/product.php:202
+msgid "Fixed"
+msgstr ""
+
+#: templates/metaboxes/product.php:204
+msgid "Profit Type"
+msgstr ""
+
+#: templates/metaboxes/product.php:211
+msgid "Profit Value"
+msgstr ""
+
+#: templates/metaboxes/product.php:219 templates/metaboxes/formula.php:260
+#: templates/metaboxes/formula.php:395 templates/metaboxes/currency.php:106
+#: templates/metaboxes/formula-components.php:54
+msgid "None"
+msgstr ""
+
+#: templates/metaboxes/product.php:219
+msgid "Zero"
+msgstr ""
+
+#: templates/metaboxes/product.php:219
+msgid "Integer"
+msgstr ""
+
+#: templates/metaboxes/product.php:221
+msgid "Rounding Type"
+msgstr ""
+
+#: templates/metaboxes/product.php:228
+msgid "Rounding Value"
+msgstr ""
+
+#: templates/metaboxes/product.php:234
+msgid "Nearest"
+msgstr ""
+
+#: templates/metaboxes/product.php:234
+msgid "Up"
+msgstr ""
+
+#: templates/metaboxes/product.php:234
+msgid "Down"
+msgstr ""
+
+#: templates/metaboxes/product.php:236
+msgid "Rounding Direction"
+msgstr ""
+
+#: templates/metaboxes/product.php:245
+msgid "Price Ceiling"
+msgstr ""
+
+#: templates/metaboxes/product.php:252
+msgid "Price Floor"
+msgstr ""
+
+#: templates/metaboxes/product.php:283
+msgid "Final price (preview):"
+msgstr ""
+
+#: templates/metaboxes/product.php:290
+msgid "— error —"
+msgstr ""
+
+#: templates/metaboxes/product.php:292
+msgid "— n/a —"
+msgstr ""
+
+#: templates/metaboxes/formula.php:75
+msgid "Formula Expression"
+msgstr ""
+
+#: templates/metaboxes/formula.php:85
+msgid "Use variable codes (each code equals unit×value)."
+msgstr ""
+
+#: templates/metaboxes/formula.php:91
+msgid "Expression total"
+msgstr ""
+
+#: templates/metaboxes/formula.php:97
+msgid "Formula Variables"
+msgstr ""
+
+#: templates/metaboxes/formula.php:161 templates/metaboxes/formula.php:323
+msgid "Custom variable"
+msgstr ""
+
+#: templates/metaboxes/formula.php:162 templates/metaboxes/formula.php:324
+msgid "Currency variable"
+msgstr ""
+
+#: templates/metaboxes/formula.php:165 templates/metaboxes/formula.php:319
+msgid "Variable Type"
+msgstr ""
+
+#: templates/metaboxes/formula.php:174 templates/metaboxes/formula.php:330
+msgid "Select Currency"
+msgstr ""
+
+#: templates/metaboxes/formula.php:195 templates/metaboxes/formula.php:344
+msgid "Current rate:"
+msgstr ""
+
+#: templates/metaboxes/formula.php:216 templates/metaboxes/formula.php:351
+msgid "Variable Name"
+msgstr ""
+
+#: templates/metaboxes/formula.php:224 templates/metaboxes/formula.php:359
+msgid "Unit Value"
+msgstr ""
+
+#: templates/metaboxes/formula.php:236 templates/metaboxes/formula.php:367
+msgid "Unit Symbol"
+msgstr ""
+
+#: templates/metaboxes/formula.php:252 templates/metaboxes/formula.php:383
+msgid "Value Symbol"
+msgstr ""
+
+#: templates/metaboxes/formula.php:261
+msgid "Profit (سود)"
+msgstr ""
+
+#: templates/metaboxes/formula.php:262
+msgid "Charge (اجرت)"
+msgstr ""
+
+#: templates/metaboxes/formula.php:263
+msgid "Weight (وزن)"
+msgstr ""
+
+#: templates/metaboxes/formula.php:266 templates/metaboxes/formula.php:391
+msgid "Role (discount target)"
+msgstr ""
+
+#: templates/metaboxes/formula.php:273 templates/metaboxes/formula.php:403
+msgid "Remove Variable"
+msgstr ""
+
+#: templates/metaboxes/formula.php:280
+#, php-format
+msgid "Code: %s (use this in expression)"
+msgstr ""
+
+#: templates/metaboxes/formula.php:291 templates/metaboxes/formula.php:409
+msgid "Copy"
+msgstr ""
+
+#: templates/metaboxes/formula.php:298 templates/metaboxes/formula.php:412
+msgid "Insert into expression"
+msgstr ""
+
+#: templates/metaboxes/formula.php:309
+msgid "Add Custom Variable"
+msgstr ""
+
+#: templates/metaboxes/formula.php:312
+msgid "Add Currency Variable"
+msgstr ""
+
+#: templates/metaboxes/formula.php:334
+#: templates/metaboxes/product-formula.php:30
+msgid "select"
+msgstr ""
+
+#: templates/metaboxes/formula.php:398
+msgid "Weight"
+msgstr ""
+
+#: templates/metaboxes/formula.php:405
+msgid "Code:"
+msgstr ""
+
+#: templates/metaboxes/product-formula.php:37
+msgid "Pick the formula to use for this product."
+msgstr ""
+
+#: templates/metaboxes/product-formula.php:48
+msgid "Variables (per product)"
+msgstr ""
+
+#: templates/metaboxes/product-formula.php:51
+msgid "This formula has no variables."
+msgstr ""
+
+#: templates/metaboxes/product-formula.php:57
+msgid "Code"
+msgstr ""
+
+#: templates/metaboxes/product-formula.php:58
+msgid "Value for this product"
+msgstr ""
+
+#: templates/metaboxes/product-formula.php:93
+msgid "Each code in the expression equals: Unit × Value (the value you set here per product)."
+msgstr ""
+
+#: templates/metaboxes/order-rates.php:41
 msgid "Invoice Rate"
 msgstr ""
 
-#: templates/metaboxes/product-quick-edit.php:17
-msgid "Discount on Profit (%)"
+#: templates/metaboxes/currency.php:39
+msgid "Rate Symbol"
 msgstr ""
 
-#: templates/metaboxes/product-quick-edit.php:27
-msgid "Discount on Profit (Fixed)"
+#: templates/metaboxes/currency.php:52 templates/metaboxes/currency.php:107
+msgid "Manual"
 msgstr ""
 
-#: templates/metaboxes/product-quick-edit.php:37
-msgid "Discount on Charge (%)"
+#: templates/metaboxes/currency.php:60
+msgid "Calculation Type"
 msgstr ""
 
-#: templates/metaboxes/product-quick-edit.php:47
-msgid "Discount on Charge (Fixed)"
+#: templates/metaboxes/currency.php:68
+msgid "Formula Text"
+msgstr ""
+
+#: templates/metaboxes/currency.php:77
+msgid "Profit (%)"
+msgstr ""
+
+#: templates/metaboxes/currency.php:85
+msgid "Fee (%)"
+msgstr ""
+
+#: templates/metaboxes/currency.php:93
+msgid "Ratio"
+msgstr ""
+
+#: templates/metaboxes/currency.php:101
+msgid "Fixed Amount"
+msgstr ""
+
+#: templates/metaboxes/currency.php:108
+msgid "Auto"
+msgstr ""
+
+#: templates/metaboxes/currency.php:115
+msgid "Update Type"
+msgstr ""
+
+#: templates/metaboxes/currency.php:124
+msgid "-- None --"
+msgstr ""
+
+#: templates/metaboxes/currency.php:133
+msgid "Relation Currency"
+msgstr ""
+
+#: templates/metaboxes/currency.php:143
+msgid "Connection Currency"
+msgstr ""
+
+#: templates/metaboxes/currency.php:148
+msgid "Add (+)"
+msgstr ""
+
+#: templates/metaboxes/currency.php:149
+msgid "Subtract (-)"
+msgstr ""
+
+#: templates/metaboxes/currency.php:156
+msgid "Operation"
+msgstr ""
+
+#: templates/metaboxes/currency.php:164
+msgid "Calculation Order"
+msgstr ""
+
+#: templates/metaboxes/currency.php:172
+msgid "Lowest Rate"
+msgstr ""
+
+#: templates/metaboxes/formula-components.php:17
+msgid "Define component lines (name + expression + symbol)."
+msgstr ""
+
+#: templates/metaboxes/formula-components.php:31
+msgid "Component Name"
+msgstr ""
+
+#: templates/metaboxes/formula-components.php:38
+msgid "Component Expression"
+msgstr ""
+
+#: templates/metaboxes/formula-components.php:46
+msgid "Component Symbol"
+msgstr ""
+
+#: templates/metaboxes/formula-components.php:59
+msgid "Component Role"
+msgstr ""
+
+#: templates/metaboxes/formula-components.php:64
+msgid "Total:"
+msgstr ""
+
+#: templates/metaboxes/formula-components.php:70
+msgid "Add Component"
+msgstr ""
+
+#: templates/metaboxes/formula-components.php:71
+msgid "Remove"
 msgstr ""

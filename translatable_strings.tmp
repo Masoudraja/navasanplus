@@ -1,0 +1,396 @@
+./includes/REST/RatesController.php:74:            return new WP_Error( 'mnsnp_token_missing', __( 'API token is not configured.', 'mns-navasan-plus' ), [ 'status' => 403 ] );
+./includes/REST/RatesController.php:77:            return new WP_Error( 'mnsnp_forbidden', __( 'Invalid API token.', 'mns-navasan-plus' ), [ 'status' => 403 ] );
+./includes/REST/RatesController.php:88:            return new WP_Error( 'mnsnp_bad_request', __( 'Invalid payload: rates must be array.', 'mns-navasan-plus' ), [ 'status' => 400 ] );
+./includes/Admin/DiscountMetaBoxes.php:22:            __( 'Navasan Plus — Discounts (Side Box)', 'mns-navasan-plus' ),
+./includes/Admin/DiscountMetaBoxes.php:44:            <label for="mnsnp_discount_profit_percentage"><?php _e( 'Discount on Profit (%)', 'mns-navasan-plus' ); ?></label>
+./includes/Admin/DiscountMetaBoxes.php:48:            <label for="mnsnp_discount_profit_fixed"><?php _e( 'Discount on Profit (Fixed)', 'mns-navasan-plus' ); ?></label>
+./includes/Admin/DiscountMetaBoxes.php:52:            <label for="mnsnp_discount_charge_percentage"><?php _e( 'Discount on Charge (%)', 'mns-navasan-plus' ); ?></label>
+./includes/Admin/DiscountMetaBoxes.php:56:            <label for="mnsnp_discount_charge_fixed"><?php _e( 'Discount on Charge (Fixed)', 'mns-navasan-plus' ); ?></label>
+./includes/Admin/MigratorPage.php:24:            __( 'Migrate from Navasan', 'mns-navasan-plus' ),
+./includes/Admin/MigratorPage.php:25:            __( 'Migration', 'mns-navasan-plus' ),
+./includes/Admin/MigratorPage.php:34:            wp_die( __( 'You do not have permission.', 'mns-navasan-plus' ) );
+./includes/Admin/MigratorPage.php:63:                    throw new \RuntimeException( __( 'Migrator class not available.', 'mns-navasan-plus' ) );
+./includes/Admin/MigratorPage.php:78:        echo '<h1>' . esc_html__( 'Migration from Navasan', 'mns-navasan-plus' ) . '</h1>';
+./includes/Admin/MigratorPage.php:79:        echo '<p>' . esc_html__( 'This tool migrates specific variable values (like weight and fee) from the old Navasan plugin to the new Navasan Plus structure.', 'mns-navasan-plus' ) . '</p>';
+./includes/Admin/MigratorPage.php:89:                $ok ? esc_html__( 'Migration finished. See the report below.', 'mns-navasan-plus' )
+./includes/Admin/MigratorPage.php:90:                    : esc_html__( 'Migration failed. See the report below.', 'mns-navasan-plus' )
+./includes/Admin/MigratorPage.php:102:        echo '<h2>' . esc_html__( 'Migration Settings', 'mns-navasan-plus' ) . '</h2>';
+./includes/Admin/MigratorPage.php:106:        echo '<tr><th colspan="2"><h3>' . esc_html__( 'New Plugin (Navasan Plus) Info', 'mns-navasan-plus' ) . '</h3></th></tr>';
+./includes/Admin/MigratorPage.php:107:        echo '<tr><th><label for="mnsnp_new_formula_id">' . esc_html__( 'New Formula ID', 'mns-navasan-plus' ) . '</label></th><td>';
+./includes/Admin/MigratorPage.php:109:        echo '<p class="description">' . esc_html__( 'Enter the ID of the formula you created in the new plugin.', 'mns-navasan-plus' ) . '</p>';
+./includes/Admin/MigratorPage.php:123:        echo '<tr><th colspan="2"><h3>' . esc_html__( 'Old Plugin (Navasan) Info', 'mns-navasan-plus' ) . '</h3></th></tr>';
+./includes/Admin/MigratorPage.php:126:        echo '<p class="description">' . esc_html__( 'The exact meta_key for the old weight value in the wp_postmeta table.', 'mns-navasan-plus' ) . '</p>';
+./includes/Admin/MigratorPage.php:131:        echo '<p class="description">' . esc_html__( 'The exact meta_key for the old fee value in the wp_postmeta table.', 'mns-navasan-plus' ) . '</p>';
+./includes/Admin/MigratorPage.php:138:        echo '<button type="submit" class="button" name="mnsnp_migrate_action" value="dry">' . esc_html__( 'Dry run (no changes)', 'mns-navasan-plus' ) . '</button> ';
+./includes/Admin/MigratorPage.php:139:        echo '<button type="submit" class="button button-primary" name="mnsnp_migrate_action" value="run">' . esc_html__( 'Run Migration', 'mns-navasan-plus' ) . '</button>';
+./includes/Admin/MigratorPage.php:147:            'report_summary'   => __( 'Summary', 'mns-navasan-plus' ),
+./includes/Admin/MigratorPage.php:148:            'products_scanned' => __( 'Products Scanned', 'mns-navasan-plus' ),
+./includes/Admin/MigratorPage.php:149:            'products_updated' => __( 'Products to be Updated', 'mns-navasan-plus' ),
+./includes/Admin/MigratorPage.php:154:        echo '<th>' . esc_html__( 'Item', 'mns-navasan-plus' ) . '</th>';
+./includes/Admin/MigratorPage.php:155:        echo '<th>' . esc_html__( 'Count / Details', 'mns-navasan-plus' ) . '</th>';
+./includes/Admin/MigratorPage.php:164:                printf( '<tr><td colspan="2" style="color:#b32d2e"><strong>%s</strong> %s</td></tr>', esc_html__( 'Error:', 'mns-navasan-plus' ), esc_html( (string) $err ) );
+./includes/Admin/PricePreviewMetaBox.php:21:            __( 'Navasan Plus – Price Preview', 'mns-navasan-plus' ),
+./includes/Admin/PricePreviewMetaBox.php:43:                'calculating' => __( 'Calculating…', 'mns-navasan-plus' ),
+./includes/Admin/PricePreviewMetaBox.php:44:                'updated'     => __( 'Updated.', 'mns-navasan-plus' ),
+./includes/Admin/PricePreviewMetaBox.php:45:                'applied'     => __( 'Applied.', 'mns-navasan-plus' ),
+./includes/Admin/PricePreviewMetaBox.php:46:                'failed'      => __( 'Failed to calculate.', 'mns-navasan-plus' ),
+./includes/Admin/PricePreviewMetaBox.php:47:                'applyFailed' => __( 'Failed to apply.', 'mns-navasan-plus' ),
+./includes/Admin/PricePreviewMetaBox.php:48:                'requestFail' => __( 'Request failed.', 'mns-navasan-plus' ),
+./includes/Admin/PricePreviewMetaBox.php:76:                <strong><?php esc_html_e( 'Current calculated price', 'mns-navasan-plus' ); ?>:</strong>
+./includes/Admin/PricePreviewMetaBox.php:84:                    <?php esc_html_e( 'Profit', 'mns-navasan-plus' ); ?>:
+./includes/Admin/PricePreviewMetaBox.php:90:                    <?php esc_html_e( 'Charge', 'mns-navasan-plus' ); ?>:
+./includes/Admin/PricePreviewMetaBox.php:98:                <?php esc_html_e( 'Recalculate now', 'mns-navasan-plus' ); ?>
+./includes/Admin/PricePreviewMetaBox.php:101:                <?php esc_html_e( 'Apply to product prices', 'mns-navasan-plus' ); ?>
+./includes/Admin/PricePreviewMetaBox.php:191:        if ( ! current_user_can( 'edit_products' ) ) wp_send_json_error( __( 'Access denied.', 'mns-navasan-plus' ) );
+./includes/Admin/PricePreviewMetaBox.php:195:        if ( $pid <= 0 ) wp_send_json_error( __( 'Invalid product id.', 'mns-navasan-plus' ) );
+./includes/Admin/PricePreviewMetaBox.php:234:                wp_send_json_error( __( 'Calculator not available.', 'mns-navasan-plus' ) );
+./includes/Admin/PricePreviewMetaBox.php:301:        if ( ! current_user_can( 'edit_products' ) ) wp_send_json_error( __( 'Access denied.', 'mns-navasan-plus' ) );
+./includes/Admin/PricePreviewMetaBox.php:305:        if ( $pid <= 0 ) wp_send_json_error( __( 'Invalid product id.', 'mns-navasan-plus' ) );
+./includes/Admin/PricePreviewMetaBox.php:335:            if ( $res === null ) wp_send_json_error( __( 'Calculator not available.', 'mns-navasan-plus' ) );
+./includes/Admin/AssignFormulaPage.php:25:            __( 'Assign Formula to Products', 'mns-navasan-plus' ),
+./includes/Admin/AssignFormulaPage.php:26:            __( 'Tools: Assign Formula', 'mns-navasan-plus' ),
+./includes/Admin/AssignFormulaPage.php:35:            wp_die( __( 'Access denied.', 'mns-navasan-plus' ) );
+./includes/Admin/AssignFormulaPage.php:56:                esc_html( $msg ?: ( $ok ? __( 'Done.', 'mns-navasan-plus' ) : __( 'Failed.', 'mns-navasan-plus' ) ) )
+./includes/Admin/AssignFormulaPage.php:60:        echo '<div class="wrap"><h1>' . esc_html__( 'Assign Formula to Products', 'mns-navasan-plus' ) . '</h1>';
+./includes/Admin/AssignFormulaPage.php:68:        echo '<tr><th><label for="mnsnp_formula_id">' . esc_html__( 'Formula', 'mns-navasan-plus' ) . '</label></th><td>';
+./includes/Admin/AssignFormulaPage.php:70:        echo '<option value="">' . esc_html__( '— Select —', 'mns-navasan-plus' ) . '</option>';
+./includes/Admin/AssignFormulaPage.php:77:        echo '<tr><th><label for="mnsnp_ids">' . esc_html__( 'Product IDs', 'mns-navasan-plus' ) . '</label></th><td>';
+./includes/Admin/AssignFormulaPage.php:79:        echo '<p class="description">' . esc_html__( 'Optional. Comma-separated. Ranges allowed (10-15).', 'mns-navasan-plus' ) . '</p>';
+./includes/Admin/AssignFormulaPage.php:83:        echo '<tr><th><label for="mnsnp_cats">' . esc_html__( 'Categories', 'mns-navasan-plus' ) . '</label></th><td>';
+./includes/Admin/AssignFormulaPage.php:89:        echo '<tr><th><label for="mnsnp_tags">' . esc_html__( 'Tags', 'mns-navasan-plus' ) . '</label></th><td>';
+./includes/Admin/AssignFormulaPage.php:95:        echo '<tr><th>' . esc_html__( 'Options', 'mns-navasan-plus' ) . '</th><td>';
+./includes/Admin/AssignFormulaPage.php:97:             esc_html__( 'Dry run (no changes)', 'mns-navasan-plus' ) . '</label><br/>';
+./includes/Admin/AssignFormulaPage.php:99:             esc_html__( 'Enable rate-based pricing', 'mns-navasan-plus' ) . '</label><br/>';
+./includes/Admin/AssignFormulaPage.php:101:             esc_html__( 'Set dependency to Advanced (Formula)', 'mns-navasan-plus' ) . '</label><br/>';
+./includes/Admin/AssignFormulaPage.php:103:             esc_html__( 'Overwrite existing assigned formula (if any)', 'mns-navasan-plus' ) . '</label><br/>';
+./includes/Admin/AssignFormulaPage.php:105:             esc_html__( 'Copy formula variables defaults into product overrides', 'mns-navasan-plus' ) . '</label><br/>';
+./includes/Admin/AssignFormulaPage.php:107:             esc_html__( 'Clear simple pricing fields', 'mns-navasan-plus' ) . '</label>';
+./includes/Admin/AssignFormulaPage.php:111:        submit_button( __( 'Assign Now', 'mns-navasan-plus' ) );
+./includes/Admin/AssignFormulaPage.php:117:            wp_die( __( 'Access denied.', 'mns-navasan-plus' ) );
+./includes/Admin/AssignFormulaPage.php:132:            $this->redir(false, __( 'Please select a valid formula.', 'mns-navasan-plus' ));
+./includes/Admin/AssignFormulaPage.php:157:            $this->redir(false, __( 'No products matched.', 'mns-navasan-plus' ));
+./includes/Admin/AssignFormulaPage.php:221:                __( 'Dry run: matched=%1$d, would_update=%2$d, skipped_existing=%3$d', 'mns-navasan-plus' ),
+./includes/Admin/AssignFormulaPage.php:229:            __( 'Assigned to %1$d products. Skipped existing: %2$d', 'mns-navasan-plus' ),
+./includes/Admin/Settings.php:27:        __( 'Navasan Plus Settings', 'mns-navasan-plus' ),
+./includes/Admin/Settings.php:28:        __( 'Settings', 'mns-navasan-plus' ),
+./includes/Admin/Settings.php:39:                'label' => __( 'Taban Gohar', 'mns-navasan-plus' ),
+./includes/Admin/Settings.php:56:            __( 'General Settings', 'mns-navasan-plus' ),
+./includes/Admin/Settings.php:58:                echo '<p>' . esc_html__( 'Configure the default rate service and caching.', 'mns-navasan-plus' ) . '</p>';
+./includes/Admin/Settings.php:65:            __( 'Default Rate Service', 'mns-navasan-plus' ),
+./includes/Admin/Settings.php:73:            __( 'Cache Expiration (minutes)', 'mns-navasan-plus' ),
+./includes/Admin/Settings.php:82:            __( 'Sync (Schedule)', 'mns-navasan-plus' ),
+./includes/Admin/Settings.php:84:                echo '<p>' . esc_html__( 'Enable periodic sync from the selected service.', 'mns-navasan-plus' ) . '</p>';
+./includes/Admin/Settings.php:91:            __( 'Enable Scheduled Sync', 'mns-navasan-plus' ),
+./includes/Admin/Settings.php:99:            __( 'Sync Interval (minutes)', 'mns-navasan-plus' ),
+./includes/Admin/Settings.php:108:            __( 'Taban Gohar Credentials', 'mns-navasan-plus' ),
+./includes/Admin/Settings.php:110:                echo '<p>' . esc_html__( 'Enter your Taban Gohar API username & password.', 'mns-navasan-plus' ) . '</p>';
+./includes/Admin/Settings.php:117:            __( 'Username', 'mns-navasan-plus' ),
+./includes/Admin/Settings.php:125:            __( 'Password', 'mns-navasan-plus' ),
+./includes/Admin/Settings.php:134:            __( 'API / Push Endpoint', 'mns-navasan-plus' ),
+./includes/Admin/Settings.php:197:            esc_html__( '1–1440 minutes.', 'mns-navasan-plus' )
+./includes/Admin/Settings.php:207:            esc_html__( 'Enable periodic sync via WP-Cron', 'mns-navasan-plus' )
+./includes/Admin/Settings.php:216:                esc_html__( 'Last Sync', 'mns-navasan-plus' ),
+./includes/Admin/Settings.php:229:            esc_html__( 'How often to sync (minutes).', 'mns-navasan-plus' )
+./includes/Admin/Settings.php:257:        <p><?php _e( 'Use this endpoint to push rates into your site (POST JSON).', 'mns-navasan-plus' ); ?></p>
+./includes/Admin/Settings.php:259:        <p><em><?php _e( 'Or send the token via HTTP header: X-API-TOKEN', 'mns-navasan-plus' ); ?></em></p>
+./includes/Admin/Settings.php:262:                <?php _e( 'Regenerate Token', 'mns-navasan-plus' ); ?>
+./includes/Admin/Settings.php:282:            <h1><?php esc_html_e( 'Navasan Plus Settings', 'mns-navasan-plus' ); ?></h1>
+./includes/Admin/Settings.php:299:                    <?php esc_html_e('Create missing currencies if not found', 'mns-navasan-plus'); ?>
+./includes/Admin/Settings.php:301:                <?php submit_button( __( 'Sync Rates Now', 'mns-navasan-plus' ), 'primary', 'submit', false ); ?>
+./includes/Admin/Settings.php:307:                <?php submit_button( __( 'Test Connection (Taban Gohar)', 'mns-navasan-plus' ), 'secondary' ); ?>
+./includes/Admin/Settings.php:315:            wp_die( __( 'Access denied.', 'mns-navasan-plus' ) );
+./includes/Admin/Settings.php:331:                    $msg = $ok ? __( 'Connection successful.', 'mns-navasan-plus' ) : __( 'Empty response received.', 'mns-navasan-plus' );
+./includes/Admin/Settings.php:334:                $msg = __( 'Service class not available.', 'mns-navasan-plus' );
+./includes/Admin/Settings.php:352:            wp_die( __( 'Access denied.', 'mns-navasan-plus' ) );
+./includes/Admin/Settings.php:368:            ? sprintf( __( 'Synced. Updated: %1$d, Created: %2$d, Skipped: %3$d', 'mns-navasan-plus' ),
+./includes/Admin/Settings.php:373:            : ( $report['error'] ?? __( 'Sync failed.', 'mns-navasan-plus' ) );
+./includes/Admin/Settings.php:387:            wp_die( __( 'Access denied.', 'mns-navasan-plus' ) );
+./includes/Admin/Settings.php:394:            'mnsnp_text' => rawurlencode( __( 'API token regenerated.', 'mns-navasan-plus' ) ),
+./includes/Admin/CategoryDiscountFields.php:17:            'discount_profit_percentage' => __( 'Discount on Profit (%)', 'mns-navasan-plus' ),
+./includes/Admin/CategoryDiscountFields.php:18:            'discount_profit_fixed'      => __( 'Discount on Profit (Fixed)', 'mns-navasan-plus' ),
+./includes/Admin/CategoryDiscountFields.php:19:            'discount_charge_percentage' => __( 'Discount on Charge (%)', 'mns-navasan-plus' ),
+./includes/Admin/CategoryDiscountFields.php:20:            'discount_charge_fixed'      => __( 'Discount on Charge (Fixed)', 'mns-navasan-plus' ),
+./includes/Admin/CategoryDiscountFields.php:37:            <h2><?php esc_html_e( 'Navasan Plus - Category Discounts', 'mns-navasan-plus' ); ?></h2>
+./includes/Admin/CategoryDiscountFields.php:38:            <p><?php esc_html_e( 'These discounts will be applied to products in this category upon creation.', 'mns-navasan-plus' ); ?></p>
+./includes/Admin/CategoryDiscountFields.php:64:                        <h2 class="hndle" style="cursor: default;"><?php esc_html_e( 'Navasan Plus - Bulk Edit Discounts', 'mns-navasan-plus' ); ?></h2>
+./includes/Admin/CategoryDiscountFields.php:67:                        <p class="description" style="margin-bottom: 1em;"><?php esc_html_e( 'IMPORTANT: When you update the category, these values will be applied to ALL products in this category, overwriting their current discounts and recalculating their final prices.', 'mns-navasan-plus' ); ?></p>
+./includes/Admin/CategoryDiscountFields.php:79:                                <th scope="row"><?php esc_html_e( 'Clear Discounts Action', 'mns-navasan-plus' ); ?></th>
+./includes/Admin/CategoryDiscountFields.php:81:                                    <a href="<?php echo esc_url( $clear_url ); ?>" class="button button-secondary" onclick="return confirm('<?php esc_attr_e( 'Are you sure you want to clear these discounts for the category AND all its products?', 'mns-navasan-plus' ); ?>');">
+./includes/Admin/CategoryDiscountFields.php:82:                                        <?php esc_html_e( 'Clear All Discounts for This Category', 'mns-navasan-plus' ); ?>
+./includes/Admin/CategoryDiscountFields.php:84:                                    <p class="description"><?php esc_html_e( 'This will remove the saved discounts from this category and all products within it.', 'mns-navasan-plus' ); ?></p>
+./includes/Admin/CategoryDiscountFields.php:106:            wp_die( __( 'Invalid request.', 'mns-navasan-plus' ) );
+./includes/Admin/PostTypes.php:45:            'label'               => __( 'Currency', 'mns-navasan-plus' ),
+./includes/Admin/PostTypes.php:46:            'description'         => __( 'Rate Based Currencies', 'mns-navasan-plus' ),
+./includes/Admin/PostTypes.php:48:                'name'               => _x( 'Currencies', 'Post Type General Name',   'mns-navasan-plus' ),
+./includes/Admin/PostTypes.php:49:                'singular_name'      => _x( 'Currency',  'Post Type Singular Name',  'mns-navasan-plus' ),
+./includes/Admin/PostTypes.php:50:                'menu_name'          => __( 'Currencies',                 'mns-navasan-plus' ),
+./includes/Admin/PostTypes.php:51:                'name_admin_bar'     => __( 'Currency',                   'mns-navasan-plus' ),
+./includes/Admin/PostTypes.php:52:                'all_items'          => __( 'Currencies',                 'mns-navasan-plus' ),
+./includes/Admin/PostTypes.php:53:                'add_new_item'       => __( 'Add New Currency',           'mns-navasan-plus' ),
+./includes/Admin/PostTypes.php:54:                'edit_item'          => __( 'Edit Currency',              'mns-navasan-plus' ),
+./includes/Admin/PostTypes.php:55:                'view_item'          => __( 'View Currency',              'mns-navasan-plus' ),
+./includes/Admin/PostTypes.php:56:                'search_items'       => __( 'Search Currency',            'mns-navasan-plus' ),
+./includes/Admin/PostTypes.php:57:                'not_found'          => __( 'Not found',                  'mns-navasan-plus' ),
+./includes/Admin/PostTypes.php:58:                'not_found_in_trash' => __( 'Not found in Trash',         'mns-navasan-plus' ),
+./includes/Admin/PostTypes.php:70:            'label'               => __( 'Formula', 'mns-navasan-plus' ),
+./includes/Admin/PostTypes.php:71:            'description'         => __( 'Rate Based Formulas', 'mns-navasan-plus' ),
+./includes/Admin/PostTypes.php:73:                'name'               => _x( 'Formulas', 'Post Type General Name',   'mns-navasan-plus' ),
+./includes/Admin/PostTypes.php:74:                'singular_name'      => _x( 'Formula',  'Post Type Singular Name',  'mns-navasan-plus' ),
+./includes/Admin/PostTypes.php:75:                'menu_name'          => __( 'Formulas',                'mns-navasan-plus' ),
+./includes/Admin/PostTypes.php:76:                'name_admin_bar'     => __( 'Formula',                 'mns-navasan-plus' ),
+./includes/Admin/PostTypes.php:77:                'all_items'          => __( 'Formulas',                'mns-navasan-plus' ),
+./includes/Admin/PostTypes.php:78:                'add_new_item'       => __( 'Add New Formula',         'mns-navasan-plus' ),
+./includes/Admin/PostTypes.php:79:                'edit_item'          => __( 'Edit Formula',            'mns-navasan-plus' ),
+./includes/Admin/PostTypes.php:80:                'view_item'          => __( 'View Formula',            'mns-navasan-plus' ),
+./includes/Admin/PostTypes.php:81:                'search_items'       => __( 'Search Formula',          'mns-navasan-plus' ),
+./includes/Admin/PostTypes.php:82:                'not_found'          => __( 'Not found',               'mns-navasan-plus' ),
+./includes/Admin/PostTypes.php:83:                'not_found_in_trash' => __( 'Not found in Trash',      'mns-navasan-plus' ),
+./includes/Admin/PostTypes.php:95:            'label'               => __( 'Chart', 'mns-navasan-plus' ),
+./includes/Admin/PostTypes.php:96:            'description'         => __( 'Rate Based Charts', 'mns-navasan-plus' ),
+./includes/Admin/PostTypes.php:98:                'name'               => _x( 'Charts', 'Post Type General Name',   'mns-navasan-plus' ),
+./includes/Admin/PostTypes.php:99:                'singular_name'      => _x( 'Chart',  'Post Type Singular Name',  'mns-navasan-plus' ),
+./includes/Admin/PostTypes.php:100:                'menu_name'          => __( 'Charts',                 'mns-navasan-plus' ),
+./includes/Admin/PostTypes.php:101:                'name_admin_bar'     => __( 'Chart',                  'mns-navasan-plus' ),
+./includes/Admin/PostTypes.php:102:                'all_items'          => __( 'Charts',                 'mns-navasan-plus' ),
+./includes/Admin/PostTypes.php:103:                'add_new_item'       => __( 'Add New Chart',          'mns-navasan-plus' ),
+./includes/Admin/PostTypes.php:104:                'edit_item'          => __( 'Edit Chart',             'mns-navasan-plus' ),
+./includes/Admin/PostTypes.php:105:                'view_item'          => __( 'View Chart',             'mns-navasan-plus' ),
+./includes/Admin/PostTypes.php:106:                'search_items'       => __( 'Search Chart',           'mns-navasan-plus' ),
+./includes/Admin/PostTypes.php:107:                'not_found'          => __( 'Not found',              'mns-navasan-plus' ),
+./includes/Admin/PostTypes.php:108:                'not_found_in_trash' => __( 'Not found in Trash',     'mns-navasan-plus' ),
+./includes/Admin/PostTypes.php:124:        $columns['currency_id']           = __( 'ID',               'mns-navasan-plus' );
+./includes/Admin/PostTypes.php:125:        $columns['currency_rate']         = __( 'Final Rate',       'mns-navasan-plus' );
+./includes/Admin/PostTypes.php:126:        $columns['currency_attributes']   = __( 'Attributes',       'mns-navasan-plus' );
+./includes/Admin/PostTypes.php:127:        $columns['currency_check_time']   = __( 'Last check time',  'mns-navasan-plus' );
+./includes/Admin/PostTypes.php:128:        $columns['currency_update_time']  = __( 'Last update time', 'mns-navasan-plus' );
+./includes/Admin/PostTypes.php:167:                    printf('%s: %s', esc_html__( 'Auto update', 'mns-navasan-plus' ), esc_html( ucfirst( str_replace( '_', ' ', $svc ) ) ) );
+./includes/Admin/PostTypes.php:169:                    esc_html_e( 'Manual update', 'mns-navasan-plus' );
+./includes/Admin/PostTypes.php:199:        $columns['formula_id']         = __( 'ID',          'mns-navasan-plus' );
+./includes/Admin/PostTypes.php:200:        $columns['formula_variables']  = __( 'Variables',   'mns-navasan-plus' );
+./includes/Admin/PostTypes.php:201:        $columns['formula_components'] = __( 'Components',  'mns-navasan-plus' );
+./includes/Admin/PostTypes.php:231:                echo ! empty( $vars_list ) ? esc_html( implode( ', ', $vars_list ) ) : esc_html__( 'No variables', 'mns-navasan-plus' );
+./includes/Admin/PostTypes.php:234:                echo ! empty( $comps_list ) ? esc_html( implode( ', ', $comps_list ) ) : esc_html__( 'No components', 'mns-navasan-plus' );
+./includes/Admin/PostTypes.php:243:        $columns['chart_id']        = __( 'ID',        'mns-navasan-plus' );
+./includes/Admin/PostTypes.php:244:        $columns['chart_items']     = __( 'Items',     'mns-navasan-plus' );
+./includes/Admin/PostTypes.php:245:        $columns['chart_shortcode'] = __( 'Shortcode', 'mns-navasan-plus' );
+./includes/Admin/PostTypes.php:274:        $actions['mnsnp_products'] = sprintf( '<a href="%s">%s</a>', esc_url( $link ), esc_html__( 'Products', 'mns-navasan-plus' ) );
+./includes/Admin/MetaBoxes.php:47:        add_meta_box('mnsnp_currency_box', __( 'Currency', 'mns-navasan-plus' ), [ $this, 'currency_output' ], 'mnsnp_currency', 'normal', 'high');
+./includes/Admin/MetaBoxes.php:48:        add_meta_box('mnsnp_formula_box', __( 'Formula', 'mns-navasan-plus' ), [ $this, 'formula_output' ], 'mnsnp_formula', 'normal', 'high');
+./includes/Admin/MetaBoxes.php:49:        add_meta_box('mnsnp_formula_components_box', __( 'Formula Components', 'mns-navasan-plus' ), [ $this, 'formula_components_output' ], 'mnsnp_formula', 'normal', 'default');
+./includes/Admin/HealthCheckPage.php:23:            __( 'Navasan Plus Health Check', 'mns-navasan-plus' ),
+./includes/Admin/HealthCheckPage.php:24:            __( 'Health Check', 'mns-navasan-plus' ), // Shorter label for the menu
+./includes/Admin/HealthCheckPage.php:34:            <h1><?php esc_html_e( 'Navasan Plus Health Check', 'mns-navasan-plus' ); ?></h1>
+./includes/Admin/HealthCheckPage.php:35:            <p><?php esc_html_e( 'Run automated checks to verify the plugin is wired correctly.', 'mns-navasan-plus' ); ?></p>
+./includes/Admin/HealthCheckPage.php:39:                <p><button class="button button-primary"><?php esc_html_e( 'Run Checks', 'mns-navasan-plus' ); ?></button></p>
+./includes/Admin/HealthCheckPage.php:48:                                <th style="width: 25%;"><?php esc_html_e( 'Check', 'mns-navasan-plus' ); ?></th>
+./includes/Admin/HealthCheckPage.php:49:                                <th style="width: 10%;"><?php esc_html_e( 'Result', 'mns-navasan-plus' ); ?></th>
+./includes/Admin/HealthCheckPage.php:50:                                <th><?php esc_html_e( 'Details', 'mns-navasan-plus' ); ?></th>
+./includes/Admin/HealthCheckPage.php:59:                                        <span style="color:#1a7f37;font-weight:600"><?php esc_html_e( 'PASS', 'mns-navasan-plus' ); ?></span>
+./includes/Admin/HealthCheckPage.php:61:                                        <span style="color:#b00020;font-weight:600"><?php esc_html_e( 'FAIL', 'mns-navasan-plus' ); ?></span>
+./includes/Admin/Menu.php:15:            __( 'Navasan Plus', 'mns-navasan-plus' ),
+./includes/Admin/Menu.php:16:            __( 'Navasan Plus', 'mns-navasan-plus' ),
+./includes/Admin/Menu.php:27:            wp_die( __( 'Access denied.', 'mns-navasan-plus' ) );
+./includes/Admin/Menu.php:29:        echo '<div class="wrap"><h1>' . esc_html__( 'Navasan Plus', 'mns-navasan-plus' ) . '</h1>';
+./includes/Admin/Menu.php:30:        echo '<p>' . esc_html__( 'Use the left submenu: Settings, Tools, Currencies, Formulas.', 'mns-navasan-plus' ) . '</p>';
+./includes/Admin/RecalculatePage.php:24:            __( 'Recalculate Prices', 'mns-navasan-plus' ),
+./includes/Admin/RecalculatePage.php:25:            __( 'Tools: Recalculate Prices', 'mns-navasan-plus' ),
+./includes/Admin/RecalculatePage.php:34:            wp_die( __( 'Access denied.', 'mns-navasan-plus' ) );
+./includes/Admin/RecalculatePage.php:42:        echo '<div class="wrap"><h1>' . esc_html__( 'Recalculate All Product Prices', 'mns-navasan-plus' ) . '</h1>';
+./includes/Admin/RecalculatePage.php:45:        echo '<h2>' . esc_html__( 'Method 1: Update via Browser (for few products)', 'mns-navasan-plus' ) . '</h2>';
+./includes/Admin/RecalculatePage.php:46:        echo '<p>' . esc_html__( 'Use this tool to recalculate and apply the formula-based price for all published products. This may take a long time for sites with many products and could time out.', 'mns-navasan-plus' ) . '</p>';
+./includes/Admin/RecalculatePage.php:51:        submit_button( __( 'Start Recalculation Now', 'mns-navasan-plus' ), 'primary', 'submit', true, [
+./includes/Admin/RecalculatePage.php:52:            'onclick' => 'return confirm(\'' . esc_js( __( 'This can be a slow process and cannot be undone. Are you sure you want to continue?', 'mns-navasan-plus' ) ) . '\');'
+./includes/Admin/RecalculatePage.php:58:        echo '<h2>' . esc_html__( 'Method 2: Update via Command Line (Recommended for many products)', 'mns-navasan-plus' ) . '</h2>';
+./includes/Admin/RecalculatePage.php:62:            <h3><?php esc_html_e( '1. What is WP-CLI and Why Use It?', 'mns-navasan-plus' ); ?></h3>
+./includes/Admin/RecalculatePage.php:65:            <h3><?php esc_html_e( '2. Prerequisites', 'mns-navasan-plus' ); ?></h3>
+./includes/Admin/RecalculatePage.php:67:                <li><?php esc_html_e( 'SSH access to the site server.', 'mns-navasan-plus' ); ?></li>
+./includes/Admin/RecalculatePage.php:68:                <li><?php esc_html_e( 'WP-CLI installed on the server (usually all good WordPress hosts have it).', 'mns-navasan-plus' ); ?></li>
+./includes/Admin/RecalculatePage.php:72:            <h3><?php esc_html_e( '3. Execution Steps', 'mns-navasan-plus' ); ?></h3>
+./includes/Admin/RecalculatePage.php:75:                    <p><strong><?php esc_html_e( 'Connect to the server:', 'mns-navasan-plus' ); ?></strong> <?php esc_html_e( 'Using a terminal application (like Terminal on Mac or PuTTY on Windows), connect to your server via SSH.', 'mns-navasan-plus' ); ?></p>
+./includes/Admin/RecalculatePage.php:79:                    <p><strong><?php esc_html_e( 'Navigate to the WordPress root folder:', 'mns-navasan-plus' ); ?></strong> <?php esc_html_e( 'Go to the path where the main WordPress files (like wp-config.php) are located. This path is usually public_html or your domain name.', 'mns-navasan-plus' ); ?></p>
+./includes/Admin/RecalculatePage.php:80:                    <pre style="background-color: #f6f7f7; padding: 15px; border-radius: 4px;"><code>cd /path/to/your/wordpress/root</code><br><em style="color:#777;"><?php esc_html_e( '# Example: cd public_html', 'mns-navasan-plus' ); ?></em></pre>
+./includes/Admin/RecalculatePage.php:83:                    <p><strong><?php esc_html_e( 'Run the command:', 'mns-navasan-plus' ); ?></strong> <?php esc_html_e( 'Copy and run the following command completely in the terminal:', 'mns-navasan-plus' ); ?></p>
+./includes/Admin/RecalculatePage.php:87:                    <p><strong><?php esc_html_e( 'Observe the output:', 'mns-navasan-plus' ); ?></strong> <?php esc_html_e( 'After running the command, you will see an output similar to the following. A progress bar shows you the status of the operation.', 'mns-navasan-plus' ); ?></p>
+./includes/Admin/RecalculatePage.php:95:            <h3><?php esc_html_e( '4. Troubleshooting', 'mns-navasan-plus' ); ?></h3>
+./includes/Admin/RecalculatePage.php:98:                <li><?php esc_html_e( 'If you see a warning error for a specific product during execution, note down the product ID and check it manually in the admin panel.', 'mns-navasan-plus' ); ?></li>
+./includes/Admin/RecalculatePage.php:107:            wp_die( __( 'Access denied.', 'mns-navasan-plus' ) );
+./includes/Admin/RecalculatePage.php:151:        $msg = sprintf( __( 'Process complete. %d products updated, %d products failed.', 'mns-navasan-plus' ), $updated_count, $error_count );
+./includes/Services/ComponentBreakdown.php:91:                'name'    => __( 'Residual', 'mns-navasan-plus' ),
+./includes/Services/RateSync.php:46:                    'display'  => sprintf( __( 'Every %d minutes (Navasan Plus)', 'mns-navasan-plus' ), $minutes ),
+./includes/PublicNS/DiscountDisplay.php:72:                       sprintf( esc_html__( 'سود شما: %s', 'mns-navasan-plus' ), wp_kses_post( $discount_html ) ) .
+./includes/PublicNS/PriceBreakdown.php:163:            <!-- <h4 style="margin: 0 0 15px 0; color: #2c3e50; font-size: 18px; font-weight: 600; border-bottom: 2px solid #3498db; padding-bottom: 8px; text-align: right;"><?php \esc_html_e('Product Details', 'mns-navasan-plus'); ?></h4> -->
+./includes/PublicNS/PriceBreakdown.php:169:                        <td style="color: #2c3e50; font-weight: 500; text-align: right; direction: rtl;"><?php echo \esc_html( \number_format_i18n( (float)$display_data['weight']['value'], 3 ) ); ?> <?php echo \esc_html( $display_data['weight']['value_symbol'] ?: \__('grams', 'mns-navasan-plus') ); ?></td>
+./includes/PublicNS/Chart.php:120:            'label'           => $args['label'] ?: sprintf( __( '%s Rate', 'mns-navasan-plus' ), $currency->get_name() ),
+./includes/PublicNS/Chart.php:136:                'label'           => sprintf( __( 'SMA(%d)', 'mns-navasan-plus' ), $sma_n ),
+./includes/Webservices/Rates/TabanGohar.php:35:                'title' => __( 'Recommended for gold and jewelry', 'mns-navasan-plus' ),
+./includes/Webservices/Rates/TabanGohar.php:66:            return new \WP_Error( $this->get_key(), __( 'Missing TabanGohar credentials.', 'mns-navasan-plus' ) );
+./includes/Webservices/Rates/TabanGohar.php:89:            return new \WP_Error( $this->get_key(), __( 'Webservice returned empty or invalid payload.', 'mns-navasan-plus' ) );
+./templates/tools/convert-products.php:17:echo '<h1>' . esc_html__( 'Convert Products to Rate-Based Pricing', 'mns-navasan-plus' ) . '</h1>';
+./templates/tools/convert-products.php:59:            _n( 'Converted %d product.', 'Converted %d products.', $updated, 'mns-navasan-plus' ),
+./templates/tools/convert-products.php:85:                    <?php esc_html_e( 'Filter by Category', 'mns-navasan-plus' ); ?>
+./templates/tools/convert-products.php:90:                    <option value=""><?php esc_html_e( '-- All Categories --', 'mns-navasan-plus' ); ?></option>
+./templates/tools/convert-products.php:98:                    <?php esc_html_e( 'Only products in this category will be converted.', 'mns-navasan-plus' ); ?>
+./templates/tools/convert-products.php:106:                    <?php esc_html_e( 'Assign Currency', 'mns-navasan-plus' ); ?>
+./templates/tools/convert-products.php:111:                    <option value="0"><?php esc_html_e( '-- Select Currency --', 'mns-navasan-plus' ); ?></option>
+./templates/tools/convert-products.php:119:                    <?php esc_html_e( 'Choose the base currency for all converted products.', 'mns-navasan-plus' ); ?>
+./templates/tools/convert-products.php:125:    <?php submit_button( esc_html__( 'Convert Products', 'mns-navasan-plus' ) ); ?>
+./templates/rate-converter.php:41:            <?php esc_html_e( 'Amount', 'mns-navasan-plus' ); ?>
+./templates/rate-converter.php:54:            <?php esc_html_e( 'From', 'mns-navasan-plus' ); ?>
+./templates/rate-converter.php:73:            <?php esc_html_e( 'To', 'mns-navasan-plus' ); ?>
+./templates/rate-converter.php:91:        <?php esc_html_e( 'Convert', 'mns-navasan-plus' ); ?>
+./templates/rate-converter.php:95:        <?php esc_html_e( 'Result:', 'mns-navasan-plus' ); ?>
+./templates/formula-order.php:10: * @var string                           $result_text    (optional) default __('Payable amount','mns-navasan-plus')
+./templates/formula-order.php:11: * @var string                           $button_text    (optional) default __('Place order','mns-navasan-plus')
+./templates/formula-order.php:32:$result_text   = ! empty( $result_text ) ? $result_text : __( 'Payable amount', 'mns-navasan-plus' );
+./templates/formula-order.php:33:$button_text   = ! empty( $button_text ) ? $button_text : __( 'Place order', 'mns-navasan-plus' );
+./templates/formula-order.php:143:        '<th><?php echo esc_js( __( 'Variable', 'mns-navasan-plus' ) ); ?></th>' +
+./templates/formula-order.php:144:        '<th><?php echo esc_js( __( 'Value', 'mns-navasan-plus' ) ); ?></th>' +
+./templates/price-calculator.php:25:        <?php esc_html_e( 'Amount', 'mns-navasan-plus' ); ?>
+./templates/price-calculator.php:40:        <?php esc_html_e( 'Currency', 'mns-navasan-plus' ); ?>
+./templates/price-calculator.php:60:            <?php echo esc_html( $name ?: sprintf( __( 'Currency #%s', 'mns-navasan-plus' ), $value ) ); ?>
+./templates/price-calculator.php:68:        <?php esc_html_e( 'Calculate', 'mns-navasan-plus' ); ?>
+./templates/price-calculator.php:73:      <?php esc_html_e( 'Result:', 'mns-navasan-plus' ); ?>
+./templates/price-calculator.php:78:      <?php esc_html_e( 'No currencies available to convert.', 'mns-navasan-plus' ); ?>
+./templates/currencies-table.php:21:            <th><?php esc_html_e( 'Currency', 'mns-navasan-plus' ); ?></th>
+./templates/currencies-table.php:22:            <th><?php esc_html_e( 'Current Rate', 'mns-navasan-plus' ); ?></th>
+./templates/currencies-table.php:23:            <th><?php esc_html_e( 'Change', 'mns-navasan-plus' ); ?></th>
+./templates/currencies-table-advanced.php:76:                                            __( '%s ago', 'mns-navasan-plus' ),
+./templates/currencies-table-advanced.php:91:                                            __( '%1$s at %2$s', 'mns-navasan-plus' ),
+./templates/formula-calculator.php:40:        <?php esc_html_e( 'Calculate', 'mns-navasan-plus' ); ?>
+./templates/formula-calculator.php:44:        <?php esc_html_e( 'Result:', 'mns-navasan-plus' ); ?>
+./templates/product-formula-values.php:28:    'name'  => __( 'Variable', 'mns-navasan-plus' ),
+./templates/product-formula-values.php:29:    'rate'  => __( 'Unit',     'mns-navasan-plus' ),
+./templates/product-formula-values.php:30:    'value' => __( 'Value',    'mns-navasan-plus' ),
+./templates/product-formula-values.php:31:    'total' => __( 'Total',    'mns-navasan-plus' ),
+./templates/product-formula-components-advanced.php:24:if ( empty($comps) ) { echo '<p class="description">'.esc_html__('No components defined for this formula.', 'mns-navasan-plus').'</p>'; return; }
+./templates/product-formula-components-advanced.php:101:echo '<td style="padding: 8px; vertical-align: top; border-right: 1px solid #ddd; font-weight: bold; width: 120px;">' . esc_html__('Summary', 'mns-navasan-plus') . '</td>';
+./templates/product-formula-components-advanced.php:103:echo esc_html__('Profit: ', 'mns-navasan-plus') . wp_kses_post( wc_price($profit_base) ) . ' → ' . wp_kses_post( wc_price($profit_after) ) . '<br>';
+./templates/product-formula-components-advanced.php:104:echo esc_html__('Charge: ', 'mns-navasan-plus') . wp_kses_post( wc_price($charge_base) ) . ' → ' . wp_kses_post( wc_price($charge_after) ) . '<br>';
+./templates/product-formula-components-advanced.php:105:echo esc_html__('Other: ', 'mns-navasan-plus') . wp_kses_post( wc_price($other_sum) ) . '<br>';
+./templates/product-formula-components-advanced.php:106:echo '<strong>' . esc_html__('Final: ', 'mns-navasan-plus') . wp_kses_post( wc_price($final) ) . '</strong>';
+./templates/product-formula-components-advanced.php:111:echo '<td style="padding: 8px; vertical-align: top; border-right: 1px solid #ddd; font-weight: bold;">' . esc_html__('Components', 'mns-navasan-plus') . '</td>';
+./templates/product-formula-components-advanced.php:115:echo '<th style="padding: 4px; border: 1px solid #ddd; text-align: left;">' . esc_html__('Name', 'mns-navasan-plus') . '</th>';
+./templates/product-formula-components-advanced.php:116:echo '<th style="padding: 4px; border: 1px solid #ddd; text-align: left;">' . esc_html__('Expression', 'mns-navasan-plus') . '</th>';
+./templates/product-formula-components-advanced.php:117:echo '<th style="padding: 4px; border: 1px solid #ddd; text-align: left;">' . esc_html__('Role', 'mns-navasan-plus') . '</th>';
+./templates/product-formula-components-advanced.php:118:echo '<th style="padding: 4px; border: 1px solid #ddd; text-align: right;">' . esc_html__('Value', 'mns-navasan-plus') . '</th>';
+./templates/product-formula-components-advanced.php:131:echo '<td colspan="3" style="padding: 4px; border: 1px solid #ddd; text-align: right;">'.esc_html__('Final Total', 'mns-navasan-plus').'</td>';
+./templates/metaboxes/currency-chart.php:73:                    title:   { display: true, text: '<?php _e( 'Date', 'mns-navasan-plus' ); ?>' }
+./templates/metaboxes/currency-chart.php:77:                    title:   { display: true, text: '<?php _e( 'Rate', 'mns-navasan-plus' ); ?>' }
+./templates/metaboxes/product.php:85:$currency_options = [ 0 => __( '— select —', 'mns-navasan-plus' ) ];
+./templates/metaboxes/product.php:160:  __( 'Rate Based', 'mns-navasan-plus' ),
+./templates/metaboxes/product.php:161:  __( 'Enable rate‐based pricing for this product.', 'mns-navasan-plus' ),
+./templates/metaboxes/product.php:172:      [ 'simple' => __( 'Simple', 'mns-navasan-plus' ), 'advanced' => __( 'Advanced (Formula)', 'mns-navasan-plus' ) ],
+./templates/metaboxes/product.php:174:      __( 'Dependency Type', 'mns-navasan-plus' ),
+./templates/metaboxes/product.php:176:      __( 'Choose how to calculate this product’s price.', 'mns-navasan-plus' )
+./templates/metaboxes/product.php:194:      __( 'Currency', 'mns-navasan-plus' ),
+./templates/metaboxes/product.php:202:      [ 'percent' => __( 'Percent', 'mns-navasan-plus' ), 'fixed' => __( 'Fixed', 'mns-navasan-plus' ) ],
+./templates/metaboxes/product.php:204:      __( 'Profit Type', 'mns-navasan-plus' ),
+./templates/metaboxes/product.php:211:      __( 'Profit Value', 'mns-navasan-plus' ),
+./templates/metaboxes/product.php:219:      [ 'none' => __( 'None', 'mns-navasan-plus' ), 'zero' => __( 'Zero', 'mns-navasan-plus' ), 'integer' => __( 'Integer', 'mns-navasan-plus' ) ],
+./templates/metaboxes/product.php:221:      __( 'Rounding Type', 'mns-navasan-plus' ),
+./templates/metaboxes/product.php:228:      __( 'Rounding Value', 'mns-navasan-plus' ),
+./templates/metaboxes/product.php:234:      [ 'close' => __( 'Nearest', 'mns-navasan-plus' ), 'up' => __( 'Up', 'mns-navasan-plus' ), 'down'  => __( 'Down', 'mns-navasan-plus' ) ],
+./templates/metaboxes/product.php:236:      __( 'Rounding Direction', 'mns-navasan-plus' ),
+./templates/metaboxes/product.php:245:      __( 'Price Ceiling', 'mns-navasan-plus' ),
+./templates/metaboxes/product.php:252:      __( 'Price Floor', 'mns-navasan-plus' ),
+./templates/metaboxes/product.php:276:    echo '<h4 class="mnsnp-preview-title">' . esc_html__( 'Price Breakdown (preview)', 'mns-navasan-plus' ) . '</h4>';
+./templates/metaboxes/product.php:283:    echo '<p class="mnsnp-preview-total"><strong>' . esc_html__( 'Final price (preview):', 'mns-navasan-plus' ) . '</strong> ';
+./templates/metaboxes/product.php:290:        } catch ( \Throwable $e ) { echo esc_html__( '— error —', 'mns-navasan-plus' ); }
+./templates/metaboxes/product.php:292:        echo esc_html__( '— n/a —', 'mns-navasan-plus' );
+./templates/metaboxes/formula.php:75:    <?php _e( 'Formula Expression', 'mns-navasan-plus' ); ?>
+./templates/metaboxes/formula.php:85:    <?php _e( 'Use variable codes (each code equals unit×value).', 'mns-navasan-plus' ); ?>
+./templates/metaboxes/formula.php:91:  <strong><?php esc_html_e( 'Expression total', 'mns-navasan-plus' ); ?>:</strong>
+./templates/metaboxes/formula.php:97:<h4><?php _e( 'Formula Variables', 'mns-navasan-plus' ); ?></h4>
+./templates/metaboxes/formula.php:161:            'custom'   => __( 'Custom variable',   'mns-navasan-plus' ),
+./templates/metaboxes/formula.php:162:            'currency' => __( 'Currency variable', 'mns-navasan-plus' ),
+./templates/metaboxes/formula.php:165:        __( 'Variable Type', 'mns-navasan-plus' ),
+./templates/metaboxes/formula.php:174:          <?php _e( 'Select Currency', 'mns-navasan-plus' ); ?>
+./templates/metaboxes/formula.php:182:          <option value="0"><?php _e( '— select —', 'mns-navasan-plus' ); ?></option>
+./templates/metaboxes/formula.php:195:          <?php _e( 'Current rate:', 'mns-navasan-plus' ); ?>
+./templates/metaboxes/formula.php:216:        __( 'Variable Name', 'mns-navasan-plus' ),
+./templates/metaboxes/formula.php:224:        __( 'Unit Value', 'mns-navasan-plus' ),
+./templates/metaboxes/formula.php:236:        __( 'Unit Symbol', 'mns-navasan-plus' ),
+./templates/metaboxes/formula.php:244:        __( 'Value', 'mns-navasan-plus' ),
+./templates/metaboxes/formula.php:252:        __( 'Value Symbol', 'mns-navasan-plus' ),
+./templates/metaboxes/formula.php:260:            'none'   => __( 'None', 'mns-navasan-plus' ),
+./templates/metaboxes/formula.php:261:            'profit' => __( 'Profit (سود)',  'mns-navasan-plus' ),
+./templates/metaboxes/formula.php:262:            'charge' => __( 'Charge (اجرت)', 'mns-navasan-plus' ),
+./templates/metaboxes/formula.php:263:            'weight' => __( 'Weight (وزن)', 'mns-navasan-plus' ),
+./templates/metaboxes/formula.php:266:        __( 'Role (discount target)', 'mns-navasan-plus' ),
+./templates/metaboxes/formula.php:273:        <?php _e( 'Remove Variable', 'mns-navasan-plus' ); ?>
+./templates/metaboxes/formula.php:280:          esc_html__( 'Code: %s (use this in expression)', 'mns-navasan-plus' ),
+./templates/metaboxes/formula.php:291:        <?php esc_html_e( 'Copy', 'mns-navasan-plus' ); ?>
+./templates/metaboxes/formula.php:298:        <?php esc_html_e( 'Insert into expression', 'mns-navasan-plus' ); ?>
+./templates/metaboxes/formula.php:309:    <?php _e( 'Add Custom Variable', 'mns-navasan-plus' ); ?>
+./templates/metaboxes/formula.php:312:    <?php _e( 'Add Currency Variable', 'mns-navasan-plus' ); ?>
+./templates/metaboxes/formula.php:319:      <label><?php echo esc_html__( 'Variable Type', 'mns-navasan-plus' ); ?></label>
+./templates/metaboxes/formula.php:323:        <option value="custom"><?php echo esc_html__( 'Custom variable', 'mns-navasan-plus' ); ?></option>
+./templates/metaboxes/formula.php:324:        <option value="currency"><?php echo esc_html__( 'Currency variable', 'mns-navasan-plus' ); ?></option>
+./templates/metaboxes/formula.php:330:        <label><?php echo esc_html__( 'Select Currency', 'mns-navasan-plus' ); ?></label>
+./templates/metaboxes/formula.php:334:          <option value="0">— <?php echo esc_html__( 'select', 'mns-navasan-plus' ); ?> —</option>
+./templates/metaboxes/formula.php:344:          <?php _e( 'Current rate:', 'mns-navasan-plus' ); ?>
+./templates/metaboxes/formula.php:351:      <label><?php echo esc_html__( 'Variable Name', 'mns-navasan-plus' ); ?></label>
+./templates/metaboxes/formula.php:359:      <label><?php echo esc_html__( 'Unit Value', 'mns-navasan-plus' ); ?></label>
+./templates/metaboxes/formula.php:367:      <label><?php echo esc_html__( 'Unit Symbol', 'mns-navasan-plus' ); ?></label>
+./templates/metaboxes/formula.php:375:      <label><?php echo esc_html__( 'Value', 'mns-navasan-plus' ); ?></label>
+./templates/metaboxes/formula.php:383:      <label><?php echo esc_html__( 'Value Symbol', 'mns-navasan-plus' ); ?></label>
+./templates/metaboxes/formula.php:391:      <label><?php echo esc_html__( 'Role (discount target)', 'mns-navasan-plus' ); ?></label>
+./templates/metaboxes/formula.php:395:        <option value="none"><?php echo esc_html__( 'None', 'mns-navasan-plus' ); ?></option>
+./templates/metaboxes/formula.php:396:        <option value="profit"><?php echo esc_html__( 'Profit', 'mns-navasan-plus' ); ?></option>
+./templates/metaboxes/formula.php:397:        <option value="charge"><?php echo esc_html__( 'Charge', 'mns-navasan-plus' ); ?></option>
+./templates/metaboxes/formula.php:398:        <option value="weight"><?php echo esc_html__( 'Weight', 'mns-navasan-plus' ); ?></option>
+./templates/metaboxes/formula.php:403:      <button type="button" class="button remove-formula-variable"><?php _e( 'Remove Variable', 'mns-navasan-plus' ); ?></button>
+./templates/metaboxes/formula.php:405:        <?php esc_html_e( 'Code:', 'mns-navasan-plus' ); ?>
+./templates/metaboxes/formula.php:409:        <?php esc_html_e( 'Copy', 'mns-navasan-plus' ); ?>
+./templates/metaboxes/formula.php:412:        <?php esc_html_e( 'Insert into expression', 'mns-navasan-plus' ); ?>
+./templates/metaboxes/product-quick-edit.php:18:            <span class="title"><?php esc_html_e( 'Discount on Profit (%)', 'mns-navasan-plus' ); ?></span>
+./templates/metaboxes/product-quick-edit.php:31:            <span class="title"><?php esc_html_e( 'Discount on Profit (Fixed)', 'mns-navasan-plus' ); ?></span>
+./templates/metaboxes/product-quick-edit.php:47:            <span class="title"><?php esc_html_e( 'Discount on Charge (%)', 'mns-navasan-plus' ); ?></span>
+./templates/metaboxes/product-quick-edit.php:60:            <span class="title"><?php esc_html_e( 'Discount on Charge (Fixed)', 'mns-navasan-plus' ); ?></span>
+./templates/metaboxes/product-formula.php:26:  <label for="mns_navasan_plus_formula_id"><?php esc_html_e('Formula', 'mns-navasan-plus'); ?></label>
+./templates/metaboxes/product-formula.php:30:    <option value="0">— <?php esc_html_e('select', 'mns-navasan-plus'); ?> —</option>
+./templates/metaboxes/product-formula.php:37:  <span class="description"><?php esc_html_e('Pick the formula to use for this product.', 'mns-navasan-plus'); ?></span>
+./templates/metaboxes/product-formula.php:48:  <h4 style="margin:10px 0;"><?php echo esc_html($row['label'] ?? ('#'.$fid)); ?> — <?php esc_html_e('Variables (per product)', 'mns-navasan-plus'); ?></h4>
+./templates/metaboxes/product-formula.php:51:    <p class="description"><?php esc_html_e('This formula has no variables.', 'mns-navasan-plus'); ?></p>
+./templates/metaboxes/product-formula.php:56:          <th style="width:30%;"><?php esc_html_e('Variable', 'mns-navasan-plus'); ?></th>
+./templates/metaboxes/product-formula.php:57:          <th style="width:20%;"><?php esc_html_e('Code', 'mns-navasan-plus'); ?></th>
+./templates/metaboxes/product-formula.php:58:          <th style="width:30%;"><?php esc_html_e('Value for this product', 'mns-navasan-plus'); ?></th>
+./templates/metaboxes/product-formula.php:59:          <th style="width:20%;"><?php esc_html_e('Unit', 'mns-navasan-plus'); ?></th>
+./templates/metaboxes/product-formula.php:93:      <?php esc_html_e('Each code in the expression equals: Unit × Value (the value you set here per product).', 'mns-navasan-plus'); ?>
+./templates/metaboxes/order-rates.php:40:                    <th><?php esc_html_e( 'Currency', 'mns-navasan-plus' ); ?></th>
+./templates/metaboxes/order-rates.php:41:                    <th><?php esc_html_e( 'Invoice Rate', 'mns-navasan-plus' ); ?></th>
+./templates/metaboxes/order-rates.php:42:                    <th><?php esc_html_e( 'Current Rate', 'mns-navasan-plus' ); ?></th>
+./templates/metaboxes/order-rates.php:43:                    <th><?php esc_html_e( 'Change', 'mns-navasan-plus' ); ?></th>
+./templates/metaboxes/currency.php:39:    __( 'Rate Symbol', 'mns-navasan-plus' )
+./templates/metaboxes/currency.php:47:    __( 'Value', 'mns-navasan-plus' )
+./templates/metaboxes/currency.php:52:    'manual'  => __( 'Manual', 'mns-navasan-plus' ),
+./templates/metaboxes/currency.php:53:    'formula' => __( 'Formula', 'mns-navasan-plus' ),
+./templates/metaboxes/currency.php:60:    __( 'Calculation Type', 'mns-navasan-plus' )
+./templates/metaboxes/currency.php:68:    __( 'Formula Text', 'mns-navasan-plus' ),
+./templates/metaboxes/currency.php:77:    __( 'Profit (%)', 'mns-navasan-plus' )
+./templates/metaboxes/currency.php:85:    __( 'Fee (%)', 'mns-navasan-plus' )
+./templates/metaboxes/currency.php:93:    __( 'Ratio', 'mns-navasan-plus' )
+./templates/metaboxes/currency.php:101:    __( 'Fixed Amount', 'mns-navasan-plus' )
+./templates/metaboxes/currency.php:106:    'none'   => __( 'None', 'mns-navasan-plus' ),
+./templates/metaboxes/currency.php:107:    'manual' => __( 'Manual', 'mns-navasan-plus' ),
+./templates/metaboxes/currency.php:108:    'auto'   => __( 'Auto', 'mns-navasan-plus' ),
+./templates/metaboxes/currency.php:115:    __( 'Update Type', 'mns-navasan-plus' )
+./templates/metaboxes/currency.php:124:$relation_opts = [ '' => __( '-- None --', 'mns-navasan-plus' ) ];
+./templates/metaboxes/currency.php:133:    __( 'Relation Currency', 'mns-navasan-plus' )
+./templates/metaboxes/currency.php:143:    __( 'Connection Currency', 'mns-navasan-plus' )
+./templates/metaboxes/currency.php:148:    '+' => __( 'Add (+)', 'mns-navasan-plus' ),
+./templates/metaboxes/currency.php:149:    '-' => __( 'Subtract (-)', 'mns-navasan-plus' ),
+./templates/metaboxes/currency.php:156:    __( 'Operation', 'mns-navasan-plus' )
+./templates/metaboxes/currency.php:164:    __( 'Calculation Order', 'mns-navasan-plus' )
+./templates/metaboxes/currency.php:172:    __( 'Lowest Rate', 'mns-navasan-plus' )
+./templates/metaboxes/formula-components.php:17:  <p style="margin:0 0 8px;"><?php esc_html_e( 'Define component lines (name + expression + symbol).', 'mns-navasan-plus' ); ?></p>
+./templates/metaboxes/formula-components.php:31:          __( 'Component Name', 'mns-navasan-plus' )
+./templates/metaboxes/formula-components.php:38:          __( 'Component Expression', 'mns-navasan-plus' ),
+./templates/metaboxes/formula-components.php:46:          __( 'Component Symbol', 'mns-navasan-plus' )
+./templates/metaboxes/formula-components.php:54:            'none'   => __( 'None', 'mns-navasan-plus' ),
+./templates/metaboxes/formula-components.php:55:            'profit' => __( 'Profit', 'mns-navasan-plus' ),
+./templates/metaboxes/formula-components.php:56:            'charge' => __( 'Charge', 'mns-navasan-plus' ),
+./templates/metaboxes/formula-components.php:59:          __( 'Component Role', 'mns-navasan-plus' )
+./templates/metaboxes/formula-components.php:64:          <strong><?php esc_html_e( 'Total:', 'mns-navasan-plus' ); ?></strong>
+./templates/metaboxes/formula-components.php:70:          <a href="#" class="button button-secondary add-formula-component"><?php esc_html_e( 'Add Component', 'mns-navasan-plus' ); ?></a>
+./templates/metaboxes/formula-components.php:71:          <a href="#" class="button remove-formula-component" style="margin-inline-start:6px;"><?php esc_html_e( 'Remove', 'mns-navasan-plus' ); ?></a>

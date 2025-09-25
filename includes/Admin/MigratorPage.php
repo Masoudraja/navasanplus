@@ -161,7 +161,7 @@ final class MigratorPage {
         }
         if ( ! empty( $r['errors'] ) && is_array( $r['errors'] ) ) {
             foreach ( $r['errors'] as $err ) {
-                printf( '<tr><td colspan="2" style="color:#b32d2e"><strong>Error:</strong> %s</td></tr>', esc_html( (string) $err ) );
+                printf( '<tr><td colspan="2" style="color:#b32d2e"><strong>%s</strong> %s</td></tr>', esc_html__( 'Error:', 'mns-navasan-plus' ), esc_html( (string) $err ) );
             }
         }
         echo '</tbody></table>';

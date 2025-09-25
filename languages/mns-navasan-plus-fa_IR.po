@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MNS Navasan Plus 1.0.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mns-navasan-plus\n"
-"POT-Creation-Date: 2024-09-24 12:00+0000\n"
+"POT-Creation-Date: 2024-09-24 15:30+0000\n"
 "PO-Revision-Date: 2024-09-24 12:00+0000\n"
 "Last-Translator: \n"
 "Language-Team: Persian\n"
@@ -16,17 +16,55 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Manual 1.0\n"
 
-#: includes/Admin/Menu.php:15
-#: includes/Admin/Menu.php:16
+#: includes/Admin/Menu.php:15 includes/Admin/Menu.php:16
 #: includes/Admin/Menu.php:26
 msgid "Navasan Plus"
 msgstr "نوسان پلاس"
 
-#: includes/Admin/Menu.php:25
-#: includes/Admin/AssignFormulaPage.php:34
+#: includes/Admin/Menu.php:25 includes/Admin/AssignFormulaPage.php:34
 #: includes/Admin/AssignFormulaPage.php:116
 msgid "Access denied."
 msgstr "دسترسی مجاز نیست."
+
+#: includes/Admin/Settings.php:26
+msgid "Navasan Plus Settings"
+msgstr "تنظیمات نوسان پلاس"
+
+#: includes/Admin/HealthCheckPage.php:22 includes/Admin/HealthCheckPage.php:33
+msgid "Navasan Plus Health Check"
+msgstr "بررسی سلامت نوسان پلاس"
+
+#: includes/Admin/MigratorPage.php:23
+msgid "Migrate from Navasan"
+msgstr "مهاجرت از نوسان"
+
+#: includes/Admin/RecalculatePage.php:23
+msgid "Recalculate Prices"
+msgstr "محاسبه مجدد قیمت‌ها"
+
+#: includes/Admin/AssignFormulaPage.php:24
+msgid "Assign Formula to Products"
+msgstr "اختصاص فرمول به محصولات"
+
+#: includes/Admin/Settings.php:27
+msgid "Settings"
+msgstr "تنظیمات"
+
+#: includes/Admin/HealthCheckPage.php:23
+msgid "Health Check"
+msgstr "بررسی سلامت"
+
+#: includes/Admin/MigratorPage.php:24
+msgid "Migration"
+msgstr "مهاجرت"
+
+#: includes/Admin/RecalculatePage.php:24
+msgid "Tools: Recalculate Prices"
+msgstr "ابزارها: محاسبه مجدد قیمت‌ها"
+
+#: includes/Admin/AssignFormulaPage.php:25
+msgid "Tools: Assign Formula"
+msgstr "ابزارها: اختصاص فرمول"
 
 #: includes/Admin/Menu.php:27
 msgid "Use the left submenu: Settings, Tools, Currencies, Formulas."
@@ -42,6 +80,10 @@ msgctxt "Post Type Singular Name"
 msgid "Currency"
 msgstr "ارز"
 
+#: includes/Admin/PostTypes.php:49
+msgid "Currencies"
+msgstr "ارزها"
+
 #: includes/Admin/PostTypes.php:72
 msgctxt "Post Type General Name"
 msgid "Formulas"
@@ -52,24 +94,41 @@ msgctxt "Post Type Singular Name"
 msgid "Formula"
 msgstr "فرمول"
 
-#: includes/Admin/PostTypes.php:97
-msgctxt "Post Type General Name"
-msgid "Charts"
-msgstr "نمودارها"
+#: includes/Admin/PostTypes.php:74
+msgid "Formulas"
+msgstr "فرمول‌ها"
 
-#: includes/Admin/PostTypes.php:98
-msgctxt "Post Type Singular Name"
-msgid "Chart"
-msgstr "نمودار"
+#: templates/metaboxes/product.php:273
+msgid "Price Breakdown (preview)"
+msgstr "تفکیک قیمت (پیش‌نمایش)"
 
-#: includes/Admin/AssignFormulaPage.php:24
-#: includes/Admin/AssignFormulaPage.php:59
-msgid "Assign Formula to Products"
-msgstr "اختصاص فرمول به محصولات"
+#: templates/metaboxes/product.php:281
+msgid "Final price (preview):"
+msgstr "قیمت نهایی (پیش‌نمایش):"
 
-#: includes/Admin/AssignFormulaPage.php:25
-msgid "Tools: Assign Formula"
-msgstr "ابزارها: اختصاص فرمول"
+#: includes/Admin/Settings.php:369 includes/Admin/Settings.php:329
+msgid "Connection successful."
+msgstr "اتصال با موفقیت برقرار شد."
+
+#: includes/Admin/Settings.php:369 includes/Admin/Settings.php:329
+msgid "Empty response received."
+msgstr "پاسخ خالی دریافت شد."
+
+#: includes/Admin/Settings.php:372 includes/Admin/Settings.php:331
+msgid "Service class not available."
+msgstr "کلاس سرویس در دسترس نیست."
+
+#: includes/Admin/Settings.php:405 includes/Admin/Settings.php:354
+msgid "Synced. Updated: %1$d, Created: %2$d, Skipped: %3$d"
+msgstr "هم‌رسانی شد. به‌روزرسانی: %1$d، ایجاد شده: %2$d، رد شده: %3$d"
+
+#: includes/Admin/Settings.php:410 includes/Admin/Settings.php:359
+msgid "Sync failed."
+msgstr "هم‌رسانی ناموفق."
+
+#: includes/Admin/Settings.php:434 includes/Admin/Settings.php:372
+msgid "API token regenerated."
+msgstr "توکن API مجدداً تولید شد."
 
 #: includes/Admin/AssignFormulaPage.php:55
 msgid "Done."
@@ -172,7 +231,8 @@ msgid "Navasan Plus - Category Discounts"
 msgstr "نوسان پلاس - تخفیفات دسته‌بندی"
 
 #: includes/Admin/CategoryDiscountFields.php:37
-msgid "These discounts will be applied to products in this category upon creation."
+msgid ""
+"These discounts will be applied to products in this category upon creation."
 msgstr "این تخفیفات هنگام ایجاد محصولات در این دسته‌بندی اعمال خواهد شد."
 
 #: includes/Admin/CategoryDiscountFields.php:63
@@ -180,30 +240,37 @@ msgid "Navasan Plus - Bulk Edit Discounts"
 msgstr "نوسان پلاس - ویرایش گروهی تخفیفات"
 
 #: includes/Admin/CategoryDiscountFields.php:66
-msgid "IMPORTANT: When you update the category, these values will be applied to ALL products in this category, overwriting their current discounts and recalculating their final prices."
-msgstr "مهم: هنگام به‌روزرسانی دسته‌بندی، این مقادیر به همه محصولات این دسته‌بندی اعمال شده، تخفیفات فعلی آن‌ها را بازنویسی و قیمت نهایی را مجدداً محاسبه می‌کند."
+msgid ""
+"IMPORTANT: When you update the category, these values will be applied to ALL "
+"products in this category, overwriting their current discounts and "
+"recalculating their final prices."
+msgstr ""
+"مهم: هنگام به‌روزرسانی دسته‌بندی، این مقادیر به همه محصولات این دسته‌بندی اعمال "
+"شده، تخفیفات فعلی آن‌ها را بازنویسی و قیمت نهایی را مجدداً محاسبه می‌کند."
 
 #: includes/Admin/CategoryDiscountFields.php:78
 msgid "Clear Discounts Action"
 msgstr "عملیات پاک کردن تخفیفات"
 
 #: includes/Admin/CategoryDiscountFields.php:80
-msgid "Are you sure you want to clear these discounts for the category AND all its products?"
-msgstr "آیا مطمئن هستید که می‌خواهید این تخفیفات را برای دسته‌بندی و همه محصولات آن پاک کنید؟"
+msgid ""
+"Are you sure you want to clear these discounts for the category AND all its "
+"products?"
+msgstr ""
+"آیا مطمئن هستید که می‌خواهید این تخفیفات را برای دسته‌بندی و همه محصولات آن "
+"پاک کنید؟"
 
 #: includes/Admin/CategoryDiscountFields.php:81
 msgid "Clear All Discounts for This Category"
 msgstr "پاک کردن همه تخفیفات این دسته‌بندی"
 
 #: includes/Admin/CategoryDiscountFields.php:83
-msgid "This will remove the saved discounts from this category and all products within it."
-msgstr "این کار تخفیفات ذخیره شده از این دسته‌بندی و همه محصولات درون آن را حذف خواهد کرد."
-
-
-
-#: includes/Admin/HealthCheckPage.php:33
-msgid "Navasan Plus Health Check"
-msgstr "بررسی سلامت نوسان پلاس"
+msgid ""
+"This will remove the saved discounts from this category and all products "
+"within it."
+msgstr ""
+"این کار تخفیفات ذخیره شده از این دسته‌بندی و همه محصولات درون آن را حذف خواهد "
+"کرد."
 
 #: includes/Admin/HealthCheckPage.php:34
 msgid "Run automated checks to verify the plugin is wired correctly."
@@ -273,21 +340,17 @@ msgstr "محاسبه مجدد الان"
 msgid "Apply to product prices"
 msgstr "اعمال به قیمت‌های محصول"
 
-#: includes/Admin/RecalculatePage.php:23
-msgid "Recalculate Prices"
-msgstr "محاسبه مجدد قیمت‌ها"
-
-#: includes/Admin/RecalculatePage.php:24
-msgid "Tools: Recalculate Prices"
-msgstr "ابزارها: محاسبه مجدد قیمت‌ها"
-
 #: includes/Admin/RecalculatePage.php:61
 msgid "1. What is WP-CLI and Why Use It?"
 msgstr "۱. WP-CLI چیست و چرا از آن استفاده کنیم؟"
 
 #: includes/Admin/Core.php:100
-msgid "You've been using the %1$s plugin for more than a week. If you like it, please give us a %2$s rating."
-msgstr "شما بیش از یک هفته از افزونه %1$s استفاده کرده‌اید. اگر آن را دوست دارید، لطفاً به ما امتیاز %2$s دهید."
+msgid ""
+"You've been using the %1$s plugin for more than a week. If you like it, "
+"please give us a %2$s rating."
+msgstr ""
+"شما بیش از یک هفته از افزونه %1$s استفاده کرده‌اید. اگر آن را دوست دارید، "
+"لطفاً به ما امتیاز %2$s دهید."
 
 #: templates/tools/convert-products.php:105
 msgid "Assign Currency"
@@ -392,8 +455,19 @@ msgid "Method 2: Update via Command Line (Recommended for many products)"
 msgstr "روش ۲: به‌روزرسانی از طریق خط فرمان (توصیه شده برای محصولات زیاد)"
 
 #: includes/Admin/RecalculatePage.php:67
-msgid "WP-CLI is a command-line interface for WordPress. It allows you to perform administrative tasks directly from the server's terminal. We use this method for updating prices because it is much faster than other methods and, most importantly, it does not encounter the execution time limit (timeout) that exists in web admin pages. This method is the only reliable way for sites with thousands of products."
-msgstr "WP-CLI یک رابط خط فرمان برای وردپرس است. این ابزار به شما اجازه می‌دهد کارهای مدیریتی را مستقیماً از ترمینال سرور انجام دهید. ما از این روش برای به‌روزرسانی قیمت‌ها استفاده می‌کنیم چون بسیار سریع‌تر از روش‌های دیگر است و مهم‌تر از همه، با محدودیت زمان اجرا (timeout) موجود در صفحات مدیریت وب مواجه نمی‌شود. این روش تنها راه قابل اعتماد برای سایت‌هایی با هزاران محصول است."
+msgid ""
+"WP-CLI is a command-line interface for WordPress. It allows you to perform "
+"administrative tasks directly from the server's terminal. We use this method "
+"for updating prices because it is much faster than other methods and, most "
+"importantly, it does not encounter the execution time limit (timeout) that "
+"exists in web admin pages. This method is the only reliable way for sites "
+"with thousands of products."
+msgstr ""
+"WP-CLI یک رابط خط فرمان برای وردپرس است. این ابزار به شما اجازه می‌دهد کارهای "
+"مدیریتی را مستقیماً از ترمینال سرور انجام دهید. ما از این روش برای به‌روزرسانی "
+"قیمت‌ها استفاده می‌کنیم چون بسیار سریع‌تر از روش‌های دیگر است و مهم‌تر از همه، با "
+"محدودیت زمان اجرا (timeout) موجود در صفحات مدیریت وب مواجه نمی‌شود. این روش "
+"تنها راه قابل اعتماد برای سایت‌هایی با هزاران محصول است."
 
 #: includes/Admin/RecalculatePage.php:70
 msgid "2. Prerequisites"
@@ -404,7 +478,8 @@ msgid "SSH access to the site server."
 msgstr "دسترسی SSH به سرور سایت."
 
 #: includes/Admin/RecalculatePage.php:73
-msgid "WP-CLI installed on the server (usually all good WordPress hosts have it)."
+msgid ""
+"WP-CLI installed on the server (usually all good WordPress hosts have it)."
 msgstr "نصب WP-CLI روی سرور (معمولاً تمام میزبان‌های خوب وردپرس آن را دارند)."
 
 #: includes/Admin/RecalculatePage.php:74
@@ -420,16 +495,24 @@ msgid "Connect to the server:"
 msgstr "اتصال به سرور:"
 
 #: includes/Admin/RecalculatePage.php:80
-msgid "Using a terminal application (like Terminal on Mac or PuTTY on Windows), connect to your server via SSH."
-msgstr "با استفاده از یک برنامه ترمینال (مثل Terminal در مک یا PuTTY در ویندوز)، از طریق SSH به سرور خود متصل شوید."
+msgid ""
+"Using a terminal application (like Terminal on Mac or PuTTY on Windows), "
+"connect to your server via SSH."
+msgstr ""
+"با استفاده از یک برنامه ترمینال (مثل Terminal در مک یا PuTTY در ویندوز)، از "
+"طریق SSH به سرور خود متصل شوید."
 
 #: includes/Admin/RecalculatePage.php:84
 msgid "Navigate to the WordPress root folder:"
 msgstr "رفتن به پوشه اصلی وردپرس:"
 
 #: includes/Admin/RecalculatePage.php:84
-msgid "Go to the path where the main WordPress files (like wp-config.php) are located. This path is usually public_html or your domain name."
-msgstr "به مسیری بروید که فایل‌های اصلی وردپرس (مثل wp-config.php) در آن قرار دارند. این مسیر معمولاً public_html یا نام دامنه شما است."
+msgid ""
+"Go to the path where the main WordPress files (like wp-config.php) are "
+"located. This path is usually public_html or your domain name."
+msgstr ""
+"به مسیری بروید که فایل‌های اصلی وردپرس (مثل wp-config.php) در آن قرار دارند. "
+"این مسیر معمولاً public_html یا نام دامنه شما است."
 
 #: includes/Admin/RecalculatePage.php:86
 msgid "# Example: cd public_html"
@@ -522,3 +605,80 @@ msgstr "افزودن"
 #: assets/js/admin.js:277
 msgid "Cancel"
 msgstr "لغو"
+
+#: includes/Admin/Settings.php:253
+msgid "Use this endpoint to push rates into your site (POST JSON)."
+msgstr ""
+"از این نقطه پایانی برای ارسال نرخ‌ها به سایت خود استفاده کنید (POST JSON)."
+
+#: includes/Admin/Settings.php:255
+msgid "Or send the token via HTTP header: X-API-TOKEN"
+msgstr "یا توکن را از طریق هدر HTTP ارسال کنید: X-API-TOKEN"
+
+#: includes/Admin/Settings.php:257
+msgid "Regenerate Token"
+msgstr "تولید مجدد توکن"
+
+#: includes/Admin/Settings.php:291
+msgid "Create missing currencies if not found"
+msgstr "در صورت یافت نشدن، ارزهای گم شده را ایجاد کن"
+
+#: templates/product-formula-components-advanced.php:16
+msgid "No components defined for this formula."
+msgstr "هیچ جزئی برای این فرمول تعریف نشده است."
+
+#: templates/product-formula-components-advanced.php:88
+msgid "Profit: "
+msgstr "سود: "
+
+#: templates/product-formula-components-advanced.php:89
+msgid "Charge: "
+msgstr "اجرت: "
+
+#: templates/product-formula-components-advanced.php:90
+msgid "Other: "
+msgstr "سایر: "
+
+#: templates/product-formula-components-advanced.php:91
+msgid "Final: "
+msgstr "نهایی: "
+
+#: templates/product-formula-components-advanced.php:118
+msgid "Final Total"
+msgstr "مجموع نهایی"
+
+#: includes/Admin/MigratorPage.php:163
+msgid "Error:"
+msgstr "خطا:"
+
+#: includes/Admin/Settings.php:XXX
+msgid "Language Settings"
+msgstr "تنظیمات زبان"
+
+#: includes/Admin/Settings.php:XXX
+msgid "Configure the plugin language (overrides WordPress default)."
+msgstr "پیکربندی زبان افزونه (اولویت بر تنظیم پیش‌فرض وردپرس)."
+
+#: includes/Admin/Settings.php:XXX
+msgid "Plugin Language"
+msgstr "زبان افزونه"
+
+#: includes/Admin/Settings.php:XXX
+msgid "Use WordPress Default"
+msgstr "استفاده از پیش‌فرض وردپرس"
+
+#: includes/Admin/Settings.php:XXX
+msgid "English"
+msgstr "انگلیسی"
+
+#: includes/Admin/Settings.php:XXX
+msgid "Persian (فارسی)"
+msgstr "فارسی (Persian)"
+
+#: includes/Admin/Settings.php:XXX
+msgid ""
+"Force plugin to use a specific language regardless of WordPress settings. "
+"Save and reload the page to see changes."
+msgstr ""
+"اجبار افزونه برای استفاده از زبان خاص صرف‌نظر از تنظیمات وردپرس. ذخیره کنید و "
+"صفحه را مجدداً بارگذاری کنید تا تغییرات را ببینید."

@@ -27,7 +27,10 @@ final class Loader {
         if ( ! defined( 'MNS_NAVASAN_PLUS_DB_PREFIX' ) ) {
             define( 'MNS_NAVASAN_PLUS_DB_PREFIX', 'mns_navasan_plus' );
         }
-        add_action( 'init', [ $this, 'load_textdomain' ] );
+        
+        // Load translations EARLY - before admin_menu hook
+        add_action( 'plugins_loaded', [ $this, 'load_textdomain' ], 0 );
+        
         add_action( 'wp_enqueue_scripts',    [ $this, 'register_public_assets' ] );
         add_action( 'admin_enqueue_scripts', [ $this, 'register_admin_assets' ] );
         $this->boot_common();
@@ -35,8 +38,62 @@ final class Loader {
     }
 
     public function load_textdomain(): void {
-        $rel = dirname( plugin_basename( __FILE__ ), 2 ) . '/languages';
-        load_plugin_textdomain( 'mns-navasan-plus', false, $rel );
+        // Check if user has set a language preference in plugin options
+        $plugin_options = get_option( 'mns_navasan_plus_options', [] );
+        $force_locale = $plugin_options['force_locale'] ?? '';
+        
+        $current_locale = get_locale();
+        $target_locale = $force_locale ?: $current_locale;
+        
+        // Get correct plugin path for translations
+        $plugin_rel_path = dirname( plugin_basename( dirname( __DIR__ ) . '/mns-navasan-plus.php' ) ) . '/languages';
+        
+        // Debug: Log translation loading attempt
+        error_log('MNS Navasan Plus: Loading translations from: ' . $plugin_rel_path);
+        error_log('MNS Navasan Plus: WordPress locale: ' . $current_locale);
+        error_log('MNS Navasan Plus: Target locale: ' . $target_locale);
+        
+        // If forcing a specific locale, override global locale temporarily
+        if ( $force_locale && $force_locale !== $current_locale ) {
+            add_filter( 'locale', function() use ( $force_locale ) {
+                return $force_locale;
+            } );
+        }
+        
+        $loaded = load_plugin_textdomain( 'mns-navasan-plus', false, $plugin_rel_path );
+        
+        // Fallback: Try different approaches if initial load failed
+        if ( ! $loaded ) {
+            // Try alternative path
+            $alt_path = plugin_basename( dirname( __DIR__ ) ) . '/languages';
+            $loaded = load_plugin_textdomain( 'mns-navasan-plus', false, $alt_path );
+            error_log('MNS Navasan Plus: Fallback path tried: ' . $alt_path . ' Result: ' . ($loaded ? 'SUCCESS' : 'FAILED'));
+        }
+        
+        // Manual fallback for common locales
+        if ( ! $loaded ) {
+            $locale = $target_locale;
+            $plugin_dir = dirname( __DIR__ );
+            
+            // Try common locale variations
+            $locale_variations = [ $locale, substr( $locale, 0, 2 ) ];
+            
+            foreach ( $locale_variations as $loc ) {
+                $mo_file = $plugin_dir . '/languages/mns-navasan-plus-' . $loc . '.mo';
+                if ( file_exists( $mo_file ) ) {
+                    $loaded = load_textdomain( 'mns-navasan-plus', $mo_file );
+                    error_log('MNS Navasan Plus: Manual load tried: ' . $mo_file . ' Result: ' . ($loaded ? 'SUCCESS' : 'FAILED'));
+                    if ( $loaded ) break;
+                }
+            }
+        }
+        
+        // Debug: Test a translation to verify it's working
+        $test_translation = __( 'Navasan Plus', 'mns-navasan-plus' );
+        error_log('MNS Navasan Plus: Test translation "Navasan Plus" = "' . $test_translation . '"');
+        
+        // Debug: Log final result
+        error_log('MNS Navasan Plus: Translation loading final result: ' . ($loaded ? 'SUCCESS' : 'FAILED'));
         
         // Set up JavaScript translations for admin scripts
         if ( is_admin() ) {

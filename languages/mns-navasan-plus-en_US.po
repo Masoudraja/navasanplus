@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MNS Navasan Plus 1.0.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mns-navasan-plus\n"
-"POT-Creation-Date: 2024-09-24 12:00+0000\n"
+"POT-Creation-Date: 2024-09-24 15:30+0000\n"
 "PO-Revision-Date: 2024-09-24 12:00+0000\n"
 "Last-Translator: \n"
 "Language-Team: English\n"
@@ -16,17 +16,56 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Manual 1.0\n"
 
-#: includes/Admin/Menu.php:15
-#: includes/Admin/Menu.php:16
+#: includes/Admin/Menu.php:15 includes/Admin/Menu.php:16
 #: includes/Admin/Menu.php:26
 msgid "Navasan Plus"
 msgstr "Navasan Plus"
 
-#: includes/Admin/Menu.php:25
-#: includes/Admin/AssignFormulaPage.php:34
+#: includes/Admin/Menu.php:25 includes/Admin/AssignFormulaPage.php:34
 #: includes/Admin/AssignFormulaPage.php:116
 msgid "Access denied."
 msgstr "Access denied."
+
+#: includes/Admin/Settings.php:26
+msgid "Navasan Plus Settings"
+msgstr "Navasan Plus Settings"
+
+#: includes/Admin/HealthCheckPage.php:22 includes/Admin/HealthCheckPage.php:33
+msgid "Navasan Plus Health Check"
+msgstr "Navasan Plus Health Check"
+
+#: includes/Admin/MigratorPage.php:23
+msgid "Migrate from Navasan"
+msgstr "Migrate from Navasan"
+
+#: includes/Admin/RecalculatePage.php:23
+msgid "Recalculate Prices"
+msgstr "Recalculate Prices"
+
+#: includes/Admin/AssignFormulaPage.php:24
+#: includes/Admin/AssignFormulaPage.php:59
+msgid "Assign Formula to Products"
+msgstr "Assign Formula to Products"
+
+#: includes/Admin/Settings.php:27
+msgid "Settings"
+msgstr "Settings"
+
+#: includes/Admin/HealthCheckPage.php:23
+msgid "Health Check"
+msgstr "Health Check"
+
+#: includes/Admin/MigratorPage.php:24
+msgid "Migration"
+msgstr "Migration"
+
+#: includes/Admin/RecalculatePage.php:24
+msgid "Tools: Recalculate Prices"
+msgstr "Tools: Recalculate Prices"
+
+#: includes/Admin/AssignFormulaPage.php:25
+msgid "Tools: Assign Formula"
+msgstr "Tools: Assign Formula"
 
 #: includes/Admin/Menu.php:27
 msgid "Use the left submenu: Settings, Tools, Currencies, Formulas."
@@ -42,6 +81,10 @@ msgctxt "Post Type Singular Name"
 msgid "Currency"
 msgstr "Currency"
 
+#: includes/Admin/PostTypes.php:49
+msgid "Currencies"
+msgstr "Currencies"
+
 #: includes/Admin/PostTypes.php:72
 msgctxt "Post Type General Name"
 msgid "Formulas"
@@ -52,6 +95,42 @@ msgctxt "Post Type Singular Name"
 msgid "Formula"
 msgstr "Formula"
 
+#: includes/Admin/PostTypes.php:74
+msgid "Formulas"
+msgstr "Formulas"
+
+#: templates/metaboxes/product.php:273
+msgid "Price Breakdown (preview)"
+msgstr "Price Breakdown (preview)"
+
+#: templates/metaboxes/product.php:281
+msgid "Final price (preview):"
+msgstr "Final price (preview):"
+
+#: includes/Admin/Settings.php:369 includes/Admin/Settings.php:329
+msgid "Connection successful."
+msgstr "Connection successful."
+
+#: includes/Admin/Settings.php:369 includes/Admin/Settings.php:329
+msgid "Empty response received."
+msgstr "Empty response received."
+
+#: includes/Admin/Settings.php:372 includes/Admin/Settings.php:331
+msgid "Service class not available."
+msgstr "Service class not available."
+
+#: includes/Admin/Settings.php:405 includes/Admin/Settings.php:354
+msgid "Synced. Updated: %1$d, Created: %2$d, Skipped: %3$d"
+msgstr "Synced. Updated: %1$d, Created: %2$d, Skipped: %3$d"
+
+#: includes/Admin/Settings.php:410 includes/Admin/Settings.php:359
+msgid "Sync failed."
+msgstr "Sync failed."
+
+#: includes/Admin/Settings.php:434 includes/Admin/Settings.php:372
+msgid "API token regenerated."
+msgstr "API token regenerated."
+
 #: includes/Admin/PostTypes.php:97
 msgctxt "Post Type General Name"
 msgid "Charts"
@@ -61,15 +140,6 @@ msgstr "Charts"
 msgctxt "Post Type Singular Name"
 msgid "Chart"
 msgstr "Chart"
-
-#: includes/Admin/AssignFormulaPage.php:24
-#: includes/Admin/AssignFormulaPage.php:59
-msgid "Assign Formula to Products"
-msgstr "Assign Formula to Products"
-
-#: includes/Admin/AssignFormulaPage.php:25
-msgid "Tools: Assign Formula"
-msgstr "Tools: Assign Formula"
 
 #: includes/Admin/AssignFormulaPage.php:55
 msgid "Done."
@@ -172,36 +242,48 @@ msgid "Navasan Plus - Category Discounts"
 msgstr "Navasan Plus - Category Discounts"
 
 #: includes/Admin/CategoryDiscountFields.php:37
-msgid "These discounts will be applied to products in this category upon creation."
-msgstr "These discounts will be applied to products in this category upon creation."
+msgid ""
+"These discounts will be applied to products in this category upon creation."
+msgstr ""
+"These discounts will be applied to products in this category upon creation."
 
 #: includes/Admin/CategoryDiscountFields.php:63
 msgid "Navasan Plus - Bulk Edit Discounts"
 msgstr "Navasan Plus - Bulk Edit Discounts"
 
 #: includes/Admin/CategoryDiscountFields.php:66
-msgid "IMPORTANT: When you update the category, these values will be applied to ALL products in this category, overwriting their current discounts and recalculating their final prices."
-msgstr "IMPORTANT: When you update the category, these values will be applied to ALL products in this category, overwriting their current discounts and recalculating their final prices."
+msgid ""
+"IMPORTANT: When you update the category, these values will be applied to ALL "
+"products in this category, overwriting their current discounts and "
+"recalculating their final prices."
+msgstr ""
+"IMPORTANT: When you update the category, these values will be applied to ALL "
+"products in this category, overwriting their current discounts and "
+"recalculating their final prices."
 
 #: includes/Admin/CategoryDiscountFields.php:78
 msgid "Clear Discounts Action"
 msgstr "Clear Discounts Action"
 
 #: includes/Admin/CategoryDiscountFields.php:80
-msgid "Are you sure you want to clear these discounts for the category AND all its products?"
-msgstr "Are you sure you want to clear these discounts for the category AND all its products?"
+msgid ""
+"Are you sure you want to clear these discounts for the category AND all its "
+"products?"
+msgstr ""
+"Are you sure you want to clear these discounts for the category AND all its "
+"products?"
 
 #: includes/Admin/CategoryDiscountFields.php:81
 msgid "Clear All Discounts for This Category"
 msgstr "Clear All Discounts for This Category"
 
 #: includes/Admin/CategoryDiscountFields.php:83
-msgid "This will remove the saved discounts from this category and all products within it."
-msgstr "This will remove the saved discounts from this category and all products within it."
-
-#: includes/Admin/HealthCheckPage.php:33
-msgid "Navasan Plus Health Check"
-msgstr "Navasan Plus Health Check"
+msgid ""
+"This will remove the saved discounts from this category and all products "
+"within it."
+msgstr ""
+"This will remove the saved discounts from this category and all products "
+"within it."
 
 #: includes/Admin/HealthCheckPage.php:34
 msgid "Run automated checks to verify the plugin is wired correctly."
@@ -271,21 +353,17 @@ msgstr "Recalculate now"
 msgid "Apply to product prices"
 msgstr "Apply to product prices"
 
-#: includes/Admin/RecalculatePage.php:23
-msgid "Recalculate Prices"
-msgstr "Recalculate Prices"
-
-#: includes/Admin/RecalculatePage.php:24
-msgid "Tools: Recalculate Prices"
-msgstr "Tools: Recalculate Prices"
-
 #: includes/Admin/RecalculatePage.php:61
 msgid "1. What is WP-CLI and Why Use It?"
 msgstr "1. What is WP-CLI and Why Use It?"
 
 #: includes/Admin/Core.php:100
-msgid "You've been using the %1$s plugin for more than a week. If you like it, please give us a %2$s rating."
-msgstr "You've been using the %1$s plugin for more than a week. If you like it, please give us a %2$s rating."
+msgid ""
+"You've been using the %1$s plugin for more than a week. If you like it, "
+"please give us a %2$s rating."
+msgstr ""
+"You've been using the %1$s plugin for more than a week. If you like it, "
+"please give us a %2$s rating."
 
 #: templates/tools/convert-products.php:105
 msgid "Assign Currency"
@@ -390,8 +468,20 @@ msgid "Method 2: Update via Command Line (Recommended for many products)"
 msgstr "Method 2: Update via Command Line (Recommended for many products)"
 
 #: includes/Admin/RecalculatePage.php:67
-msgid "WP-CLI is a command-line interface for WordPress. It allows you to perform administrative tasks directly from the server's terminal. We use this method for updating prices because it is much faster than other methods and, most importantly, it does not encounter the execution time limit (timeout) that exists in web admin pages. This method is the only reliable way for sites with thousands of products."
-msgstr "WP-CLI is a command-line interface for WordPress. It allows you to perform administrative tasks directly from the server's terminal. We use this method for updating prices because it is much faster than other methods and, most importantly, it does not encounter the execution time limit (timeout) that exists in web admin pages. This method is the only reliable way for sites with thousands of products."
+msgid ""
+"WP-CLI is a command-line interface for WordPress. It allows you to perform "
+"administrative tasks directly from the server's terminal. We use this method "
+"for updating prices because it is much faster than other methods and, most "
+"importantly, it does not encounter the execution time limit (timeout) that "
+"exists in web admin pages. This method is the only reliable way for sites "
+"with thousands of products."
+msgstr ""
+"WP-CLI is a command-line interface for WordPress. It allows you to perform "
+"administrative tasks directly from the server's terminal. We use this method "
+"for updating prices because it is much faster than other methods and, most "
+"importantly, it does not encounter the execution time limit (timeout) that "
+"exists in web admin pages. This method is the only reliable way for sites "
+"with thousands of products."
 
 #: includes/Admin/RecalculatePage.php:70
 msgid "2. Prerequisites"
@@ -402,8 +492,10 @@ msgid "SSH access to the site server."
 msgstr "SSH access to the site server."
 
 #: includes/Admin/RecalculatePage.php:73
-msgid "WP-CLI installed on the server (usually all good WordPress hosts have it)."
-msgstr "WP-CLI installed on the server (usually all good WordPress hosts have it)."
+msgid ""
+"WP-CLI installed on the server (usually all good WordPress hosts have it)."
+msgstr ""
+"WP-CLI installed on the server (usually all good WordPress hosts have it)."
 
 #: includes/Admin/RecalculatePage.php:74
 msgid "The \"MNS Navasan Plus\" plugin must be active."
@@ -418,16 +510,24 @@ msgid "Connect to the server:"
 msgstr "Connect to the server:"
 
 #: includes/Admin/RecalculatePage.php:80
-msgid "Using a terminal application (like Terminal on Mac or PuTTY on Windows), connect to your server via SSH."
-msgstr "Using a terminal application (like Terminal on Mac or PuTTY on Windows), connect to your server via SSH."
+msgid ""
+"Using a terminal application (like Terminal on Mac or PuTTY on Windows), "
+"connect to your server via SSH."
+msgstr ""
+"Using a terminal application (like Terminal on Mac or PuTTY on Windows), "
+"connect to your server via SSH."
 
 #: includes/Admin/RecalculatePage.php:84
 msgid "Navigate to the WordPress root folder:"
 msgstr "Navigate to the WordPress root folder:"
 
 #: includes/Admin/RecalculatePage.php:84
-msgid "Go to the path where the main WordPress files (like wp-config.php) are located. This path is usually public_html or your domain name."
-msgstr "Go to the path where the main WordPress files (like wp-config.php) are located. This path is usually public_html or your domain name."
+msgid ""
+"Go to the path where the main WordPress files (like wp-config.php) are "
+"located. This path is usually public_html or your domain name."
+msgstr ""
+"Go to the path where the main WordPress files (like wp-config.php) are "
+"located. This path is usually public_html or your domain name."
 
 #: includes/Admin/RecalculatePage.php:86
 msgid "# Example: cd public_html"
@@ -497,8 +597,6 @@ msgstr "charge"
 msgid "Section"
 msgstr "Section"
 
-
-
 #: templates/metaboxes/order-rates.php:39
 msgid "Invoice Rate"
 msgstr "Invoice Rate"
@@ -523,3 +621,78 @@ msgstr "Add"
 msgid "Cancel"
 msgstr "Cancel"
 
+#: includes/Admin/Settings.php:253
+msgid "Use this endpoint to push rates into your site (POST JSON)."
+msgstr "Use this endpoint to push rates into your site (POST JSON)."
+
+#: includes/Admin/Settings.php:255
+msgid "Or send the token via HTTP header: X-API-TOKEN"
+msgstr "Or send the token via HTTP header: X-API-TOKEN"
+
+#: includes/Admin/Settings.php:257
+msgid "Regenerate Token"
+msgstr "Regenerate Token"
+
+#: includes/Admin/Settings.php:291
+msgid "Create missing currencies if not found"
+msgstr "Create missing currencies if not found"
+
+#: templates/product-formula-components-advanced.php:16
+msgid "No components defined for this formula."
+msgstr "No components defined for this formula."
+
+#: templates/product-formula-components-advanced.php:88
+msgid "Profit: "
+msgstr "Profit: "
+
+#: templates/product-formula-components-advanced.php:89
+msgid "Charge: "
+msgstr "Charge: "
+
+#: templates/product-formula-components-advanced.php:90
+msgid "Other: "
+msgstr "Other: "
+
+#: templates/product-formula-components-advanced.php:91
+msgid "Final: "
+msgstr "Final: "
+
+#: templates/product-formula-components-advanced.php:118
+msgid "Final Total"
+msgstr "Final Total"
+
+#: includes/Admin/MigratorPage.php:163
+msgid "Error:"
+msgstr "Error:"
+
+#: includes/Admin/Settings.php:XXX
+msgid "Language Settings"
+msgstr "Language Settings"
+
+#: includes/Admin/Settings.php:XXX
+msgid "Configure the plugin language (overrides WordPress default)."
+msgstr "Configure the plugin language (overrides WordPress default)."
+
+#: includes/Admin/Settings.php:XXX
+msgid "Plugin Language"
+msgstr "Plugin Language"
+
+#: includes/Admin/Settings.php:XXX
+msgid "Use WordPress Default"
+msgstr "Use WordPress Default"
+
+#: includes/Admin/Settings.php:XXX
+msgid "English"
+msgstr "English"
+
+#: includes/Admin/Settings.php:XXX
+msgid "Persian (فارسی)"
+msgstr "Persian (فارسی)"
+
+#: includes/Admin/Settings.php:XXX
+msgid ""
+"Force plugin to use a specific language regardless of WordPress settings. "
+"Save and reload the page to see changes."
+msgstr ""
+"Force plugin to use a specific language regardless of WordPress settings. "
+"Save and reload the page to see changes."
