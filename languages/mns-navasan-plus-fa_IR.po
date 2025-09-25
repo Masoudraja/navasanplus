@@ -1,0 +1,524 @@
+# Persian (Iran) translation for MNS Navasan Plus
+# Copyright (C) 2024 MNS Navasan Plus
+# This file is distributed under the same license as the MNS Navasan Plus package.
+msgid ""
+msgstr ""
+"Project-Id-Version: MNS Navasan Plus 1.0.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mns-navasan-plus\n"
+"POT-Creation-Date: 2024-09-24 12:00+0000\n"
+"PO-Revision-Date: 2024-09-24 12:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: Persian\n"
+"Language: fa_IR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Manual 1.0\n"
+
+#: includes/Admin/Menu.php:15
+#: includes/Admin/Menu.php:16
+#: includes/Admin/Menu.php:26
+msgid "Navasan Plus"
+msgstr "نوسان پلاس"
+
+#: includes/Admin/Menu.php:25
+#: includes/Admin/AssignFormulaPage.php:34
+#: includes/Admin/AssignFormulaPage.php:116
+msgid "Access denied."
+msgstr "دسترسی مجاز نیست."
+
+#: includes/Admin/Menu.php:27
+msgid "Use the left submenu: Settings, Tools, Currencies, Formulas."
+msgstr "از منوی فرعی سمت چپ استفاده کنید: تنظیمات، ابزارها، ارزها، فرمول‌ها."
+
+#: includes/Admin/PostTypes.php:47
+msgctxt "Post Type General Name"
+msgid "Currencies"
+msgstr "ارزها"
+
+#: includes/Admin/PostTypes.php:48
+msgctxt "Post Type Singular Name"
+msgid "Currency"
+msgstr "ارز"
+
+#: includes/Admin/PostTypes.php:72
+msgctxt "Post Type General Name"
+msgid "Formulas"
+msgstr "فرمول‌ها"
+
+#: includes/Admin/PostTypes.php:73
+msgctxt "Post Type Singular Name"
+msgid "Formula"
+msgstr "فرمول"
+
+#: includes/Admin/PostTypes.php:97
+msgctxt "Post Type General Name"
+msgid "Charts"
+msgstr "نمودارها"
+
+#: includes/Admin/PostTypes.php:98
+msgctxt "Post Type Singular Name"
+msgid "Chart"
+msgstr "نمودار"
+
+#: includes/Admin/AssignFormulaPage.php:24
+#: includes/Admin/AssignFormulaPage.php:59
+msgid "Assign Formula to Products"
+msgstr "اختصاص فرمول به محصولات"
+
+#: includes/Admin/AssignFormulaPage.php:25
+msgid "Tools: Assign Formula"
+msgstr "ابزارها: اختصاص فرمول"
+
+#: includes/Admin/AssignFormulaPage.php:55
+msgid "Done."
+msgstr "انجام شد."
+
+#: includes/Admin/AssignFormulaPage.php:55
+msgid "Failed."
+msgstr "ناموفق."
+
+#: includes/Admin/AssignFormulaPage.php:67
+msgid "Formula"
+msgstr "فرمول"
+
+#: includes/Admin/AssignFormulaPage.php:69
+msgid "— Select —"
+msgstr "— انتخاب کنید —"
+
+#: includes/Admin/AssignFormulaPage.php:76
+msgid "Product IDs"
+msgstr "شناسه‌های محصول"
+
+#: includes/Admin/AssignFormulaPage.php:78
+msgid "Optional. Comma-separated. Ranges allowed (10-15)."
+msgstr "اختیاری. با کاما جدا شده. محدوده مجاز (۱۰-۱۵)."
+
+#: includes/Admin/AssignFormulaPage.php:82
+msgid "Categories"
+msgstr "دسته‌بندی‌ها"
+
+#: includes/Admin/AssignFormulaPage.php:88
+msgid "Tags"
+msgstr "برچسب‌ها"
+
+#: includes/Admin/AssignFormulaPage.php:94
+msgid "Options"
+msgstr "گزینه‌ها"
+
+#: includes/Admin/AssignFormulaPage.php:96
+msgid "Dry run (no changes)"
+msgstr "اجرای آزمایشی (بدون تغییر)"
+
+#: includes/Admin/AssignFormulaPage.php:98
+msgid "Enable rate-based pricing"
+msgstr "فعال‌سازی قیمت‌گذاری بر اساس نرخ"
+
+#: includes/Admin/AssignFormulaPage.php:100
+msgid "Set dependency to Advanced (Formula)"
+msgstr "تنظیم وابستگی به پیشرفته (فرمول)"
+
+#: includes/Admin/AssignFormulaPage.php:102
+msgid "Overwrite existing assigned formula (if any)"
+msgstr "بازنویسی فرمول اختصاص یافته موجود (در صورت وجود)"
+
+#: includes/Admin/AssignFormulaPage.php:104
+msgid "Copy formula variables defaults into product overrides"
+msgstr "کپی مقادیر پیش‌فرض متغیرهای فرمول در بازنویسی محصول"
+
+#: includes/Admin/AssignFormulaPage.php:106
+msgid "Clear simple pricing fields"
+msgstr "پاک کردن فیلدهای قیمت‌گذاری ساده"
+
+#: includes/Admin/AssignFormulaPage.php:110
+msgid "Assign Now"
+msgstr "اختصاص الان"
+
+#: includes/Admin/AssignFormulaPage.php:131
+msgid "Please select a valid formula."
+msgstr "لطفاً یک فرمول معتبر انتخاب کنید."
+
+#: includes/Admin/AssignFormulaPage.php:156
+msgid "No products matched."
+msgstr "هیچ محصولی مطابقت نداشت."
+
+#: includes/Admin/AssignFormulaPage.php:220
+msgid "Dry run: matched=%1$d, would_update=%2$d, skipped_existing=%3$d"
+msgstr "اجرای آزمایشی: تطبیق=%1$d، به‌روزرسانی=%2$d، رد شده موجود=%3$d"
+
+#: includes/Admin/AssignFormulaPage.php:228
+msgid "Assigned to %1$d products. Skipped existing: %2$d"
+msgstr "اختصاص داده شده به %1$d محصول. رد شده موجود: %2$d"
+
+#: includes/Admin/CategoryDiscountFields.php:16
+msgid "Discount on Profit (%)"
+msgstr "تخفیف روی سود (درصد)"
+
+#: includes/Admin/CategoryDiscountFields.php:17
+msgid "Discount on Profit (Fixed)"
+msgstr "تخفیف روی سود (ثابت)"
+
+#: includes/Admin/CategoryDiscountFields.php:18
+msgid "Discount on Charge (%)"
+msgstr "تخفیف روی اجرت (درصد)"
+
+#: includes/Admin/CategoryDiscountFields.php:19
+msgid "Discount on Charge (Fixed)"
+msgstr "تخفیف روی اجرت (ثابت)"
+
+#: includes/Admin/CategoryDiscountFields.php:36
+msgid "Navasan Plus - Category Discounts"
+msgstr "نوسان پلاس - تخفیفات دسته‌بندی"
+
+#: includes/Admin/CategoryDiscountFields.php:37
+msgid "These discounts will be applied to products in this category upon creation."
+msgstr "این تخفیفات هنگام ایجاد محصولات در این دسته‌بندی اعمال خواهد شد."
+
+#: includes/Admin/CategoryDiscountFields.php:63
+msgid "Navasan Plus - Bulk Edit Discounts"
+msgstr "نوسان پلاس - ویرایش گروهی تخفیفات"
+
+#: includes/Admin/CategoryDiscountFields.php:66
+msgid "IMPORTANT: When you update the category, these values will be applied to ALL products in this category, overwriting their current discounts and recalculating their final prices."
+msgstr "مهم: هنگام به‌روزرسانی دسته‌بندی، این مقادیر به همه محصولات این دسته‌بندی اعمال شده، تخفیفات فعلی آن‌ها را بازنویسی و قیمت نهایی را مجدداً محاسبه می‌کند."
+
+#: includes/Admin/CategoryDiscountFields.php:78
+msgid "Clear Discounts Action"
+msgstr "عملیات پاک کردن تخفیفات"
+
+#: includes/Admin/CategoryDiscountFields.php:80
+msgid "Are you sure you want to clear these discounts for the category AND all its products?"
+msgstr "آیا مطمئن هستید که می‌خواهید این تخفیفات را برای دسته‌بندی و همه محصولات آن پاک کنید؟"
+
+#: includes/Admin/CategoryDiscountFields.php:81
+msgid "Clear All Discounts for This Category"
+msgstr "پاک کردن همه تخفیفات این دسته‌بندی"
+
+#: includes/Admin/CategoryDiscountFields.php:83
+msgid "This will remove the saved discounts from this category and all products within it."
+msgstr "این کار تخفیفات ذخیره شده از این دسته‌بندی و همه محصولات درون آن را حذف خواهد کرد."
+
+
+
+#: includes/Admin/HealthCheckPage.php:33
+msgid "Navasan Plus Health Check"
+msgstr "بررسی سلامت نوسان پلاس"
+
+#: includes/Admin/HealthCheckPage.php:34
+msgid "Run automated checks to verify the plugin is wired correctly."
+msgstr "اجرای بررسی‌های خودکار برای تأیید اتصال صحیح افزونه."
+
+#: includes/Admin/HealthCheckPage.php:38
+msgid "Run Checks"
+msgstr "اجرای بررسی‌ها"
+
+#: includes/Admin/HealthCheckPage.php:47
+msgid "Check"
+msgstr "بررسی"
+
+#: includes/Admin/HealthCheckPage.php:48
+msgid "Result"
+msgstr "نتیجه"
+
+#: includes/Admin/HealthCheckPage.php:49
+msgid "Details"
+msgstr "جزئیات"
+
+#: includes/Admin/PostTypes.php:168
+msgid "Manual update"
+msgstr "به‌روزرسانی دستی"
+
+#: includes/Admin/PricePreviewMetaBox.php:19
+msgid "Navasan Plus – Price Preview"
+msgstr "نوسان پلاس – پیش‌نمایش قیمت"
+
+#: includes/Admin/PricePreviewMetaBox.php:36
+msgid "Calculating…"
+msgstr "در حال محاسبه..."
+
+#: includes/Admin/PricePreviewMetaBox.php:37
+msgid "Updated."
+msgstr "به‌روزرسانی شد."
+
+#: includes/Admin/PricePreviewMetaBox.php:38
+msgid "Applied."
+msgstr "اعمال شد."
+
+#: includes/Admin/PricePreviewMetaBox.php:39
+msgid "Failed to calculate."
+msgstr "محاسبه ناموفق بود."
+
+#: includes/Admin/PricePreviewMetaBox.php:40
+msgid "Failed to apply."
+msgstr "اعمال ناموفق بود."
+
+#: includes/Admin/PricePreviewMetaBox.php:75
+msgid "Current calculated price"
+msgstr "قیمت محاسبه شده فعلی"
+
+#: includes/Admin/PricePreviewMetaBox.php:83
+msgid "Profit"
+msgstr "سود"
+
+#: includes/Admin/PricePreviewMetaBox.php:89
+msgid "Charge"
+msgstr "اجرت"
+
+#: includes/Admin/PricePreviewMetaBox.php:97
+msgid "Recalculate now"
+msgstr "محاسبه مجدد الان"
+
+#: includes/Admin/PricePreviewMetaBox.php:100
+msgid "Apply to product prices"
+msgstr "اعمال به قیمت‌های محصول"
+
+#: includes/Admin/RecalculatePage.php:23
+msgid "Recalculate Prices"
+msgstr "محاسبه مجدد قیمت‌ها"
+
+#: includes/Admin/RecalculatePage.php:24
+msgid "Tools: Recalculate Prices"
+msgstr "ابزارها: محاسبه مجدد قیمت‌ها"
+
+#: includes/Admin/RecalculatePage.php:61
+msgid "1. What is WP-CLI and Why Use It?"
+msgstr "۱. WP-CLI چیست و چرا از آن استفاده کنیم؟"
+
+#: includes/Admin/Core.php:100
+msgid "You've been using the %1$s plugin for more than a week. If you like it, please give us a %2$s rating."
+msgstr "شما بیش از یک هفته از افزونه %1$s استفاده کرده‌اید. اگر آن را دوست دارید، لطفاً به ما امتیاز %2$s دهید."
+
+#: templates/tools/convert-products.php:105
+msgid "Assign Currency"
+msgstr "اختصاص ارز"
+
+#: templates/tools/convert-products.php:108
+msgid "-- Select Currency --"
+msgstr "-- انتخاب ارز --"
+
+#: templates/tools/convert-products.php:116
+msgid "Choose the base currency for all converted products."
+msgstr "ارز پایه را برای همه محصولات تبدیل شده انتخاب کنید."
+
+#: templates/tools/convert-products.php:122
+msgid "Convert Products"
+msgstr "تبدیل محصولات"
+
+#: includes/PublicNS/PriceBreakdown.php:15
+msgid "Price Breakdown"
+msgstr "تفکیک قیمت"
+
+#: includes/PublicNS/DiscountDisplay.php:25
+msgid "Applied Discounts"
+msgstr "تخفیفات اعمال شده"
+
+#: includes/PublicNS/Chart.php:30
+msgid "Currency Chart"
+msgstr "چارت ارز"
+
+#: includes/Admin/CategoryDiscountFields.php:105
+msgid "Invalid request."
+msgstr "درخواست نامعتبر."
+
+#: includes/Admin/HealthCheckPage.php:58
+msgid "PASS"
+msgstr "موفق"
+
+#: includes/Admin/HealthCheckPage.php:60
+msgid "FAIL"
+msgstr "ناموفق"
+
+#: templates/currencies-table.php:18
+msgid "Currency"
+msgstr "ارز"
+
+#: templates/currencies-table.php:19
+msgid "Current Rate"
+msgstr "نرخ فعلی"
+
+#: templates/currencies-table.php:20
+msgid "Change"
+msgstr "تغییر"
+
+#: templates/rate-converter.php:52
+msgid "From"
+msgstr "از"
+
+#: templates/rate-converter.php:68
+msgid "To"
+msgstr "به"
+
+#: templates/rate-converter.php:85
+msgid "Convert"
+msgstr "تبدیل"
+
+#: templates/price-calculator.php:56
+msgid "Currency #%s"
+msgstr "ارز #%s"
+
+#: templates/price-calculator.php:66
+msgid "Calculate"
+msgstr "محاسبه"
+
+#: templates/price-calculator.php:70
+msgid "Result:"
+msgstr "نتیجه:"
+
+#: templates/price-calculator.php:74
+msgid "No currencies available to convert."
+msgstr "هیچ ارزی برای تبدیل در دسترس نیست."
+
+#: templates/tools/convert-products.php:84
+msgid "Filter by Category"
+msgstr "فیلتر بر اساس دسته‌بندی"
+
+#: templates/tools/convert-products.php:88
+msgid "-- All Categories --"
+msgstr "-- همه دسته‌بندی‌ها --"
+
+#: templates/tools/convert-products.php:96
+msgid "Only products in this category will be converted."
+msgstr "فقط محصولات این دسته‌بندی تبدیل خواهند شد."
+
+#: templates/tools/convert-products.php:51
+msgid "Converted %d product."
+msgid_plural "Converted %d products."
+msgstr[0] "%d محصول تبدیل شد."
+msgstr[1] "%d محصول تبدیل شدند."
+
+#: includes/Admin/RecalculatePage.php:62
+msgid "Method 2: Update via Command Line (Recommended for many products)"
+msgstr "روش ۲: به‌روزرسانی از طریق خط فرمان (توصیه شده برای محصولات زیاد)"
+
+#: includes/Admin/RecalculatePage.php:67
+msgid "WP-CLI is a command-line interface for WordPress. It allows you to perform administrative tasks directly from the server's terminal. We use this method for updating prices because it is much faster than other methods and, most importantly, it does not encounter the execution time limit (timeout) that exists in web admin pages. This method is the only reliable way for sites with thousands of products."
+msgstr "WP-CLI یک رابط خط فرمان برای وردپرس است. این ابزار به شما اجازه می‌دهد کارهای مدیریتی را مستقیماً از ترمینال سرور انجام دهید. ما از این روش برای به‌روزرسانی قیمت‌ها استفاده می‌کنیم چون بسیار سریع‌تر از روش‌های دیگر است و مهم‌تر از همه، با محدودیت زمان اجرا (timeout) موجود در صفحات مدیریت وب مواجه نمی‌شود. این روش تنها راه قابل اعتماد برای سایت‌هایی با هزاران محصول است."
+
+#: includes/Admin/RecalculatePage.php:70
+msgid "2. Prerequisites"
+msgstr "۲. پیش‌نیازها"
+
+#: includes/Admin/RecalculatePage.php:72
+msgid "SSH access to the site server."
+msgstr "دسترسی SSH به سرور سایت."
+
+#: includes/Admin/RecalculatePage.php:73
+msgid "WP-CLI installed on the server (usually all good WordPress hosts have it)."
+msgstr "نصب WP-CLI روی سرور (معمولاً تمام میزبان‌های خوب وردپرس آن را دارند)."
+
+#: includes/Admin/RecalculatePage.php:74
+msgid "The \"MNS Navasan Plus\" plugin must be active."
+msgstr "افزونه «نوسان پلاس» باید فعال باشد."
+
+#: includes/Admin/RecalculatePage.php:77
+msgid "3. Execution Steps"
+msgstr "۳. مراحل اجرا"
+
+#: includes/Admin/RecalculatePage.php:80
+msgid "Connect to the server:"
+msgstr "اتصال به سرور:"
+
+#: includes/Admin/RecalculatePage.php:80
+msgid "Using a terminal application (like Terminal on Mac or PuTTY on Windows), connect to your server via SSH."
+msgstr "با استفاده از یک برنامه ترمینال (مثل Terminal در مک یا PuTTY در ویندوز)، از طریق SSH به سرور خود متصل شوید."
+
+#: includes/Admin/RecalculatePage.php:84
+msgid "Navigate to the WordPress root folder:"
+msgstr "رفتن به پوشه اصلی وردپرس:"
+
+#: includes/Admin/RecalculatePage.php:84
+msgid "Go to the path where the main WordPress files (like wp-config.php) are located. This path is usually public_html or your domain name."
+msgstr "به مسیری بروید که فایل‌های اصلی وردپرس (مثل wp-config.php) در آن قرار دارند. این مسیر معمولاً public_html یا نام دامنه شما است."
+
+#: includes/Admin/RecalculatePage.php:86
+msgid "# Example: cd public_html"
+msgstr "# مثال: cd public_html"
+
+#: includes/Admin/RecalculatePage.php:89
+msgid "Run the command:"
+msgstr "اجرای دستور:"
+
+#: includes/Admin/RecalculatePage.php:89
+msgid "Copy and run the following command completely in the terminal:"
+msgstr "دستور زیر را کامل در ترمینال کپی و اجرا کنید:"
+
+#: includes/Admin/MigratorPage.php:104
+msgid "New Plugin (Navasan Plus) Info"
+msgstr "اطلاعات افزونه جدید (نوسان پلاس)"
+
+#: includes/Admin/MigratorPage.php:107
+msgid "Enter the ID of the formula you created in the new plugin."
+msgstr "شناسه فرمولی که در افزونه جدید ایجاد کرده‌اید را وارد کنید."
+
+#: templates/currencies-table-advanced.php:76
+msgid "%s ago"
+msgstr "%s پیش"
+
+#: templates/currencies-table-advanced.php:86
+msgid "%1$s at %2$s"
+msgstr "%1$s در %2$s"
+
+#: templates/metaboxes/currency-chart.php:67
+msgid "Date"
+msgstr "تاریخ"
+
+#: templates/metaboxes/currency-chart.php:71
+msgid "Rate"
+msgstr "نرخ"
+
+#: templates/product-formula-components-advanced.php:99
+msgid "Summary"
+msgstr "خلاصه"
+
+#: templates/product-formula-components-advanced.php:107
+msgid "Components"
+msgstr "اجزا"
+
+#: templates/product-formula-components-advanced.php:110
+msgid "Name"
+msgstr "نام"
+
+#: templates/product-formula-components-advanced.php:111
+msgid "Expression"
+msgstr "عبارت"
+
+#: templates/product-formula-components-advanced.php:112
+msgid "Role"
+msgstr "نقش"
+
+#: templates/product-formula-components-advanced.php:122
+msgid "profit"
+msgstr "سود"
+
+#: templates/product-formula-components-advanced.php:122
+msgid "charge"
+msgstr "اجرت"
+
+#: templates/product-formula-components-advanced.php:88
+msgid "Section"
+msgstr "بخش"
+
+#: templates/metaboxes/order-rates.php:39
+msgid "Invoice Rate"
+msgstr "نرخ فاکتور"
+
+#: assets/js/admin.js:254
+msgid "No currencies found."
+msgstr "هیچ ارزی یافت نشد."
+
+#: assets/js/admin.js:260
+msgid "Add Currency Variable"
+msgstr "افزودن متغیر ارز"
+
+#: assets/js/admin.js:264
+msgid "— select —"
+msgstr "— انتخاب —"
+
+#: assets/js/admin.js:276
+msgid "Add"
+msgstr "افزودن"
+
+#: assets/js/admin.js:277
+msgid "Cancel"
+msgstr "لغو"

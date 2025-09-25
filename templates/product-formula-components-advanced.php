@@ -98,7 +98,7 @@ echo '</tr>';
 
 // Summary Section
 echo '<tr style="border-bottom: 1px solid #ddd;">';
-echo '<td style="padding: 8px; vertical-align: top; border-right: 1px solid #ddd; font-weight: bold; width: 120px;">Summary</td>';
+echo '<td style="padding: 8px; vertical-align: top; border-right: 1px solid #ddd; font-weight: bold; width: 120px;">' . esc_html__('Summary', 'mns-navasan-plus') . '</td>';
 echo '<td style="padding: 8px; font-size: 13px; line-height: 1.4;">';
 echo esc_html__('Profit: ', 'mns-navasan-plus') . wp_kses_post( wc_price($profit_base) ) . ' → ' . wp_kses_post( wc_price($profit_after) ) . '<br>';
 echo esc_html__('Charge: ', 'mns-navasan-plus') . wp_kses_post( wc_price($charge_base) ) . ' → ' . wp_kses_post( wc_price($charge_after) ) . '<br>';
@@ -108,14 +108,14 @@ echo '</td></tr>';
 
 // Components Header
 echo '<tr style="border-bottom: 1px solid #ddd;">';
-echo '<td style="padding: 8px; vertical-align: top; border-right: 1px solid #ddd; font-weight: bold;">Components</td>';
+echo '<td style="padding: 8px; vertical-align: top; border-right: 1px solid #ddd; font-weight: bold;">' . esc_html__('Components', 'mns-navasan-plus') . '</td>';
 echo '<td style="padding: 4px;">';
 echo '<table style="width: 100%; border-collapse: collapse; font-size: 13px;">';
 echo '<tr style="background: #f5f5f5;">';
-echo '<th style="padding: 4px; border: 1px solid #ddd; text-align: left;">Name</th>';
-echo '<th style="padding: 4px; border: 1px solid #ddd; text-align: left;">Expression</th>';
-echo '<th style="padding: 4px; border: 1px solid #ddd; text-align: left;">Role</th>';
-echo '<th style="padding: 4px; border: 1px solid #ddd; text-align: right;">Value</th>';
+echo '<th style="padding: 4px; border: 1px solid #ddd; text-align: left;">' . esc_html__('Name', 'mns-navasan-plus') . '</th>';
+echo '<th style="padding: 4px; border: 1px solid #ddd; text-align: left;">' . esc_html__('Expression', 'mns-navasan-plus') . '</th>';
+echo '<th style="padding: 4px; border: 1px solid #ddd; text-align: left;">' . esc_html__('Role', 'mns-navasan-plus') . '</th>';
+echo '<th style="padding: 4px; border: 1px solid #ddd; text-align: right;">' . esc_html__('Value', 'mns-navasan-plus') . '</th>';
 echo '</tr>';
 
 foreach ( $rows as $r ) {

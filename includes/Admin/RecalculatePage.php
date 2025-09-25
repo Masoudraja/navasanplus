@@ -31,7 +31,7 @@ final class RecalculatePage {
 
     public function render(): void {
         if ( ! current_user_can( 'manage_woocommerce' ) ) {
-            wp_die( 'Access Denied' );
+            wp_die( __( 'Access denied.', 'mns-navasan-plus' ) );
         }
 
         if ( isset( $_GET['mnsnp_done'] ) ) {
@@ -104,7 +104,7 @@ Success: Process complete. 2548 products updated. 0 products failed.</pre>
 
     public function handle(): void {
         if ( ! current_user_can( 'manage_woocommerce' ) ) {
-            wp_die( 'Access Denied' );
+            wp_die( __( 'Access denied.', 'mns-navasan-plus' ) );
         }
         check_admin_referer( 'mnsnp_recalculate_all', '_mnsnp_nonce' );
 

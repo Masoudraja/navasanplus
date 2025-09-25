@@ -103,7 +103,7 @@ final class CategoryDiscountFields {
     public function handle_clear_discounts(): void {
         $term_id = isset( $_GET['term_id'] ) ? absint( $_GET['term_id'] ) : 0;
         if ( ! $term_id || ! check_admin_referer( 'mnsnp_clear_cat_discounts_' . $term_id ) || ! current_user_can( 'edit_term', $term_id ) ) {
-            wp_die( 'Invalid request.' );
+            wp_die( __( 'Invalid request.', 'mns-navasan-plus' ) );
         }
         $empty_discounts = array_fill_keys( array_keys($this->fields), '' );
         $this->apply_and_save( $term_id, $empty_discounts );

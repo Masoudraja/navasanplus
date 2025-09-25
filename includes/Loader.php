@@ -37,6 +37,34 @@ final class Loader {
     public function load_textdomain(): void {
         $rel = dirname( plugin_basename( __FILE__ ), 2 ) . '/languages';
         load_plugin_textdomain( 'mns-navasan-plus', false, $rel );
+        
+        // Set up JavaScript translations for admin scripts
+        if ( is_admin() ) {
+            add_action( 'admin_enqueue_scripts', [ $this, 'setup_script_translations' ], 20 );
+        } else {
+            add_action( 'wp_enqueue_scripts', [ $this, 'setup_script_translations' ], 20 );
+        }
+    }
+
+    public function setup_script_translations(): void {
+        // Set up translations for registered scripts
+        $plugin_dir = dirname( __DIR__ );
+        $languages_path = $plugin_dir . '/languages';
+        
+        // Admin scripts
+        if ( wp_script_is( 'mns-navasan-plus-admin', 'enqueued' ) || wp_script_is( 'mns-navasan-plus-admin', 'registered' ) ) {
+            wp_set_script_translations( 'mns-navasan-plus-admin', 'mns-navasan-plus', $languages_path );
+        }
+        
+        // Public scripts
+        if ( wp_script_is( 'mns-navasan-plus-public', 'enqueued' ) || wp_script_is( 'mns-navasan-plus-public', 'registered' ) ) {
+            wp_set_script_translations( 'mns-navasan-plus-public', 'mns-navasan-plus', $languages_path );
+        }
+        
+        // Common scripts
+        if ( wp_script_is( 'mns-navasan-plus-common', 'enqueued' ) || wp_script_is( 'mns-navasan-plus-common', 'registered' ) ) {
+            wp_set_script_translations( 'mns-navasan-plus-common', 'mns-navasan-plus', $languages_path );
+        }
     }
 
     private function ver_for( string $abs_path ): string {

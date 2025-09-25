@@ -252,17 +252,23 @@ jQuery(function ($) {
   function openCurrencyPicker(onPick) {
     var currencies = getCurrencies();
     if (!currencies.length) {
-      alert("No currencies found.");
+      alert(wp.i18n.__("No currencies found.", "mns-navasan-plus"));
       return;
     }
     var html = `
   <div class="mnsnp-modal-backdrop" style="position:fixed;inset:0;background:rgba(0,0,0,.25);z-index:9999;"></div>
   <div class="mnsnp-modal" style="position:fixed;left:50%;top:30%;transform:translateX(-50%);background:#fff;border:1px solid #ccd0d4;border-radius:6px;box-shadow:0 10px 30px rgba(0,0,0,.2);width:420px;z-index:10000;">
-    <div style="padding:14px 16px;border-bottom:1px solid #eee;font-weight:600;">Add Currency Variable</div>
+    <div style="padding:14px 16px;border-bottom:1px solid #eee;font-weight:600;">${wp.i18n.__(
+      "Add Currency Variable",
+      "mns-navasan-plus"
+    )}</div>
     <div style="padding:16px;">
       <label style="display:block;margin-bottom:6px;">Select Currency</label>
       <select class="mnsnp-curr-select" style="width:100%;">
-        <option value="0">— select —</option>
+        <option value="0">${wp.i18n.__(
+          "— select —",
+          "mns-navasan-plus"
+        )}</option>
         ${currencies
           .map(
             (c) =>
@@ -274,8 +280,14 @@ jQuery(function ($) {
       </select>
     </div>
     <div style="padding:12px 16px;border-top:1px solid #eee;text-align:left;">
-      <button class="button button-primary mnsnp-curr-choose">Add</button>
-      <button class="button mnsnp-curr-cancel" style="margin-inline-start:6px;">Cancel</button>
+      <button class="button button-primary mnsnp-curr-choose">${wp.i18n.__(
+        "Add",
+        "mns-navasan-plus"
+      )}</button>
+      <button class="button mnsnp-curr-cancel" style="margin-inline-start:6px;">${wp.i18n.__(
+        "Cancel",
+        "mns-navasan-plus"
+      )}</button>
     </div>
   </div>`;
     var $wrap = $('<div class="mnsnp-curr-picker-wrap"></div>')

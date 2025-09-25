@@ -56,9 +56,9 @@ final class HealthCheckPage {
                                 <td><strong><?php echo esc_html( $row['label'] ); ?></strong></td>
                                 <td>
                                     <?php if ( ! empty( $row['ok'] ) ) : ?>
-                                        <span style="color:#1a7f37;font-weight:600">PASS</span>
+                                        <span style="color:#1a7f37;font-weight:600"><?php esc_html_e( 'PASS', 'mns-navasan-plus' ); ?></span>
                                     <?php else: ?>
-                                        <span style="color:#b00020;font-weight:600">FAIL</span>
+                                        <span style="color:#b00020;font-weight:600"><?php esc_html_e( 'FAIL', 'mns-navasan-plus' ); ?></span>
                                     <?php endif; ?>
                                 </td>
                                 <td><?php echo wp_kses_post( $row['msg'] ); ?></td>
