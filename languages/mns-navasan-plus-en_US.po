@@ -541,11 +541,11 @@ msgstr "Run the command:"
 msgid "Copy and run the following command completely in the terminal:"
 msgstr "Copy and run the following command completely in the terminal:"
 
-#: includes/Admin/MigratorPage.php:104
+#: includes/Admin/MigratorPage.php:104 includes/Admin/MigratorPage.php:89
 msgid "New Plugin (Navasan Plus) Info"
 msgstr "New Plugin (Navasan Plus) Info"
 
-#: includes/Admin/MigratorPage.php:107
+#: includes/Admin/MigratorPage.php:107 includes/Admin/MigratorPage.php:92
 msgid "Enter the ID of the formula you created in the new plugin."
 msgstr "Enter the ID of the formula you created in the new plugin."
 
@@ -696,3 +696,131 @@ msgid ""
 msgstr ""
 "Force plugin to use a specific language regardless of WordPress settings. "
 "Save and reload the page to see changes."
+
+#: includes/Admin/Settings.php:57
+msgid "Configure the default rate service and caching."
+msgstr "Configure the default rate service and caching."
+
+#: includes/Admin/Settings.php:75
+msgid "Enable periodic sync from the selected service."
+msgstr "Enable periodic sync from the selected service."
+
+#: includes/Admin/Settings.php:96
+msgid "Enter your Taban Gohar API username & password."
+msgstr "Enter your Taban Gohar API username & password."
+
+#: includes/Admin/Settings.php:196
+msgid "1–1440 minutes."
+msgstr "1–1440 minutes."
+
+#: includes/Admin/Settings.php:206
+msgid "Enable periodic sync via WP-Cron"
+msgstr "Enable periodic sync via WP-Cron"
+
+#: includes/Admin/Settings.php:214
+msgid "Last Sync"
+msgstr "Last Sync"
+
+#: includes/Admin/Settings.php:224
+msgid "How often to sync (minutes)."
+msgstr "How often to sync (minutes)."
+
+#: includes/Admin/Settings.php:292
+msgid "Test Connection (Taban Gohar)"
+msgstr "Test Connection (Taban Gohar)"
+
+#: includes/Admin/Settings.php:287
+msgid "Sync Rates Now"
+msgstr "Sync Rates Now"
+
+#: includes/Admin/MigratorPage.php:32
+msgid "You do not have permission."
+msgstr "You do not have permission."
+
+#: includes/Admin/MigratorPage.php:55
+msgid "Migrator class not available."
+msgstr "Migrator class not available."
+
+#: includes/Admin/MigratorPage.php:68
+msgid ""
+"This tool migrates specific variable values (like weight and fee) from the "
+"old Navasan plugin to the new Navasan Plus structure."
+msgstr ""
+"This tool migrates specific variable values (like weight and fee) from the "
+"old Navasan plugin to the new Navasan Plus structure."
+
+#: includes/Admin/MigratorPage.php:76
+msgid "Migration finished. See the report below."
+msgstr "Migration finished. See the report below."
+
+#: includes/Admin/MigratorPage.php:77
+msgid "Migration failed. See the report below."
+msgstr "Migration failed. See the report below."
+
+#: includes/Admin/MigratorPage.php:90
+msgid "New Formula ID"
+msgstr "New Formula ID"
+
+#: includes/Admin/MigratorPage.php:95
+msgid "New \"Weight\" Variable Code"
+msgstr "New \"Weight\" Variable Code"
+
+#: includes/Admin/MigratorPage.php:97
+msgid "Enter the variable code for \"weight\" from your new formula."
+msgstr "Enter the variable code for \"weight\" from your new formula."
+
+#: includes/Admin/MigratorPage.php:100
+msgid "New \"Fee\" Variable Code"
+msgstr "New \"Fee\" Variable Code"
+
+#: includes/Admin/MigratorPage.php:102
+msgid "Enter the variable code for \"fee\" from your new formula."
+msgstr "Enter the variable code for \"fee\" from your new formula."
+
+#: includes/Admin/MigratorPage.php:105
+msgid "Old Plugin (Navasan) Info"
+msgstr "Old Plugin (Navasan Plus) Info"
+
+#: includes/Admin/MigratorPage.php:106
+msgid "Old \"Weight\" Meta Key"
+msgstr "Old \"Weight\" Meta Key"
+
+#: includes/Admin/MigratorPage.php:108
+msgid "The exact meta_key for the old weight value in the wp_postmeta table."
+msgstr "The exact meta_key for the old weight value in the wp_postmeta table."
+
+#: includes/Admin/MigratorPage.php:111
+msgid "Old \"Fee\" Meta Key"
+msgstr "Old \"Fee\" Meta Key"
+
+#: includes/Admin/MigratorPage.php:113
+msgid "The exact meta_key for the old fee value in the wp_postmeta table."
+msgstr "The exact meta_key for the old fee value in the wp_postmeta table."
+
+#: includes/Admin/MigratorPage.php:119
+msgid "Run Migration"
+msgstr "Run Migration"
+
+#: includes/Admin/MigratorPage.php:127
+msgid "Products Scanned"
+msgstr "Products Scanned"
+
+#: includes/Admin/MigratorPage.php:128
+msgid "Products to be Updated"
+msgstr "Products to be Updated"
+
+#: includes/Admin/MigratorPage.php:129
+msgid "Found \"Weight\" Values"
+msgstr "Found \"Weight\" Values"
+
+#: includes/Admin/MigratorPage.php:130
+msgid "Found \"Fee\" Values"
+msgstr "Found \"Fee\" Values"
+
+#: includes/Admin/MigratorPage.php:133
+msgid "Item"
+msgstr "Item"
+
+#: includes/Admin/MigratorPage.php:134
+msgid "Count / Details"
+msgstr "Count / Details"

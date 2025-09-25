@@ -526,11 +526,11 @@ msgstr "اجرای دستور:"
 msgid "Copy and run the following command completely in the terminal:"
 msgstr "دستور زیر را کامل در ترمینال کپی و اجرا کنید:"
 
-#: includes/Admin/MigratorPage.php:104
+#: includes/Admin/MigratorPage.php:104 includes/Admin/MigratorPage.php:89
 msgid "New Plugin (Navasan Plus) Info"
 msgstr "اطلاعات افزونه جدید (نوسان پلاس)"
 
-#: includes/Admin/MigratorPage.php:107
+#: includes/Admin/MigratorPage.php:107 includes/Admin/MigratorPage.php:92
 msgid "Enter the ID of the formula you created in the new plugin."
 msgstr "شناسه فرمولی که در افزونه جدید ایجاد کرده‌اید را وارد کنید."
 
@@ -682,3 +682,131 @@ msgid ""
 msgstr ""
 "اجبار افزونه برای استفاده از زبان خاص صرف‌نظر از تنظیمات وردپرس. ذخیره کنید و "
 "صفحه را مجدداً بارگذاری کنید تا تغییرات را ببینید."
+
+#: includes/Admin/Settings.php:57
+msgid "Configure the default rate service and caching."
+msgstr "پیکربندی سرویس نرخ پیش‌فرض و کش‌سازی."
+
+#: includes/Admin/Settings.php:75
+msgid "Enable periodic sync from the selected service."
+msgstr "فعال‌سازی هم‌رسانی دوره‌ای از سرویس انتخاب شده."
+
+#: includes/Admin/Settings.php:96
+msgid "Enter your Taban Gohar API username & password."
+msgstr "نام کاربری و رمز عبور API تبان گهر خود را وارد کنید."
+
+#: includes/Admin/Settings.php:196
+msgid "1–1440 minutes."
+msgstr "۱–۱۴۴۰ دقیقه."
+
+#: includes/Admin/Settings.php:206
+msgid "Enable periodic sync via WP-Cron"
+msgstr "فعال‌سازی هم‌رسانی دوره‌ای از طریق WP-Cron"
+
+#: includes/Admin/Settings.php:214
+msgid "Last Sync"
+msgstr "آخرین هم‌رسانی"
+
+#: includes/Admin/Settings.php:224
+msgid "How often to sync (minutes)."
+msgstr "دفعات هم‌رسانی (دقیقه)."
+
+#: includes/Admin/Settings.php:292
+msgid "Test Connection (Taban Gohar)"
+msgstr "تست اتصال (تبان گهر)"
+
+#: includes/Admin/Settings.php:287
+msgid "Sync Rates Now"
+msgstr "هم‌رسانی نرخ‌ها اکنون"
+
+#: includes/Admin/MigratorPage.php:32
+msgid "You do not have permission."
+msgstr "شما اجازه دسترسی ندارید."
+
+#: includes/Admin/MigratorPage.php:55
+msgid "Migrator class not available."
+msgstr "کلاس مهاجر در دسترس نیست."
+
+#: includes/Admin/MigratorPage.php:68
+msgid ""
+"This tool migrates specific variable values (like weight and fee) from the "
+"old Navasan plugin to the new Navasan Plus structure."
+msgstr ""
+"این ابزار مقادیر متغیر خاص (مانند وزن و اجرت) را از افزونه قدیمی نوسان به "
+"ساختار جدید نوسان پلاس مهاجرت می‌دهد."
+
+#: includes/Admin/MigratorPage.php:76
+msgid "Migration finished. See the report below."
+msgstr "مهاجرت به پایان رسید. گزارش را در زیر مشاهده کنید."
+
+#: includes/Admin/MigratorPage.php:77
+msgid "Migration failed. See the report below."
+msgstr "مهاجرت ناموفق. گزارش را در زیر مشاهده کنید."
+
+#: includes/Admin/MigratorPage.php:90
+msgid "New Formula ID"
+msgstr "شناسه فرمول جدید"
+
+#: includes/Admin/MigratorPage.php:95
+msgid "New \"Weight\" Variable Code"
+msgstr "کد متغیر جدید \"وزن\""
+
+#: includes/Admin/MigratorPage.php:97
+msgid "Enter the variable code for \"weight\" from your new formula."
+msgstr "کد متغیر \"وزن\" را از فرمول جدید خود وارد کنید."
+
+#: includes/Admin/MigratorPage.php:100
+msgid "New \"Fee\" Variable Code"
+msgstr "کد متغیر جدید \"اجرت\""
+
+#: includes/Admin/MigratorPage.php:102
+msgid "Enter the variable code for \"fee\" from your new formula."
+msgstr "کد متغیر \"اجرت\" را از فرمول جدید خود وارد کنید."
+
+#: includes/Admin/MigratorPage.php:105
+msgid "Old Plugin (Navasan) Info"
+msgstr "اطلاعات افزونه قدیمی (نوسان)"
+
+#: includes/Admin/MigratorPage.php:106
+msgid "Old \"Weight\" Meta Key"
+msgstr "کلید متا قدیمی \"وزن\""
+
+#: includes/Admin/MigratorPage.php:108
+msgid "The exact meta_key for the old weight value in the wp_postmeta table."
+msgstr "کلید دقیق meta_key برای مقدار وزن قدیمی در جدول wp_postmeta."
+
+#: includes/Admin/MigratorPage.php:111
+msgid "Old \"Fee\" Meta Key"
+msgstr "کلید متا قدیمی \"اجرت\""
+
+#: includes/Admin/MigratorPage.php:113
+msgid "The exact meta_key for the old fee value in the wp_postmeta table."
+msgstr "کلید دقیق meta_key برای مقدار اجرت قدیمی در جدول wp_postmeta."
+
+#: includes/Admin/MigratorPage.php:119
+msgid "Run Migration"
+msgstr "اجرای مهاجرت"
+
+#: includes/Admin/MigratorPage.php:127
+msgid "Products Scanned"
+msgstr "محصولات بررسی شده"
+
+#: includes/Admin/MigratorPage.php:128
+msgid "Products to be Updated"
+msgstr "محصولات برای به‌روزرسانی"
+
+#: includes/Admin/MigratorPage.php:129
+msgid "Found \"Weight\" Values"
+msgstr "مقادیر \"وزن\" یافت شده"
+
+#: includes/Admin/MigratorPage.php:130
+msgid "Found \"Fee\" Values"
+msgstr "مقادیر \"اجرت\" یافت شده"
+
+#: includes/Admin/MigratorPage.php:133
+msgid "Item"
+msgstr "آیتم"
+
+#: includes/Admin/MigratorPage.php:134
+msgid "Count / Details"
+msgstr "تعداد / جزئیات"
