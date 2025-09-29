@@ -14,12 +14,12 @@ use MNS\NavasanPlus\Helpers;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-// اگر در فرانت نمایش می‌دهی، استایل عمومی را enqueue کن (در ادمین معمولاً لازم نیست)
+// If displaying on frontend, enqueue public styles (usually not needed in admin)
 if ( ! is_admin() ) {
     wp_enqueue_style( 'mns-navasan-plus-public', Helpers::plugin_url( 'assets/css/public.css' ), [], '1.0.0' );
 }
 
-// امن‌سازی ورودی‌ها
+// Sanitize inputs
 $display = is_array( $atts['display'] ?? null )
     ? array_map( 'trim', $atts['display'] )
     : array_filter( array_map( 'trim', explode( ',', $atts['display'] ?? '' ) ) );
@@ -31,15 +31,15 @@ $all_columns = [
     'total' => __( 'Total',    'mns-navasan-plus' ),
 ];
 
-// فقط ستون‌های خواسته‌شده
+// Only requested columns
 $columns = empty( $display )
-    ? [ 'name' => $all_columns['name'], 'total' => $all_columns['total'] ] // پیش‌فرض
+    ? [ 'name' => $all_columns['name'], 'total' => $all_columns['total'] ] // Default
     : array_intersect_key( $all_columns, array_flip( $display ) );
 
-// مقدار ورودی پایه
+// Base input value
 $input_value = isset( $atts['value'] ) ? (float) $atts['value'] : null;
 
-// گارد ایمنی روی ورودی‌ها
+// Safety guard for inputs
 if ( ! is_object( $formula ) || ! method_exists( $formula, 'get_variables' ) ) {
     return;
 }
@@ -47,11 +47,11 @@ if ( ! is_object( $product ) || ! method_exists( $product, 'get_formula_variable
     return;
 }
 
-// یک‌بار متغیرها را به‌صورت آرایهٔ کُد=>مقدار بگیر
-$vars_map = $product->get_formula_variables( $input_value ); // مثلاً ['gold_rate'=>123.45,...]
+// Get variables once as code=>value array
+$vars_map = $product->get_formula_variables( $input_value ); // e.g. ['gold_rate'=>123.45,...]
 $vars_map = is_array( $vars_map ) ? $vars_map : [];
 
-$variables = $formula->get_variables(); // آرایه‌ای از FormulaVariable
+$variables = $formula->get_variables(); // Array of FormulaVariable
 ?>
 
 <table class="widefat mns-formula-values-table">
@@ -64,14 +64,14 @@ $variables = $formula->get_variables(); // آرایه‌ای از FormulaVariabl
     </thead>
     <tbody>
         <?php foreach ( $variables as $variable ) :
-            // محاسبهٔ مقادیر
+            // Calculate values
             $code        = method_exists( $variable, 'get_code' ) ? $variable->get_code() : '';
             $unit        = method_exists( $variable, 'get_unit' ) ? (float) $variable->get_unit() : 1.0;
             $unit_symbol = method_exists( $variable, 'get_unit_symbol' ) ? (string) $variable->get_unit_symbol() : '';
             $def_value   = method_exists( $variable, 'get_value' ) ? (float) $variable->get_value() : 0.0;
             $val_symbol  = method_exists( $variable, 'get_value_symbol' ) ? (string) $variable->get_value_symbol() : '';
 
-            // مقدار ورودی برای این متغیر از نقشه (fallback به مقدار پیش‌فرض خود متغیر)
+            // Input value for this Variable from map (fallback to Variable's default value)
             $val = array_key_exists( $code, $vars_map ) ? (float) $vars_map[ $code ] : $def_value;
 
             $total = $unit * $val;

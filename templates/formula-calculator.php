@@ -11,12 +11,12 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-// از هندل‌های رجیستر شده در Loader استفاده کن
+// Use registered handles in Loader
 wp_enqueue_style( 'mns-navasan-plus-public' );
 wp_enqueue_script( 'mns-navasan-plus-formula-parser' );
 wp_enqueue_script( 'mns-navasan-plus-public' );
 
-// یک شناسه یکتا برای این نمونه
+// A unique identifier for this instance
 $uid = 'mns-formula-calculator-' . wp_unique_id();
 ?>
 <div class="mns-formula-calculator" id="<?php echo esc_attr( $uid ); ?>"
@@ -58,11 +58,11 @@ $uid = 'mns-formula-calculator-' . wp_unique_id();
 
   function evaluateWithFallback(expr, vars) {
     const FP = window.FormulaParser || {};
-    // 1) API تابعی: FormulaParser.evaluate(expr, vars)
+    // 1) API Function: FormulaParser.evaluate(expr, vars)
     if (typeof FP.evaluate === 'function') {
       return FP.evaluate(expr, vars);
     }
-    // 2) API کلاسی: new FormulaParser.Parser().evaluate(expr, vars)
+    // 2) Class API: new FormulaParser.Parser().evaluate(expr, vars)
     if (typeof FP.Parser === 'function') {
       try {
         const p = new FP.Parser();
@@ -75,7 +75,7 @@ $uid = 'mns-formula-calculator-' . wp_unique_id();
   }
 
   btn.addEventListener('click', () => {
-    // جمع‌آوری مقادیر متغیرها
+    // Collect variable values
     const vars = {};
     inputs.forEach(input => {
       const code = input.dataset.code;
@@ -91,7 +91,7 @@ $uid = 'mns-formula-calculator-' . wp_unique_id();
       return;
     }
 
-    // نمایش خوش‌فرم (محلی)
+    // Display خوش‌فرم (محلی)
     resultEl.textContent = price.toLocaleString(undefined, {
       maximumFractionDigits: 4
     });

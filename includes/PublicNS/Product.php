@@ -2,8 +2,8 @@
 /**
  * PublicNS\Product
  *
- * یک لایه‌ی نازک روی WC_Product که متادیتاهای «نوسان پلاس» را می‌خوانَد
- * و چند متد کمکی برای استفاده در قالب‌ها (templates) فراهم می‌کند.
+ * A thin layer over WC_Product that reads "Navasan Plus" metadata
+ * and provides several helper methods for use in templates.
  *
  * File: includes/PublicNS/Product.php
  */
@@ -25,40 +25,40 @@ class Product {
         $this->wc = $product;
     }
 
-    /** دسترسی به آبجکت ووکامرس */
+    /** Access to WooCommerce object */
     public function get_wc(): \WC_Product {
         return $this->wc;
     }
 
-    /** شناسه محصول */
+    /** ID Product */
     public function get_id(): int {
         return (int) $this->wc->get_id();
     }
 
-    /** نام محصول */
+    /** Name Product */
     public function get_name(): string {
         return (string) $this->wc->get_name();
     }
 
-    /** آیا قیمت‌گذاری بر پایه‌ی نرخ فعال است؟ */
+    /** Is rate-based pricing active? */
     public function is_rate_based(): bool {
         return (bool) $this->get_meta( '_mns_navasan_plus_active', false );
     }
 
-    /** نوع وابستگی (simple|advanced) */
+    /** Dependency type (simple|advanced) */
     public function get_dependence_type(): string {
         $type = (string) $this->get_meta( '_mns_navasan_plus_dependence_type', 'simple' );
         return in_array( $type, [ 'simple', 'advanced' ], true ) ? $type : 'simple';
     }
 
-    /** شناسه ارز پایه‌ی محصول (اگر تعیین شده باشد) */
+    /** Base currency ID of product (if set) */
     public function get_currency_id(): int {
         return (int) $this->get_meta( '_mns_navasan_plus_currency_id', 0 );
     }
 
     /**
-     * لیست ارزهای مرتبط با محصول
-     * فعلاً فقط یک ارزِ پایه را برمی‌گردانیم (در صورت نیاز بعداً چندارزی می‌شود)
+     * List of currencies related to product
+     * Currently we only return one base currency (multi-currency can be added later if needed)
      *
      * @return Currency[]
      */
@@ -73,24 +73,24 @@ class Product {
         return [];
     }
 
-    /** نرخ جاری محصول (نرخ ارز پایه یا ۰) */
+    /** Current product rate (base currency rate or 0) */
     public function get_rate(): float {
         $currs = $this->get_currencies();
         return ! empty( $currs ) ? (float) $currs[0]->get_rate() : 0.0;
     }
 
-    /** نوع سود (percent|fixed) */
+    /** Profit type (percent|fixed) */
     public function get_profit_type(): string {
         $t = (string) $this->get_meta( '_mns_navasan_plus_profit_type', 'percent' );
         return in_array( $t, [ 'percent', 'fixed' ], true ) ? $t : 'percent';
     }
 
-    /** مقدار سود */
+    /** Profit value */
     public function get_profit_value(): float {
         return (float) $this->get_meta( '_mns_navasan_plus_profit_value', 0 );
     }
 
-    /** تنظیمات گردکردن (type|value|side) با درنظرگرفتن تنظیمات سراسری به‌عنوان پیش‌فرض */
+    /** Rounding settings (type|value|side) considering global settings as default */
     public function get_rounding(): array {
         $global = class_exists( Options::class ) ? Options::get_global_rounding() : [
             'type'  => 'zero',
@@ -108,7 +108,7 @@ class Product {
         ];
     }
 
-    /** سقف و کف قیمت (درصورت تنظیم) */
+    /** Price ceiling and floor (if set) */
     public function get_price_limits(): array {
         return [
             'ceil'  => (float) $this->get_meta( '_mns_navasan_plus_ceil_price',  0 ),
@@ -117,15 +117,15 @@ class Product {
     }
 
     // ---------------------------------------------------------------------
-    // فرمول‌ها (advanced)
+    // Formulas (advanced)
     // ---------------------------------------------------------------------
 
-    /** شناسه‌ی فرمول انتخاب‌شده برای این محصول */
+    /** Selected formula ID for this product */
     public function get_formula_id(): int {
         return (int) $this->get_meta( '_mns_navasan_plus_formula_id', 0 );
     }
 
-    /** آبجکت فرمولِ انتخاب‌شده (در صورت موجود بودن کلاس Formula) */
+    /** Selected formula object (if Formula class is available) */
     public function get_formula(): ?Formula {
         $fid = $this->get_formula_id();
         if ( $fid > 0 && class_exists( __NAMESPACE__ . '\\Formula' ) ) {
@@ -138,15 +138,15 @@ class Product {
     }
 
     /**
-     * مقدار یک متغیرِ فرمول برای این محصول
-     * - اول از متای تجمیع‌شده‌ی جدید: _mns_navasan_plus_formula_variables[ fid ][ code ]['regular']
-     * - اگر نبود، فالبک به کلید قدیمی: _mns_navasan_plus_formula_{fid}_{code}_regular
-     * - اگر باز هم نبود و $fallback_value پاس داده شده، همان
-     * - در غیر این صورت مقدار پیش‌فرض خودِ متغیر
+     * Value of a formula variable for this product
+     * - First from new aggregated meta: _mns_navasan_plus_formula_variables[ fid ][ code ]['regular']
+     * - If not found, fallback to old key: _mns_navasan_plus_formula_{fid}_{code}_regular
+     * - If still not found and $fallback_value is passed, use that
+     * - Otherwise use variable's default value
      *
-     * @param object     $variable       شیء متغیر (FormulaVariable) با get_code()/get_value()
+     * @param object     $variable       شیء Variable (FormulaVariable) با get_code()/get_value()
      * @param float|null $fallback_value
-     * @param int|null   $formula_id     (اختیاری) اجبار به یک فرمول خاص
+     * @param int|null   $formula_id     (optional) force to a specific formula
      * @return float
      */
     public function get_formula_variable( $variable, ?float $fallback_value = null, ?int $formula_id = null ): float {
@@ -156,7 +156,7 @@ class Product {
         $fid  = $formula_id ?: $this->get_formula_id();
         $code = (string) $variable->get_code();
 
-        // 1) متای تجمیع‌شدهٔ جدید
+        // 1) New aggregated meta
         $map = $this->get_meta( '_mns_navasan_plus_formula_variables', null );
         if ( is_array( $map )
             && isset( $map[ $fid ], $map[ $fid ][ $code ], $map[ $fid ][ $code ]['regular'] )
@@ -165,14 +165,14 @@ class Product {
             return (float) $map[ $fid ][ $code ]['regular'];
         }
 
-        // 2) فالبک: کلیدهای جداگانهٔ قدیمی
+        // 2) Fallback: old separate keys
         $legacy_key = sprintf( '_mns_navasan_plus_formula_%d_%s_regular', $fid, $code );
         $legacy_val = $this->get_meta( $legacy_key, null );
         if ( $legacy_val !== null && $legacy_val !== '' ) {
             return (float) $legacy_val;
         }
 
-        // 3) فالبک به مقدار ورودی/پیش‌فرض
+        // 3) Fallback to input/default value
         if ( $fallback_value !== null ) {
             return (float) $fallback_value;
         }
@@ -183,10 +183,10 @@ class Product {
     }
 
     /**
-     * آرایه‌ی انجمنی متغیرها برای اجرای اجزاء/کامپوننت‌های فرمول
-     * خروجی: ['code' => value, ...]
+     * Associative array of variables for executing formula parts/components
+     * Output: ['code' => value, ...]
      *
-     * @param float|null $fallback_value اگر ورودی پایه‌ای داری (مثلاً مقدار وزن) پاس بده
+     * @param float|null $fallback_value if you have a base input (e.g. weight value) pass it
      * @return array
      */
     public function get_formula_variables( ?float $fallback_value = null ): array {
@@ -203,8 +203,8 @@ class Product {
     }
 
     /**
-     * لیست اجزاء (Components) فرمول مرتبط با این محصول (درصورت وجود کلاس/متد)
-     * خروجی آرایه‌ای از آبجکت‌هایی که حداقل متدهای get_name(), get_symbol(), execute($vars) دارند.
+     * List of formula components related to this product (if class/method exists)
+     * Output: array of objects that have at least get_name(), get_symbol(), execute($vars) methods.
      */
     public function get_formula_components(): array {
         $formula = $this->get_formula();
@@ -216,13 +216,13 @@ class Product {
     }
 
     // ---------------------------------------------------------------------
-    // محاسبه قیمت کمکی (ساده)
+    // Price calculation helpers (simple)
     // ---------------------------------------------------------------------
 
     /**
-     * محاسبه‌ی قیمت بر اساس نرخ + سود + گردکردن (+ اعمال سقف/کف در صورت وجود)
+     * Price calculation based on rate + profit + rounding (+ applying ceiling/floor if exists)
      *
-     * @param float $base_number  عدد مبنا (مثلاً وزن/مقدار)
+     * @param float $base_number  base number (e.g. weight/quantity)
      * @return float
      */
     public function compute_rate_price( float $base_number ): float {
@@ -232,7 +232,7 @@ class Product {
         $round        = $this->get_rounding();   // ['type','value','side']
         $limits       = $this->get_price_limits();
 
-        // 1) اعمال سود
+        // 1) Apply profit
         if ( $profit_type === 'percent' ) {
             $factor = max( -100.0, (float) $profit_value ) / 100.0 + 1.0;
             $price  = $base_number * $rate * $factor;
@@ -240,10 +240,10 @@ class Product {
             $price = $base_number * $rate + (float) $profit_value;
         }
 
-        // 2) گرد کردن
+        // 2) Rounding
         $price = $this->round_number( $price, (float) $round['value'], (string) $round['type'], (string) $round['side'] );
 
-        // 3) اعمال سقف/کف
+        // 3) Apply ceiling/floor
         if ( $limits['ceil'] > 0 && $price > $limits['ceil'] ) {
             $price = (float) $limits['ceil'];
         }
@@ -254,7 +254,7 @@ class Product {
         return max( 0.0, (float) $price );
     }
 
-    /** گردکردن با گام (step) و نوع (none|zero|integer) و جهت (close|up|down) */
+    /** Rounding with step and type (none|zero|integer) and direction (close|up|down) */
     protected function round_number( float $number, float $step = 0, string $type = 'zero', string $side = 'close' ): float {
         if ( $type === 'none' || $step <= 0 ) {
             return $number;
@@ -277,7 +277,7 @@ class Product {
     // Internals
     // ---------------------------------------------------------------------
 
-    /** خواندن متای محصول (wrapper روی WC_Product::get_meta) */
+    /** Read product meta (wrapper over WC_Product::get_meta) */
     protected function get_meta( string $key, $default = null ) {
         $val = $this->wc->get_meta( $key, true );
         return ( $val === '' || $val === null ) ? $default : $val;

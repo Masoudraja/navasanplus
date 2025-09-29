@@ -23,14 +23,14 @@ $over      = (array) ($overAll[$fid] ?? []);
 
 if ( empty($comps) ) { echo '<p class="description">'.esc_html__('No components defined for this formula.', 'mns-navasan-plus').'</p>'; return; }
 
-// نرخ ارز
+// Rate Currency
 $rate = function( int $cid ) use ( $db ) : float {
     if ( $cid <= 0 ) return 0.0;
     $r = get_post_meta( $cid, $db->full_meta_key('currency_value'), true );
     return ($r === '' ? 0.0 : (float)$r);
 };
 
-// 1) Map متغیرها برای موتور (unit×value برای currency؛ برای custom همان value)
+// 1) Map Variables for engine (unit×value for currency; for custom use same value)
 $vars_for_engine = [];
 foreach ( $vars_meta as $code => $row ) {
     $code = sanitize_key($code);
@@ -50,7 +50,7 @@ foreach ( $vars_meta as $code => $row ) {
     }
 }
 
-// 2) ارزیابی کامپوننت‌ها
+// 2) Evaluate Components
 $engine = new FormulaEngine();
 $rows = [];
 $profit_base = 0.0; $charge_base = 0.0; $other_sum = 0.0;
@@ -74,7 +74,7 @@ foreach ( $comps as $c ) {
     $rows[] = [ 'name'=>$name, 'exp'=>$exp, 'val'=>$val, 'symbol'=>$sym, 'role'=>$role ];
 }
 
-// 3) اعمال تخفیف روی مبالغ سود/اجرت
+// 3) Apply discount on profit/charge amounts
 $profit_after = $profit_base;
 $charge_after = $charge_base;
 if ( class_exists(DiscountService::class) ) {
@@ -83,7 +83,7 @@ if ( class_exists(DiscountService::class) ) {
 
 $final = (float)$other_sum + (float)$profit_after + (float)$charge_after;
 
-// صفر اعشار برای تومان
+// Zero decimals برای Toman
 $dec_filter = function(){ return 0; };
 add_filter( 'wc_get_price_decimals', $dec_filter, 1000 );
 

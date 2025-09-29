@@ -69,7 +69,7 @@ final class DiscountDisplay {
             if ( $discount_amount > 0.001 ) {
                 $discount_html = wc_price( $discount_amount );
                 return '<div class="mnsnp-item-discount-notice" style="font-size: 0.9em; color: #28a745; font-weight: bold; width: 100%;">' .
-                       sprintf( esc_html__( 'سود شما: %s', 'mns-navasan-plus' ), wp_kses_post( $discount_html ) ) .
+                       sprintf( esc_html__( 'profit شما: %s', 'mns-navasan-plus' ), wp_kses_post( $discount_html ) ) .
                        '</div>';
             }
         }

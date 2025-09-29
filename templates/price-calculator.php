@@ -7,14 +7,14 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-// از هندل‌های رجیسترشده استفاده می‌کنیم تا Loader بین .min/.js سوییچ کند
+// Using registered handles so Loader can switch between .min/.js
 wp_enqueue_style( 'mns-navasan-plus-public' );
 wp_enqueue_script( 'mns-navasan-plus-public' );
 
-// شناسه یکتا
+// Unique identifier
 $uid = 'mns-price-calculator-' . wp_unique_id();
 
-// اطمینان از آرایه بودن ورودی
+// Ensure input is array
 $currencies = is_array( $currencies ) ? $currencies : [];
 $has_items  = ! empty( $currencies );
 ?>
@@ -99,12 +99,12 @@ $has_items  = ! empty( $currencies );
       const r = Number.isFinite(rate) ? rate : 0;
 
       const converted = a * r;
-      // نمایش locale-aware با 2 رقم اعشار
+      // Display locale-aware with 2 decimal places
       const formatted = Number(converted).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
       $result.text( formatted + (sym ? (' ' + sym) : '') );
     }
 
-    // رویدادها: دکمه + تغییر مقدار/ارز → محاسبهٔ خودکار
+    // Events: button + value/currency change → auto calculation
     $calc.on('click', '.mns-price-calculator-btn', function(e){
       e.preventDefault();
       recalc();
@@ -112,7 +112,7 @@ $has_items  = ! empty( $currencies );
     $amount.on('input', recalc);
     $currency.on('change', recalc);
 
-    // محاسبهٔ اولیه
+    // Calculationٔ Firstیه
     recalc();
   });
 })(jQuery);

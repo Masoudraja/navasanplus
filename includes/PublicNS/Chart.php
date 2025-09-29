@@ -44,7 +44,7 @@ class Chart {
             $i++;
         }
 
-        // تضمین وجود آخرین نقطه
+        // Ensure last point exists
         if ( $last_ts !== null && ! array_key_exists( $last_ts, $out ) ) {
             $out[ $last_ts ] = $history[ $last_ts ];
         }
@@ -155,7 +155,7 @@ class Chart {
             ],
         ];
 
-        // فیلتر برای شخصی‌سازی
+        // Filter for customization
         return apply_filters( 'mnsnp/chart/prepared', $prepared, $currency, $args );
     }
 
@@ -181,7 +181,7 @@ class Chart {
                     'ticks'   => [ 'beginAtZero' => false ],
                 ],
             ],
-            // برای دیتاست‌های پرنقطه کمی نرم‌تر دیده شود
+            // For high-density datasets to appear smoother
             'elements' => [
                 'line'   => [ 'borderJoinStyle' => 'round' ],
                 'point'  => [ 'radius' => 0 ],
@@ -199,13 +199,13 @@ class Chart {
             'options' => $final_options,
         ];
 
-        // فیلتر برای شخصی‌سازی نهایی
+        // Filter for final customization
         return apply_filters( 'mnsnp/chart/config', $config, $prepared, $options );
     }
 
     protected static function hex_to_rgba( string $hex, float $alpha = 1.0 ): string {
         $hex = ltrim( trim( $hex ), '#' );
-        // فال‌بک ایمن
+        // Safe fallback
         if ( ! preg_match( '/^([0-9a-f]{3}|[0-9a-f]{6})$/i', $hex ) ) {
             $hex = '0073aa';
         }

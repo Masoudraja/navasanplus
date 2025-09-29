@@ -1,7 +1,7 @@
 <?php
 /**
  * Formula Components Meta-box (admin)
- * ذخیره با کلیدهای: name, text, symbol, role
+ * Save with keys: name, text, symbol, role
  */
 if ( ! defined( 'ABSPATH' ) ) exit;
 

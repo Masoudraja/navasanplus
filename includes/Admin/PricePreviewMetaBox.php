@@ -51,7 +51,7 @@ final class PricePreviewMetaBox {
     }
 
     public function render( \WP_Post $post ): void {
-        // صفر اعشار
+        // Zero decimals
         $dec_filter = static function(){ return 0; };
         add_filter( 'wc_get_price_decimals', $dec_filter, 1000 );
 
@@ -133,14 +133,14 @@ final class PricePreviewMetaBox {
             action: 'mnsnp_preview_price',
             nonce:  MNSNP_Preview.nonce,
             product_id: $('#post_ID').val(),
-            discounts: getCurrentDiscounts() // ⬅️ مهم: تخفیف‌های ذخیره‌نشده
+            discounts: getCurrentDiscounts() // ⬅️ Important: unsaved discounts
             }).done(function(res){
             if (res && res.success && res.data){
                 if (typeof res.data.price_html   !== 'undefined') $('#mnsnp-final-val').html(res.data.price_html);
                 if (typeof res.data.profit_html  !== 'undefined') $('#mnsnp-profit-val').html(res.data.profit_html);
                 if (typeof res.data.charge_html  !== 'undefined') $('#mnsnp-charge-val').html(res.data.charge_html);
 
-                // این خروجی‌ها برای پر کردن فیلدهای قیمت ووکامرس
+                // These outputs are for filling WooCommerce price fields
                 if (typeof res.data.regular_raw !== 'undefined') $('#_regular_price').val(res.data.regular_raw).trigger('change');
                 if (typeof res.data.sale_raw    !== 'undefined') $('#_sale_price').val(res.data.sale_raw).trigger('change');
 
@@ -153,12 +153,12 @@ final class PricePreviewMetaBox {
             }).always(function(){ $btn.prop('disabled', false); });
         }
 
-        // محاسبه مجدد
+        // Recalculate
         $(document).on('click', '#mnsnp-recalc', doRecalc);
-        // تغییرات باکس تخفیف → محاسبه‌ی خودکار
+        // Discount box changes → auto calculation
         $(document).on('input change', 'input[name^="mnsnp_discount["]', debounce(doRecalc, 400));
 
-        // اعمال به قیمت‌های محصول (متای ووکامرس)
+        // Apply to product prices (WooCommerce meta)
         $(document).on('click', '#mnsnp-apply-to-prices', function(){
             var $btn = $(this), $msg = $('#mnsnp-preview-msg');
             $btn.prop('disabled', true);
@@ -168,10 +168,10 @@ final class PricePreviewMetaBox {
             action: 'mnsnp_apply_price',
             nonce:  MNSNP_Preview.applyNonce,
             product_id: $('#post_ID').val(),
-            discounts: getCurrentDiscounts() // ⬅️ همان تخفیف‌های فعلی (ذخیره‌نشده)
+            discounts: getCurrentDiscounts() // ⬅️ Same current discounts (unsaved)
             }).done(function(res){
             if (res && res.success && res.data){
-                // فیلدهای ووکامرس را پر کن
+                // Fill WooCommerce fields
                 if (typeof res.data.regular_raw !== 'undefined') $('#_regular_price').val(res.data.regular_raw).trigger('change');
                 if (typeof res.data.sale_raw    !== 'undefined') $('#_sale_price').val(res.data.sale_raw).trigger('change');
                 $msg.text(MNSNP_Preview.i18n.applied);
@@ -194,11 +194,11 @@ final class PricePreviewMetaBox {
         $pid = isset($_POST['product_id']) ? absint( $_POST['product_id'] ) : 0;
         if ( $pid <= 0 ) wp_send_json_error( __( 'Invalid product id.', 'mns-navasan-plus' ) );
 
-        // صفر اعشار برای قیمت‌ها در پیش‌نمایش
+        // Zero decimals for prices in preview
         $dec_filter = function(){ return 0; };
         add_filter( 'wc_get_price_decimals', $dec_filter, 1000 );
 
-        // تخفیف‌های موقّت (از فرمِ باز)
+        // Temporary discounts (from open form)
         $in = $_POST['discounts'] ?? [];
         if ( is_string($in) ) {
             $tmp = json_decode( wp_unslash($in), true );
@@ -214,7 +214,7 @@ final class PricePreviewMetaBox {
             ];
         }
 
-        // فیلتر موقّت: تا وقتی این درخواست اجرا می‌شود، apply() همین override را استفاده کند
+        // Filter موقّت: تا وقتی این Request اجرا می‌شود، apply() همین override را استفاده کند
         $pid_local = $pid;
         $override_local = $override;
         $ov_filter = function($v, $pid_arg) use ($pid_local, $override_local) {
@@ -249,7 +249,7 @@ final class PricePreviewMetaBox {
                 $pr_i = (int) floor($profit);
                 $ch_i = (int) floor($charge);
 
-                $has_discount = ($pb_i > $p_i); // اگر قبل از تخفیف > بعد از تخفیف باشد
+                $has_discount = ($pb_i > $p_i); // اگر قبل از تخفیف > After discount باشد
 
                 $out = [
                     'price'       => $p_i,
@@ -320,7 +320,7 @@ final class PricePreviewMetaBox {
             ];
         }
 
-        // فیلتر موقت برای DiscountService
+        // Filter موقت برای DiscountService
         $pid_local = $pid;
         $override_local = $override;
         $ov_filter = function($v, $pid_arg) use ($pid_local, $override_local) {
@@ -342,7 +342,7 @@ final class PricePreviewMetaBox {
 
             $has_discount = ($pb_i > $p_i);
 
-            // ذخیره در متای ووکامرس
+            // Save در متای ووکامرس
             $regular_i = $has_discount ? $pb_i : $p_i;
             $sale_i    = $has_discount ? $p_i  : 0;
 
@@ -352,7 +352,7 @@ final class PricePreviewMetaBox {
 
             if ( function_exists('wc_delete_product_transients') ) wc_delete_product_transients( $pid );
 
-            // خروجی UI
+            // Output UI
             $dec_filter = static function(){ return 0; };
             add_filter( 'wc_get_price_decimals', $dec_filter, 1000 );
             $out = [

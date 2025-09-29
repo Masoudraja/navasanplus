@@ -9,24 +9,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Admin Core: بارگذاری استایل/اسکریپت ادمین + بوت مؤلفه‌های ادمین
+ * Admin Core: Loading admin styles/scripts + booting admin components
  */
 final class Core {
     /** @var Core|null */
     private static $_instance = null;
 
     private function __construct() {
-        // اسکریپت/استایل بخش ادمین
+        // Scripts/styles for admin section
         add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_assets' ] );
-        // نوتیس بازبینی/امتیاز
+        // Review/rating notice
         add_action( 'admin_notices',        [ $this, 'review_notice' ] );
 
-        // ـ بوت تنظیمات
+        // - Boot settings
         if ( class_exists( __NAMESPACE__ . '\\Settings' ) && method_exists( Settings::class, 'instance' ) ) {
-            Settings::instance(); // معمولاً خودش هوک‌ها را رجیستر می‌کند
+            Settings::instance(); // Usually registers its own hooks
         }
 
-        // ـ ثبت CPTها (اگر init استاتیک ندارد، run نمونه‌ای را صدا بزن)
+        // - Register CPTs (if no static init, call an instance run)
         if ( class_exists( __NAMESPACE__ . '\\PostTypes' ) ) {
             if ( method_exists( PostTypes::class, 'init' ) ) {
                 PostTypes::init();
@@ -35,17 +35,17 @@ final class Core {
             }
         }
 
-        // ـ متاباکس‌ها (کلاس شما متد run دارد)
+        // - Meta boxes (your class has run method)
         if ( class_exists( __NAMESPACE__ . '\\MetaBoxes' ) ) {
             ( new MetaBoxes() )->run();
         }
 
-        // ـ ادغام ووکامرس (کلاس شما متد run دارد)
+        // - WooCommerce integration (your class has run method)
         if ( class_exists( __NAMESPACE__ . '\\WooCommerce' ) ) {
             ( new WooCommerce() )->run();
         }
 
-        // توجه: Widgets نداریم، پس چیزی صدا نمی‌زنیم
+        // Note: We don't have Widgets, so we don't call anything
     }
 
     /** @return Core */
@@ -77,7 +77,7 @@ final class Core {
             return;
         }
 
-        // اگر قبلاً بسته شده
+        // If already dismissed
         if ( DB::instance()->read_user_meta( get_current_user_id(), 'rating_notice_info_demiss', false ) ) {
             return;
         }
@@ -94,7 +94,7 @@ final class Core {
             return;
         }
 
-        // ستاره‌ها
+        // Stars
         $stars = str_repeat( '<i class="dashicons dashicons-star-filled" style="color:#fea000;"></i>', 5 );
         $nonce = wp_create_nonce( 'mns_navasan_plus_rating_notice_nonce' );
         $message = sprintf(

@@ -2,15 +2,15 @@
 /**
  * Services\FormulaEngine
  *
- * موتور سبک و امن برای ارزیابی عبارات ریاضی با متغیرها.
- * پشتیبانی از:
- *  - عملگرها: + - * / % ^  (توان راست‌چین)، منفیِ یک‌جمله‌ای (u-)
- *  - پرانتز و جداکنندهٔ آرگومان (,)
- *  - متغیرها: [A-Za-z_][A-Za-z0-9_]*  (سازگار با [VAR] هم هست)
- *  - توابع: min(...), max(...), abs(x), ceil(x), floor(x), round(x[, precision])
- *  - shorthand درصد: 5% ⇒ (5/100)
+ * Lightweight and secure engine for evaluating mathematical expressions with variables.
+ * Support for:
+ *  - Operators: + - * / % ^  (right-associative power), unary negative (u-)
+ *  - Parentheses and argument separator (,)
+ *  - Variables: [A-Za-z_][A-Za-z0-9_]*  (also compatible with [VAR])
+ *  - Functions: min(...), max(...), abs(x), ceil(x), floor(x), round(x[, precision])
+ *  - Shorthand percent: 5% ⇒ (5/100)
  *
- * بدون eval؛ با Shunting-yard و RPN، سازگار با نوسان قدیمی.
+ * Without eval; with Shunting-yard and RPN, compatible with old Navasan.
  *
  * File: includes/Services/FormulaEngine.php
  */
@@ -21,13 +21,13 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 final class FormulaEngine {
 
-	/** کش سبک برای توکن‌ها و RPN (برای فرمول‌های تکراری) */
+	/** Lightweight cache for tokens and RPN (for repetitive formulas) */
 	private array $cacheTokens = [];
 	private array $cacheRPN    = [];
 	private int   $cacheLimit  = 128;
 
 	/**
-	 * ارزیابی یک عبارت با مجموعه متغیرها
+	 * Evaluate an expression with a set of variables
 	 *
 	 * @param string $expr
 	 * @param array  $vars ['CODE' => number, ...]
@@ -36,15 +36,15 @@ final class FormulaEngine {
 	public function evaluate( string $expr, array $vars = [] ): float {
 		$expr = (string) $expr;
 
-		// 1) سازگاری با قدیمی‌ها: [VAR] → VAR (حذف براکت‌ها)
+		// 1) Compatibility with old: [VAR] → VAR (remove brackets)
 		$expr = preg_replace('/\[\s*([A-Za-z_][A-Za-z0-9_]*)\s*\]/u', '$1', $expr);
 
-		// 2) shorthand درصد:
-		// عددِ چسبیده به % → (عدد/100)
-		// نکته: الگو "(\d+(\.\d+)?)%(?!\d)" باعث می‌شود 100%20 (mod) تبدیل نشود.
+		// 2) shorthand percent:
+		// Number stuck to % → (number/100)
+		// Note: Pattern "(\d+(\.\d+)?)%(?!\d)" prevents 100%20 (mod) from converting.
 		$expr = preg_replace('/(\d+(?:\.\d+)?)%(?!\d)/', '($1/100)', $expr);
 
-		// 3) کش توکن‌ها و RPN
+		// 3) Cache tokens and RPN
 		if ( isset($this->cacheRPN[$expr]) ) {
 			$rpn = $this->cacheRPN[$expr];
 		} else {
@@ -63,7 +63,7 @@ final class FormulaEngine {
 		return $this->evalRPN( $rpn, $vars );
 	}
 
-	/** مدیریت سادهٔ ظرفیت کش */
+	/** Simple cache capacity management */
 	private function remember(array &$cache, string $key, $val): void {
 		$cache[$key] = $val;
 		if ( count($cache) > $this->cacheLimit ) {
@@ -75,7 +75,7 @@ final class FormulaEngine {
 	// Tokenize
 	// ---------------------------------------------------------------------
 
-	/** تبدیل رشته به توکن‌ها: num, id, op(+ - * / % ^), lparen, rparen, comma */
+	/** Convert string to tokens: num, id, op(+ - * / % ^), lparen, rparen, comma */
 	private function tokenize( string $s ): array {
 		$out = [];
 		$len = strlen( $s );
@@ -84,10 +84,10 @@ final class FormulaEngine {
 		while ( $i < $len ) {
 			$ch = $s[$i];
 
-			// فضاها
+			// Spaces
 			if ( ctype_space( $ch ) ) { $i++; continue; }
 
-			// عدد: 123 | 123.45 | .5
+			// Number: 123 | 123.45 | .5
 			if ( ctype_digit( $ch ) || ( $ch === '.' && $i+1 < $len && ctype_digit( $s[$i+1] ) ) ) {
 				$start = $i++;
 				while ( $i < $len && ( ctype_digit( $s[$i] ) || $s[$i] === '.' ) ) $i++;
@@ -95,7 +95,7 @@ final class FormulaEngine {
 				continue;
 			}
 
-			// شناسه (متغیر/تابع)
+			// Identifier (variable/function)
 			if ( ctype_alpha( $ch ) || $ch === '_' ) {
 				$start = $i++;
 				while ( $i < $len && ( ctype_alnum( $s[$i] ) || $s[$i] === '_' ) ) $i++;
@@ -103,7 +103,7 @@ final class FormulaEngine {
 				continue;
 			}
 
-			// علائم/پرانتز/کاما
+			// Symbols/parentheses/comma
 			switch ( $ch ) {
 				case '+': case '-': case '*': case '/': case '%': case '^':
 					$out[] = [ 't' => 'op', 'v' => $ch ]; $i++; continue 2;
@@ -115,7 +115,7 @@ final class FormulaEngine {
 					$out[] = [ 't' => 'comma' ];  $i++; continue 2;
 			}
 
-			// کاراکتر ناشناخته → نادیده
+			// Unknown character → ignore
 			$i++;
 		}
 
@@ -126,19 +126,19 @@ final class FormulaEngine {
 	// Shunting-yard → RPN
 	// ---------------------------------------------------------------------
 
-	/** تبدیل توکن‌ها به RPN با پشتیبانی از تابع و آرگومان‌ها */
+	/** Convert tokens to RPN with function and argument support */
 	private function toRPN( array $tokens ): array {
 		$out = [];
 		$opStack = [];
 
-		// برای توابع: هنگام id و سپس '('، یک توکن func روی استک می‌گذاریم.
-		$funcArgCount = []; // تعداد comma ها
-		$funcArgSeen  = []; // آیا «توکن آرگومان» دیده شده؟ (برای تشخیص 0 آرگومان)
+		// For functions: when id and then '(', we put a func token on stack.
+		$funcArgCount = []; // Number of commas
+		$funcArgSeen  = []; // Was "argument token" seen? (to detect 0 arguments)
 
 		$prec       = [ '+' => 2, '-' => 2, '*' => 3, '/' => 3, '%' => 3, '^' => 4, 'u-' => 5 ];
 		$rightAssoc = [ '^' => true, 'u-' => true ];
 
-		$prevType = null; // برای تشخیص منفی یک‌جمله‌ای
+		$prevType = null; // For detecting unary negative
 
 		for ( $i = 0, $n = count( $tokens ); $i < $n; $i++ ) {
 			$t = $tokens[$i];
@@ -150,19 +150,19 @@ final class FormulaEngine {
 					break;
 
 				case 'id':
-					// تابع؟ اگر بعدی '(' باشد
+					// Function? If next is '('
 					$isFunc = ( $i+1 < $n && $tokens[$i+1]['t'] === 'lparen' );
 					if ( $isFunc ) {
 						array_push( $opStack, [ 't' => 'func', 'v' => $t['v'] ] );
 					} else {
-						$out[] = $t; // متغیر معمولی
+						$out[] = $t; // Regular variable
 					}
 					$prevType = 'id';
 					break;
 
 				case 'lparen':
 					array_push( $opStack, [ 't' => 'lparen' ] );
-					// اگر قبل از '(' تابع است، یک رکورد شمارش آرگومان باز کن
+					// If there's a function before '(', open an argument count record
 					if ( count($opStack) >= 2 ) {
 						$prev = $opStack[ count($opStack) - 2 ];
 						if ( $prev['t'] === 'func' ) {
@@ -182,10 +182,10 @@ final class FormulaEngine {
 					if ( !empty( $opStack ) && end( $opStack )['t'] === 'lparen' ) {
 						array_pop( $opStack );
 					}
-					// اگر قبل از '(' تابع داریم، آن را به خروجی اضافه کن
+					// If we have a function before '(', add it to output
 					if ( !empty( $opStack ) && end( $opStack )['t'] === 'func' ) {
 						$func = array_pop( $opStack );
-						// محاسبهٔ تعداد آرگومان‌ها:
+						// Calculationٔ تعداد آرگومان‌ها:
 						$argc = 0;
 						if ( !empty( $funcArgCount ) ) {
 							$argc = array_pop( $funcArgCount );
@@ -234,7 +234,7 @@ final class FormulaEngine {
 					}
 					array_push( $opStack, [ 't' => 'op', 'v' => $op ] );
 
-					// در آرگومان تابع، دیدن اپراتور یعنی «توکن آرگومان» دیده شده
+					// در آرگومان Function، دیدن اپراتور یعنی «Token آرگومان» دیده شده
 					if ( !empty( $funcArgSeen ) ) {
 						$funcArgSeen[ count($funcArgSeen) - 1 ] = true;
 					}
@@ -243,7 +243,7 @@ final class FormulaEngine {
 					break;
 			}
 
-			// «توکن آرگومان» = عدد یا شناسه (نه پرانتز/کاما) → برای تشخیص foo()
+			// «Token آرگومان» = عدد یا ID (نه پرانتز/کاما) → برای تشخیص foo()
 			if ( !empty( $funcArgSeen ) && ($t['t'] === 'num' || $t['t'] === 'id') ) {
 				$funcArgSeen[ count($funcArgSeen) - 1 ] = true;
 			}
@@ -265,11 +265,11 @@ final class FormulaEngine {
 	// Evaluate RPN
 	// ---------------------------------------------------------------------
 
-	/** اجرای RPN با محیط متغیرها (Case-Insensitive) */
+	/** اجرای RPN با محیط Variableها (Case-Insensitive) */
 	private function evalRPN( array $rpn, array $vars ): float {
 		$st = [];
 
-		// lookup متغیرها را Case-Insensitive کن
+		// lookup Variableها را Case-Insensitive کن
 		$varsL = [];
 		foreach ( $vars as $k => $v ) {
 			$varsL[ strtolower((string)$k) ] = (float) $v;
@@ -346,7 +346,7 @@ final class FormulaEngine {
 				$precision = isset( $args[1] ) ? (int) $args[1] : 0;
 				return (float) round( $args[0], $precision );
 		}
-		// تابع ناشناخته → 0
+		// Function ناشناخته → 0
 		return 0.0;
 	}
 

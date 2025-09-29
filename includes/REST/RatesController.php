@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  */
 final class RatesController {
 
-    /** سقف پیش‌فرض تاریخچه (قابل override با فیلتر) */
+    /** سقف پیش‌فرض تاریخچه (قابل override با Filter) */
     private int $default_history_cap = 500;
 
     public function boot(): void {
@@ -41,7 +41,7 @@ final class RatesController {
         );
     }
 
-    /** خواندن توکن از Settings (اگه موجود بود) با سازگاری عقب‌رو */
+    /** خواندن Token از Settings (اگه Available بود) با سازگاری عقب‌رو */
     private function get_token(): string {
         // ترجیح: Settings::get_rest_api_main_token()
         if ( class_exists( '\MNS\NavasanPlus\Admin\Settings' )
@@ -65,7 +65,7 @@ final class RatesController {
         return '';
     }
 
-    /** Permission: تطبیق توکن */
+    /** Permission: تطبیق Token */
     public function permission( WP_REST_Request $request ) {
         $provided = (string) ( $request->get_param('token') ?: $request->get_header('X-API-TOKEN') );
         $valid    = $this->get_token();
@@ -90,7 +90,7 @@ final class RatesController {
 
         $db   = DB::instance();
 
-        // سقف تاریخچه (قابل سفارشی‌سازی با فیلتر)
+        // سقف تاریخچه (قابل Orderی‌سازی با Filter)
         $history_cap = (int) apply_filters(
             'mnsnp/rates_history_cap',
             (int) apply_filters( 'mnsnp/history_cap', $this->default_history_cap )
@@ -110,14 +110,14 @@ final class RatesController {
             $rate = (float) $rate;
             if ( ! is_finite( $rate ) || $rate < 0 ) { $report['skipped']++; continue; }
 
-            // پست باید وجود داشته باشه (از نوشتن روی ID نامعتبر جلوگیری می‌کنیم)
+            // پست باید وجود داشته باشه (از نوشتن روی ID Invalid جلوگیری می‌کنیم)
             $post = get_post( $cid );
             if ( ! $post ) { $report['skipped']++; continue; }
 
-            // زمان معقول: اگر نامعتبر/خیلی آینده، همین الان
+            // زمان معقول: اگر Invalid/خیلی آینده، همین الان
             if ( $t < 1 || $t > $now + 86400 ) { $t = $now; }
 
-            // ذخیره نرخ جاری + زمان آخرین آپدیت
+            // Save Rate جاری + زمان Lastین آپدیت
             $db->update_post_meta( $cid, 'currency_value',       $rate );
             $db->update_post_meta( $cid, 'currency_update_time', $t );
 
@@ -139,11 +139,11 @@ final class RatesController {
             $report['ids'][] = $cid;
         }
 
-        // یکتا کردن شناسه‌ها
+        // یکتا کردن ID‌ها
         $report['ids'] = array_values( array_unique( $report['ids'] ) );
 
         /**
-         * بعد از اتمام همه‌ی آیتم‌ها (برای لاگ/کش/تریگرهای جانبی)
+         * بعد از اتمام همه‌ی آیتم‌ها (برای لاگ/Cache/تریگرهای جانبی)
          */
         do_action( 'mnsnp/rates_bulk_updated', $report );
 

@@ -4,7 +4,7 @@ namespace MNS\NavasanPlus\Tools;
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
- * مهاجرت داینامیک و سفارشی برای انتقال مقادیر از افزونه قدیمی "نوسان"
+ * Dynamic and custom migration for transferring values from old "Navasan" plugin
  */
 final class Migrator {
 
@@ -28,7 +28,7 @@ final class Migrator {
             'errors'           => [],
         ];
         
-        // مرحله ۱: اعتبارسنجی ورودی‌ها
+        // Stage 1: Input validation
         if ( empty($args['new_formula_id']) || empty($args['new_vazn_code']) || empty($args['new_ojrat_code']) || empty($args['old_vazn_key']) || empty($args['old_ojrat_key']) ) {
             $report['errors'][] = 'All setting fields are required. Please fill them all and try again.';
             return $report;
@@ -40,7 +40,7 @@ final class Migrator {
         $old_vazn_key   = $args['old_vazn_key'];
         $old_ojrat_key  = $args['old_ojrat_key'];
 
-        // مرحله ۲: گرفتن محصولات
+        // Stage 2: Get products
         $product_ids = get_posts([
             'post_type'      => ['product', 'product_variation'],
             'posts_per_page' => -1,

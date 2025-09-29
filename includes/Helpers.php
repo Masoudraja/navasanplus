@@ -23,7 +23,7 @@ class Helpers {
 
     /**
      * Convert Persian/Arabic digits and normalize decimal/thousand separators to EN.
-     * (بدون وابستگی به mbstring/intl)
+     * (without dependency on mbstring/intl)
      */
     public static function normalize_digits( string $str ): string {
         static $map = [
@@ -33,7 +33,7 @@ class Helpers {
             '٠'=>'0','١'=>'1','٢'=>'2','٣'=>'3','٤'=>'4','٥'=>'5','٦'=>'6','٧'=>'7','٨'=>'8','٩'=>'9',
             // separators
             '٬'=>'',   // U+066C thousands sep → drop
-            '،'=>',',  // Arabic comma → comma (بعداً حذف کاما انجام می‌دیم)
+            '،'=>',',  // Arabic comma → comma (later we remove commas)
             '٫'=>'.',  // Arabic decimal sep → dot
         ];
         return strtr($str, $map);

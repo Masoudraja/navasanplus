@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 /**
  * ComponentBreakdown
  *
- * خروجی: ['rows' => [ ['name','symbol','value','percent'], ... ], 'total' => float]
+ * Output: ['rows' => [ ['name','symbol','value','percent'], ... ], 'total' => float]
  */
 final class ComponentBreakdown
 {
@@ -20,7 +20,7 @@ final class ComponentBreakdown
      */
     public static function breakdown( ?string $mainExpr, array $components, array $vars, $engine = null, float $epsilon = 1e-9 ): array
     {
-        // 1) محاسبه‌ی اجزاء
+        // 1) Calculation‌ی اجزاء
         $rows     = [];
         $sumComps = 0.0;
 
@@ -34,12 +34,12 @@ final class ComponentBreakdown
             $val = 0.0;
             try {
                 $val = (float) $comp->execute( $vars );
-                // اگر موتور/عبارت مقدار غیرمتناهی/NaN برگرداند
+                // اگر موتور/Expression مقدار غیرمتناهی/NaN برگرداند
                 if ( function_exists('is_finite') && ! is_finite( $val ) ) {
                     $val = 0.0;
                 }
             } catch ( \Throwable $e ) {
-                $val = 0.0; // ایمن: ادامه بده
+                $val = 0.0; // ایمن: Continue بده
             }
 
             if ( abs( $val ) < $epsilon ) {
@@ -100,7 +100,7 @@ final class ComponentBreakdown
             'total' => $total,
         ];
 
-        // فیلتر توسعه‌پذیری
+        // Filter توسعه‌پذیری
         return apply_filters( 'mnsnp/component_breakdown/result', $result, $mainExpr, $components, $vars );
     }
 }

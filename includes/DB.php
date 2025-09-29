@@ -15,10 +15,10 @@ final class DB {
     /** @var self|null */
     private static ?self $instance = null;
 
-    /** پیشوند گزینه‌ها (options) بدون زیرخط ابتدایی */
+    /** Option prefix (options) without leading underscore */
     private string $option_prefix;
 
-    /** پیشوند متاها (post/user/term meta) با زیرخط ابتدایی */
+    /** Meta prefix (post/user/term meta) with leading underscore */
     private string $meta_prefix;
 
     private function __construct() {
@@ -35,10 +35,10 @@ final class DB {
         return self::$instance;
     }
 
-    /** پیشوند پایه‌ی options (بدون زیرخط ابتدا) */
+    /** Base option prefix (without leading underscore) */
     public function prefix(): string { return $this->option_prefix; }
 
-    /** (اختیاری) دسترسی به پیشوندها برای دیباگ */
+    /** (Optional) Access to prefixes for debug */
     public function option_prefix(): string { return $this->option_prefix; }
     public function meta_prefix(): string   { return $this->meta_prefix; }
 
@@ -46,25 +46,25 @@ final class DB {
     // Options
     // ---------------------------------------------------------------------
 
-    /** کلید option نهایی با پیشوند */
+    /** Final option key with prefix */
     private function option_key( string $key ): string {
         $key = ltrim( $key, '_' );
         return $this->option_prefix . '_' . $key;
     }
 
-    /** دسترسی عمومی به کلید option نهایی (برای دیباگ/Query) */
+    /** Public access to final option key (for debug/Query) */
     public function full_option_key( string $key ): string {
         return $this->option_key( $key );
     }
 
-    /** خواندن گزینه با مقدار پیش‌فرض */
+    /** Read option with default value */
     public function read_option( string $key, $default = false ) {
         $okey = $this->option_key( $key );
         $val  = get_option( $okey, '__mnsnp_absent__' );
         return ( '__mnsnp_absent__' === $val ) ? $default : $val;
     }
 
-    /** نوشتن گزینه (اول add_option سپس update_option) */
+    /** Write option (first add_option then update_option) */
     public function update_option( string $key, $value, bool $autoload = false ): bool {
         $okey = $this->option_key( $key );
         if ( false === get_option( $okey, false ) ) {
@@ -73,7 +73,7 @@ final class DB {
         return (bool) update_option( $okey, $value );
     }
 
-    /** حذف گزینه */
+    /** Delete option */
     public function delete_option( string $key ): bool {
         return (bool) delete_option( $this->option_key( $key ) );
     }
@@ -82,69 +82,69 @@ final class DB {
     // Post/User/Term Meta
     // ---------------------------------------------------------------------
 
-    /** کلید meta نهایی با پیشوند */
+    /** Final meta key with prefix */
     private function meta_key( string $key ): string {
         $key = ltrim( $key, '_' );
         return $this->meta_prefix . $key;
     }
 
-    /** دسترسی عمومی به کلید meta نهایی (برای Queryها) */
+    /** Public access to final meta key (for Queries) */
     public function full_meta_key( string $key ): string {
         return $this->meta_key( $key );
     }
 
-    /** خواندن متای پست (single) */
+    /** Read post meta (single) */
     public function read_post_meta( int $post_id, string $key, $default = false ) {
         $mkey = $this->meta_key( $key );
         $val  = get_post_meta( $post_id, $mkey, true );
         return ( $val === '' || $val === null ) ? $default : $val;
     }
 
-    /** نوشتن متای پست (single) */
+    /** Write post meta (single) */
     public function update_post_meta( int $post_id, string $key, $value ) {
         $mkey = $this->meta_key( $key );
         return update_post_meta( $post_id, $mkey, $value );
     }
 
-    /** حذف متای پست */
+    /** Delete post meta */
     public function delete_post_meta( int $post_id, string $key ): bool {
         $mkey = $this->meta_key( $key );
         return (bool) delete_post_meta( $post_id, $mkey );
     }
 
-    /** خواندن متای کاربر */
+    /** Read user meta */
     public function read_user_meta( int $user_id, string $key, $default = false ) {
         $mkey = $this->meta_key( $key );
         $val  = get_user_meta( $user_id, $mkey, true );
         return ( $val === '' || $val === null ) ? $default : $val;
     }
 
-    /** نوشتن متای کاربر */
+    /** Write user meta */
     public function update_user_meta( int $user_id, string $key, $value ) {
         $mkey = $this->meta_key( $key );
         return update_user_meta( $user_id, $mkey, $value );
     }
 
-    /** حذف متای کاربر */
+    /** Delete user meta */
     public function delete_user_meta( int $user_id, string $key ): bool {
         $mkey = $this->meta_key( $key );
         return (bool) delete_user_meta( $user_id, $mkey );
     }
 
-    /** خواندن متای ترم */
+    /** Read term meta */
     public function read_term_meta( int $term_id, string $key, $default = false ) {
         $mkey = $this->meta_key( $key );
         $val  = get_term_meta( $term_id, $mkey, true );
         return ( $val === '' || $val === null ) ? $default : $val;
     }
 
-    /** نوشتن متای ترم */
+    /** Write term meta */
     public function update_term_meta( int $term_id, string $key, $value ) {
         $mkey = $this->meta_key( $key );
         return update_term_meta( $term_id, $mkey, $value );
     }
 
-    /** حذف متای ترم */
+    /** Delete term meta */
     public function delete_term_meta( int $term_id, string $key ): bool {
         $mkey = $this->meta_key( $key );
         return (bool) delete_term_meta( $term_id, $mkey );

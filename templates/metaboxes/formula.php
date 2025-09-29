@@ -19,7 +19,7 @@ use MNS\NavasanPlus\DB;
 // Nonce مطابق با save_formula()
 wp_nonce_field( 'mns_navasan_plus_formula', '_mns_navasan_plus_formula_nonce' );
 
-// اطمینان از حضور پارسر (برای محاسبهٔ لحظه‌ای)
+// Ensure parser presence (for real-time calculation)
 if ( wp_script_is( 'mns-navasan-plus-formula-parser', 'registered' ) ) {
     wp_enqueue_script( 'mns-navasan-plus-formula-parser' );
 }
@@ -42,7 +42,7 @@ foreach ( $currency_posts as $cid ) {
     $rate  = (float) DB::instance()->read_post_meta( $cid, 'currency_value', 0 );
     $sym   = (string) DB::instance()->read_post_meta( $cid, 'currency_rate_symbol', '' );
     if ( $sym === '' ) {
-        // fallback قدیمی
+        // Old fallback
         $sym = (string) DB::instance()->read_post_meta( $cid, 'currency_symbol', '' );
     }
     $currencies[] = [
@@ -58,10 +58,10 @@ $formula        = is_array( $formula ?? null ) ? $formula : [];
 $codes          = array_keys( (array) ( $formula['variables'] ?? [] ) );
 $existing_count = count( $codes );
 $stored_counter = isset( $formula['variables_counter'] ) ? (int) $formula['variables_counter'] : 0;
-$next_index     = max( $existing_count, $stored_counter ); // برای ساخت آیتم جدید
-$render_count   = max( 1, $existing_count );               // حداقل یک ردیف برای شروع
+$next_index     = max( $existing_count, $stored_counter ); // For creating new item
+$render_count   = max( 1, $existing_count );               // At least one row to start
 
-// مقدار اولیهٔ عبارت: اگر متای جدید ست است، همان؛ وگرنه legacy $formula['formul']
+// Initial expression value: if new meta is set, use that; otherwise legacy $formula['formul']
 $initial_expression = '';
 if ( isset( $formula['expression'] ) && $formula['expression'] !== '' ) {
     $initial_expression = (string) $formula['expression'];
@@ -117,7 +117,7 @@ if ( isset( $formula['expression'] ) && $formula['expression'] !== '' ) {
           'role'         => 'none',
       ];
 
-      // نوع: اگر currency_id داشت → currency، در غیر اینصورت custom
+      // Type: if it had currency_id → currency, otherwise custom
       $type        = $var['type'] ?: ( ! empty( $var['currency_id'] ) ? 'currency' : 'custom' );
       $currency_id = (int) ( $var['currency_id'] ?? 0 );
       $role        = isset( $var['role'] ) ? (string) $var['role'] : 'none';
@@ -125,7 +125,7 @@ if ( isset( $formula['expression'] ) && $formula['expression'] !== '' ) {
           $role = 'none';
       }
 
-      // پیدا کردن ارز انتخاب‌شده (اگر هست)
+      // Find selected currency (if exists)
       $currSel = null;
       if ( $currency_id > 0 ) {
           foreach ( $currencies as $c ) {
@@ -133,7 +133,7 @@ if ( isset( $formula['expression'] ) && $formula['expression'] !== '' ) {
           }
       }
 
-      // مقدارهای پیش‌فرضِ هوشمند:
+      // Smart default values:
       $unit_val = array_key_exists( 'unit', $var )
           ? (string) $var['unit']
           : ( $type === 'currency' && $currSel ? (string) $currSel['rate'] : '' );
@@ -142,18 +142,18 @@ if ( isset( $formula['expression'] ) && $formula['expression'] !== '' ) {
           ? (string) $var['unit_symbol']
           : ( $type === 'currency' && $currSel ? (string) $currSel['symbol'] : '' );
 
-      // value: برای currency اگر ذخیره نشده → 1
+      // value: for currency if not saved → 1
       $value_val = array_key_exists( 'value', $var )
           ? (string) $var['value']
           : ( $type === 'currency' ? '1' : '' );
 
-      // در حالت currency → readonly روی unit فقط
+      // In currency mode → readonly on unit only
       $readonly_attrs = ( $type === 'currency' ) ? [ 'readonly' => 'readonly' ] : [];
   ?>
   <div class="mns-formula-variable" data-code="<?php echo esc_attr( $code ); ?>">
 
     <?php
-    // نوع متغیر
+    // Variable type
     Fields::select(
         "mns_navasan_plus_formula_variables_{$code}_type",
         "_mns_navasan_plus_formula_variables[{$code}][type]",
@@ -228,7 +228,7 @@ if ( isset( $formula['expression'] ) && $formula['expression'] !== '' ) {
         )
     );
 
-    // نماد واحد (editable for all types)
+    // Unit symbol (editable for all types)
     Fields::text(
         "mns_navasan_plus_formula_variables_{$code}_unit_symbol",
         "_mns_navasan_plus_formula_variables[{$code}][unit_symbol]",
@@ -258,8 +258,8 @@ if ( isset( $formula['expression'] ) && $formula['expression'] !== '' ) {
         "_mns_navasan_plus_formula_variables[{$code}][role]",
         [
             'none'   => __( 'None', 'mns-navasan-plus' ),
-            'profit' => __( 'Profit (سود)',  'mns-navasan-plus' ),
-            'charge' => __( 'Charge (اجرت)', 'mns-navasan-plus' ),
+            'profit' => __( 'Profit (profit)',  'mns-navasan-plus' ),
+            'charge' => __( 'Charge (charge)', 'mns-navasan-plus' ),
             'weight' => __( 'Weight (وزن)', 'mns-navasan-plus' ),
         ],
         $role,

@@ -4,10 +4,10 @@ namespace MNS\NavasanPlus;
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
- * هستهٔ افزونه (Singleton)
- * - نگهدارندهٔ Loader
- * - دسترسی کمکی به نسخه/مسیر/دیتا
- * - ارائه‌ی wrapper محصول: get_product( WC_Product )
+ * Plugin Core (Singleton)
+ * - Holder of Loader
+ * - Helper access to version/path/data
+ * - Provides product wrapper: get_product( WC_Product )
  */
 final class Plugin {
 
@@ -17,30 +17,30 @@ final class Plugin {
     /** @var Loader */
     private Loader $loader;
 
-    /** @var string نسخهٔ افزونه برای کش‌شکنی اسکریپت‌ها/استایل‌ها */
+    /** @var string Plugin version for cache busting scripts/styles */
     private string $version = '1.0.1';
 
-    /** @var string مسیر فایل اصلی افزونه */
+    /** @var string Main plugin file path */
     private string $plugin_file;
 
-    /** @var array کش «اطلاعات افزونه» از هدر */
+    /** @var array Cache for "plugin info" from header */
     private array $plugin_data_cache = [];
 
     /**
-     * @param string $plugin_file مسیر فایل اصلی افزونه
+     * @param string $plugin_file Main plugin file path
      */
     private function __construct( string $plugin_file ) {
         $this->plugin_file = $plugin_file;
         $this->loader      = new Loader();
     }
 
-    /** جلوگیری از ساخت نمونهٔ دوم */
+    /** Prevent creating second instance */
     private function __clone() {}
-    /** جلوگیری از unserialize */
+    /** Prevent unserialize */
     private function __wakeup() {}
 
     /**
-     * گرفتن نمونهٔ Singleton
+     * Get Singleton instance
      * @param string $plugin_file
      */
     public static function instance( string $plugin_file = '' ): self {
@@ -53,53 +53,53 @@ final class Plugin {
         return self::$instance;
     }
 
-    /** بوت کامل افزونه (Loader → init) */
+    /** Complete plugin boot (Loader → init) */
     public function run(): void {
         $this->loader->init();
     }
 
-    /** دسترسی به Loader */
+    /** Access to Loader */
     public function loader(): Loader {
         return $this->loader;
     }
 
-    /** نسخهٔ افزونه (قابل فیلتر) */
+    /** Plugin version (filterable) */
     public function version(): string {
         return apply_filters( 'mnsnp/version', $this->version, $this );
     }
 
     /**
-     * نسخهٔ مناسب asset:
-     * - در حالت dev (SCRIPT_DEBUG=true) از time() برای bust cache
-     * - در حالت prod از نسخهٔ افزونه
-     * - قابل فیلتر
+     * Appropriate asset version:
+     * - In dev mode (SCRIPT_DEBUG=true) uses time() for cache bust
+     * - In prod mode uses plugin version
+     * - Filterable
      */
     public function assets_version(): string {
         $v = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? (string) time() : $this->version();
         return apply_filters( 'mnsnp/assets_version', $v, $this );
     }
 
-    /** مسیر فایل اصلی افزونه */
+    /** Main plugin file path */
     public function plugin_file(): string {
         return $this->plugin_file;
     }
 
-    /** basename افزونه */
+    /** Plugin basename */
     public function plugin_basename(): string {
         return plugin_basename( $this->plugin_file );
     }
 
-    /** مسیر پوشهٔ افزونه */
+    /** Plugin directory path */
     public function plugin_dir_path(): string {
         return plugin_dir_path( $this->plugin_file );
     }
 
-    /** URL پوشهٔ افزونه */
+    /** Plugin directory URL */
     public function plugin_dir_url(): string {
         return plugin_dir_url( $this->plugin_file );
     }
 
-    /** اطلاعات هدر افزونه (Name, Version, Author, PluginURI, …) */
+    /** Plugin header info (Name, Version, Author, PluginURI, …) */
     public function get_plugin_data(): array {
         if ( empty( $this->plugin_data_cache ) ) {
             if ( ! function_exists( 'get_plugin_data' ) ) {
@@ -110,25 +110,25 @@ final class Plugin {
         return $this->plugin_data_cache;
     }
 
-    /** نام افزونه برای نمایش (قابل فیلتر) */
+    /** Plugin name for display (filterable) */
     public function get_plugin_name(): string {
         $data  = $this->get_plugin_data();
         $name  = $data['Name'] ?? 'MNS Navasan Plus';
         return apply_filters( 'mnsnp/plugin_name', $name, $this );
     }
 
-    /** دسترسی سریع به DB wrapper */
+    /** Quick access to DB wrapper */
     public function db(): DB {
         return DB::instance();
     }
 
-    /** آیا ووکامرس فعاله؟ */
+    /** Is WooCommerce active? */
     public function is_wc_active(): bool {
         return class_exists( 'WooCommerce' );
     }
 
     /**
-     * تبدیل WC_Product به wrapper «محصول نوسان پلاس»
+     * Convert WC_Product to "Navasan Plus Product" wrapper
      *
      * @param \WC_Product $wc_product
      * @return \MNS\NavasanPlus\PublicNS\Product

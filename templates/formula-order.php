@@ -100,7 +100,7 @@ $options = [
 
     function evaluateWithFallback(expr, vars){
       const FP = window.FormulaParser || {};
-      if (typeof FP.evaluate === 'function') return FP.evaluate(expr, vars);           // API تابعی
+      if (typeof FP.evaluate === 'function') return FP.evaluate(expr, vars);           // API Functionی
       if (typeof FP.Parser === 'function') {                                          // API کلاسی
         try { const p = new FP.Parser(); if (typeof p.evaluate==='function') return p.evaluate(expr, vars); } catch(e){}
       }

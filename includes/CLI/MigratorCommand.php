@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
 
     /**
-     * WP-CLI: مهاجرت از «نوسان» به «نوسان پلاس»
+     * WP-CLI: مهcharge از «نوسان» به «نوسان پلاس»
      *
      * Examples:
      *   wp mnsnp migrate --dry-run
@@ -86,6 +86,6 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
         }
     }
 
-    // حفظ نام دستور مطابق مستنداتت: `wp mnsnp migrate`
+    // حفظ Name دستور مطابق مستنداتت: `wp mnsnp migrate`
     \WP_CLI::add_command( 'mnsnp migrate', [ MigratorCommand::class, 'migrate' ] );
 }

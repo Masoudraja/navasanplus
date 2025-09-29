@@ -28,19 +28,19 @@ final class PriceCalculator {
 
         $price = $this->calc_simple( $product );
         if ( $price === null ) return null;
-        // در حالت ساده تخفیف داخلی نداریم
+        // In simple mode we don't have internal discounts
         return [ 'price' => (float)$price, 'price_before' => (float)$price, 'profit' => 0.0, 'charge' => 0.0 ];
     }
 
-    /** تعیین نقش کامپوننت (profit/charge/none) */
+    /** Determine component role (profit/charge/none) */
     private function detect_component_role( array $c ): string {
         if ( ! empty( $c['role'] ) ) {
             $r = strtolower( (string) $c['role'] );
             return in_array( $r, ['profit','charge'], true ) ? $r : 'none';
         }
         $hay = strtolower( (string)($c['name'] ?? '') . ' ' . (string)($c['text'] ?? $c['expression'] ?? '') );
-        if ( strpos($hay, 'سود')   !== false || strpos($hay, 'profit') !== false ) return 'profit';
-        if ( strpos($hay, 'اجرت')  !== false || strpos($hay, 'charge') !== false ) return 'charge';
+        if ( strpos($hay, 'profit')   !== false || strpos($hay, 'profit') !== false ) return 'profit';
+        if ( strpos($hay, 'charge')  !== false || strpos($hay, 'charge') !== false ) return 'charge';
         return 'none';
     }
 
@@ -57,7 +57,7 @@ final class PriceCalculator {
         $over_all = (array) $product->get_meta( $db->full_meta_key('formula_variables'), true );
         $over     = (array) ($over_all[$fid] ?? []);
 
-        // 1) ساخت مقدار قابل‌استفاده در موتور: code => unit × value
+        // 1) Build usable value for engine: code => unit × value
         $vars_for_engine = [];
         $var_roles_for_fallback = [];
         foreach ( $vars_meta as $code => $row ) {
@@ -71,7 +71,7 @@ final class PriceCalculator {
             $cid  = (int)($row['currency_id'] ?? 0);
             $type = ((string)($row['type'] ?? '') === 'currency' || $cid > 0) ? 'currency' : 'custom';
 
-            // --- تعیین unit
+            // --- Determine unit
             if ( $type === 'currency' ) {
                 $unit = $this->get_currency_rate($cid);
             } else {
@@ -79,7 +79,7 @@ final class PriceCalculator {
                 $unit = ($uRaw === '' || $uRaw === null) ? 1.0 : (float)$uRaw;
             }
 
-            // --- مقدار override از خودِ محصول
+            // --- Override value from product itself
             $ov = $over[$code]['regular'] ?? null;
             if ( $ov === '' ) $ov = null;
             $val = $ov !== null ? (float)$ov : (float)($row['value'] ?? 0);
@@ -89,7 +89,7 @@ final class PriceCalculator {
 
         $engine = new \MNS\NavasanPlus\Services\FormulaEngine();
 
-        // 2) اگر کامپوننت نقش‌دار داریم → سود/اجرت را مستقیماً از کامپوننت‌ها جمع می‌کنیم
+        // 2) If we have role-based components → we sum profit/charge directly from components
         $has_role_component = false;
         $sum_profit_base = 0.0; $sum_charge_base = 0.0; $sum_other = 0.0;
 
@@ -107,7 +107,7 @@ final class PriceCalculator {
         }
 
         if ( $has_role_component ) {
-            // اعمال تخفیف روی مبالغ نهایی سود/اجرت
+            // Apply discount to final profit/charge amounts
             $profit_after = $sum_profit_base;
             $charge_after = $sum_charge_base;
             if ( class_exists('\MNS\NavasanPlus\Services\DiscountService') ) {
@@ -127,7 +127,7 @@ final class PriceCalculator {
             ];
         }
 
-        // 3) در غیر اینصورت: نقشِ متغیرها + scale (fallback)
+        // 3) Otherwise: variable roles + scale (fallback)
         $sum_profit_base = 0.0; $sum_charge_base = 0.0;
         foreach ( $vars_for_engine as $code => $base ) {
             $role = $var_roles_for_fallback[$code] ?? 'none';
@@ -135,7 +135,7 @@ final class PriceCalculator {
             if ( $role === 'charge' ) $sum_charge_base += (float)$base;
         }
 
-        // بعد از تخفیف
+        // After discount
         $profit_after = $sum_profit_base;
         $charge_after = $sum_charge_base;
         if ( class_exists('\MNS\NavasanPlus\Services\DiscountService') ) {
@@ -157,7 +157,7 @@ final class PriceCalculator {
         $final_before = null;
         $final_after  = null;
 
-        // قبل از تخفیف ← با مقادیر خام
+        // Before discount ← with raw values
         try {
             if ( trim($expr) !== '' ) {
                 $tmp = $engine->evaluate($expr, $vars_for_engine);
@@ -174,7 +174,7 @@ final class PriceCalculator {
             }
         } catch (\Throwable $e) {}
 
-        // بعد از تخفیف ← با مقادیر scale‌شده
+        // After discount ← with scaled values
         try {
             if ( trim($expr) !== '' ) {
                 $tmp = $engine->evaluate($expr, $vars_scaled);

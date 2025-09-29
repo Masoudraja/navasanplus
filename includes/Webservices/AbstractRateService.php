@@ -4,35 +4,35 @@ namespace MNS\NavasanPlus\Webservices;
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
- * کلاس پایهٔ سرویس‌های نرخ
- * - مدیریت تنظیمات سرویس از options
- * - درخواست HTTP امن به API
- * - نرمال‌سازی پاسخ JSON
+ * Base class for rate services
+ * - Manages service settings from options
+ * - Secure HTTP requests to API
+ * - JSON response normalization
  *
- * سرویس‌های فرزند باید:
- *  - $key, $name, $url, $settings را تنظیم کنند
- *  - متد retrieve() را پیاده‌سازی کنند و آرایهٔ [ code => ['name'=>..., 'price'=>float], ... ] برگردانند
+ * Child services must:
+ *  - Set $key, $name, $url, $settings
+ *  - Implement retrieve() method and return array [ code => ['name'=>..., 'price'=>float], ... ]
  */
 abstract class AbstractRateService {
 
-    /** کلید سرویس (مثل tabangohar) */
+    /** Service key (like tabangohar) */
     protected string $key = '';
 
-    /** نام نمایشی سرویس */
+    /** Display name of service */
     protected string $name = '';
 
-    /** ریشهٔ API */
+    /** API root */
     protected string $url  = '';
 
-    /** آیا رایگان است؟ صرفاً جهت نمایش */
+    /** Is it free? Only for display purposes */
     protected bool $free   = false;
 
-    /** واحد پول پایه (نمایشی) */
+    /** Base currency unit (for display) */
     protected string $currency = '';
 
     /**
-     * تعریف فیلدهای تنظیمات سرویس
-     * نمونه:
+     * Service settings field definitions
+     * Example:
      * [
      *   'username' => ['type'=>'text','default'=>''],
      *   'password' => ['type'=>'text','default'=>''],
@@ -40,28 +40,28 @@ abstract class AbstractRateService {
      */
     protected array $settings = [];
 
-    /** نشان‌ها/برچسب‌های نمایشی سرویس (برای جلوگیری از Dynamic Properties) */
+    /** Display badges/labels for service (to prevent Dynamic Properties) */
     protected array $badges = [];
 
-    /** timeout پیش‌فرض درخواست‌ها (ثانیه) */
+    /** Default timeout for requests (seconds) */
     protected int $timeout = 20;
 
     public function __construct() {}
 
-    /** باید توسط فرزند پیاده‌سازی شود؛ خروجی: array|WP_Error */
+    /** Must be implemented by child; Output: array|WP_Error */
     abstract public function retrieve();
 
-    /** خواندن گزینهٔ سرویس از mns_navasan_plus_options */
+    /** Read service option from mns_navasan_plus_options */
     protected function get_option( string $field, $default = '' ) {
         $opts = get_option( 'mns_navasan_plus_options', [] );
 
-        // ساختار جدید: services[{$this->key}][field]
+        // New structure: services[{$this->key}][field]
         if ( isset( $opts['services'][ $this->key ][ $field ] ) && $opts['services'][ $this->key ][ $field ] !== '' ) {
             return $opts['services'][ $this->key ][ $field ];
         }
 
-        // سازگاری عقب‌رو (برای tabangohar_username/password)
-        $legacy_key = $this->key . '_' . $field; // مثل tabangohar_username
+        // Backward compatibility (for tabangohar_username/password)
+        $legacy_key = $this->key . '_' . $field; // like tabangohar_username
         if ( isset( $opts[ $legacy_key ] ) && $opts[ $legacy_key ] !== '' ) {
             return $opts[ $legacy_key ];
         }
@@ -74,10 +74,10 @@ abstract class AbstractRateService {
     }
 
     /**
-     * درخواست GET به یک URL
+     * GET request to a URL
      * @param string $url
-     * @param array  $args آرگومان‌های اضافه wp_remote_get (مثلاً headers سفارشی)
-     * @return array|\WP_Error json-decoded array یا WP_Error
+     * @param array  $args Additional wp_remote_get arguments (e.g. custom headers)
+     * @return array|\WP_Error json-decoded array or WP_Error
      */
     protected function request( string $url, array $args = [] ) {
         $url  = esc_url_raw( $url );
@@ -114,7 +114,7 @@ abstract class AbstractRateService {
         return $data;
     }
 
-    /** دسترسی به مشخصات سرویس (اختیاری) */
+    /** Access to service specifications (optional) */
     public function get_key(): string      { return $this->key; }
     public function get_name(): string     { return $this->name; }
     public function get_url(): string      { return $this->url; }

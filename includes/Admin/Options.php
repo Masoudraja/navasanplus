@@ -168,7 +168,7 @@ class Options {
                     'text' => (string) ( $vals['text'] ?? '' ),
                 ];
             } else {
-                // اطمینان از وجود همهٔ کلیدهای vars
+                // Ensure all vars keys exist
                 $need_keys = array_keys( (array) ( $vals['vars'] ?? [] ) );
                 foreach ( $need_keys as $vk ) {
                     if ( ! isset( $patterns[ $key ]['vars'][ $vk ] ) ) {

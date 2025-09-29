@@ -45,7 +45,7 @@ final class MigratorPage {
         if ( isset( $_POST['mnsnp_migrate_action'] ) && check_admin_referer( 'mnsnp_migrate' ) ) {
             $action = in_array( $_POST['mnsnp_migrate_action'], [ 'dry', 'run' ], true ) ? $_POST['mnsnp_migrate_action'] : 'dry';
             
-            // دریافت مقادیر از فیلدهای جدید و پاکسازی آن‌ها
+            // Get values from new fields and sanitize them
             $migrator_args = [
                 'dry'            => ($action === 'dry'),
                 'new_formula_id' => isset($_POST['mnsnp_new_formula_id']) ? intval($_POST['mnsnp_new_formula_id']) : 0,

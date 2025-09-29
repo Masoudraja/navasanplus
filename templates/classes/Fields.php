@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 /**
  * Field renderer for admin metaboxes / WC product panels.
  *
- * امضاها (با سازگاری کامل با کدهای فعلی):
+ * امضاها (با سازگاری کامل با Codeهای فعلی):
  *  - text( $id, $name, $value, $label, [ $args ] )
  *  - number( $id, $name, $value, $label, [ $args ] )
  *  - checkbox( $id, $name, $checked_bool, $label, $desc = '', [ $args ] )
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * $args مشترک:
  *  - wrapper_class: string   (مثلاً form-row، form-row-first/last/full)
  *  - class:         string   کلاس اضافه برای input/select/textarea
- *  - desc_tip:      bool     نمایش tip به‌جای description
+ *  - desc_tip:      bool     Display tip به‌جای description
  *  - placeholder:   string
  *  - step/min/max:  برای number
  *  - rows/cols:     برای textarea (rows پیش‌فرض 4)

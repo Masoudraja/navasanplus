@@ -20,7 +20,7 @@ final class Settings {
     public function add_menu(): void {
     $parent = class_exists('\MNS\NavasanPlus\Admin\Menu') 
         ? \MNS\NavasanPlus\Admin\Menu::SLUG 
-        : 'woocommerce'; // فالبک امن
+        : 'woocommerce'; // Safe fallback
 
     add_submenu_page(
         $parent,
@@ -32,7 +32,7 @@ final class Settings {
     );
 }
 
-    /** لیست سرویس‌های نرخ (قابل توسعه با فیلتر) */
+    /** List سرویس‌های Rate (قابل توسعه با Filter) */
     private function get_services(): array {
         $services = [
             'tabangohar' => [
@@ -128,7 +128,7 @@ final class Settings {
             'mns_navasan_plus_tg'
         );
 
-        // API / Push Endpoint (نمایش توکن و آدرس REST)
+        // API / Push Endpoint (Display Token و آدرس REST)
         add_settings_section(
             'mns_navasan_plus_api',
             __( 'API / Push Endpoint', 'mns-navasan-plus' ),
@@ -180,7 +180,7 @@ final class Settings {
         $output['services']['tabangohar']['username'] = $tg_user;
         $output['services']['tabangohar']['password'] = $tg_pass;
 
-        // Back-compat keys (اختیاری)
+        // Back-compat keys (optional)
         $output['tabangohar_username'] = $tg_user;
         $output['tabangohar_password'] = $tg_pass;
         
@@ -227,7 +227,7 @@ final class Settings {
             checked( $on, true, false ),
             esc_html__( 'Enable periodic sync via WP-Cron', 'mns-navasan-plus' )
         );
-        // نمایش آخرین نتیجه Sync
+        // Show last sync result
         $last = get_option( 'mns_navasan_plus_last_sync', [] );
         if ( ! empty( $last ) && ! empty( $last['time'] ) ) {
             $color = ! empty( $last['ok'] ) ? '#0a0' : '#a00';
@@ -291,7 +291,7 @@ final class Settings {
         echo '<p class="description">' . esc_html__( 'Force plugin to use a specific language regardless of WordPress settings. Save and reload the page to see changes.', 'mns-navasan-plus' ) . '</p>';
     }
 
-    /** سکشن API: نمایش Endpoint و توکن + دکمهٔ Regenerate */
+    /** سCacheن API: Display Endpoint و Token + دکمهٔ Regenerate */
     public function api_section_callback(): void {
         $token = self::get_rest_api_main_token();
         $url   = esc_url( rest_url( 'mnsnp/v1/rates' ) );

@@ -15,7 +15,7 @@ final class AssignFormulaPage {
     }
 
     public function menu(): void {
-        // اگر منوی مستقل افزونه‌ات داری، از همون به‌عنوان والد استفاده می‌کنیم
+        // If you have an independent plugin menu, use it as parent
         $parent = class_exists('\MNS\NavasanPlus\Admin\Menu')
             ? \MNS\NavasanPlus\Admin\Menu::SLUG
             : 'woocommerce';

@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: MNS Navasan Plus
- * Description: افزونه‌ی پیشرفته قیمت‌گذاری ووکامرس بر پایه نرخ ارز/فلزات با فیلدهای تخفیف سود و اجرت
+ * Description: Advanced WooCommerce pricing plugin based on currency/metals rates with discount, profit and fee fields
  * Version:     1.0.1
  * Author:      Masoudraja@gmail.com
  * Text Domain: mns-navasan-plus
@@ -10,29 +10,29 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-/** مسیر فایل اصلی افزونه */
+/** Main plugin file path */
 if ( ! defined( 'MNS_NAVASAN_PLUS_FILE' ) ) {
     define( 'MNS_NAVASAN_PLUS_FILE', __FILE__ );
 }
 
-/** نسخه‌ی افزونه (برای کش‌شکنی assetها و همسانی داخلی) */
+/** Plugin version (for cache busting assets and internal consistency) */
 if ( ! defined( 'MNS_NAVASAN_PLUS_VER' ) ) {
     define( 'MNS_NAVASAN_PLUS_VER', '1.0.1' );
 }
 
-/** پیشوند کلیدهای گزینه/متا */
+/** Prefix for option/meta keys */
 if ( ! defined( 'MNS_NAVASAN_PLUS_DB_PREFIX' ) ) {
     define( 'MNS_NAVASAN_PLUS_DB_PREFIX', 'mns_navasan_plus' );
 }
 
-/** Composer autoload (اگر موجود بود) */
+/** Composer autoload (if available) */
 $composer_autoload = __DIR__ . '/vendor/autoload.php';
 if ( file_exists( $composer_autoload ) ) {
     require_once $composer_autoload;
 } else {
-    // اتولودر سبک برای کلاس‌های افزونه وقتی Composer نداریم
+    // Light autoloader for plugin classes when we don't have Composer
     spl_autoload_register( static function ( $class ) {
-        // فقط فضای نام افزونه
+        // Only plugin namespace
         $prefixes = [
             'MNS\\NavasanPlus\\Templates\\' => __DIR__ . '/templates/',
             'MNS\\NavasanPlus\\'            => __DIR__ . '/includes/',
@@ -52,16 +52,16 @@ if ( file_exists( $composer_autoload ) ) {
     } );
 }
 
-/** فایل‌های ضروری پایه (ایمن؛ با اتولودر هم تداخلی ندارد) */
+/** Essential base files (safe; no conflict with autoloader) */
 require_once __DIR__ . '/includes/DB.php';
 require_once __DIR__ . '/includes/Helpers.php';
 require_once __DIR__ . '/includes/Loader.php';
 require_once __DIR__ . '/includes/Plugin.php';
 
 /**
- * اگر Composer ندارید، دو سرویس زیر را هم دستی لود می‌کنیم
- * تا RateSync (WP-Cron) و REST API همیشه در دسترس باشند.
- * (با اتولودر هم خودکار لود می‌شوند؛ این فقط اطمینان بیشتر است.)
+ * If you don't have Composer, we also manually load the two services below
+ * so that RateSync (WP-Cron) and REST API are always available.
+ * (They are also auto-loaded with autoloader; this is just extra assurance.)
  */
 $maybe_files = [
     __DIR__ . '/includes/Services/RateSync.php',
@@ -72,7 +72,7 @@ foreach ( $maybe_files as $mf ) {
 }
 
 /**
- * مسیر افزونهٔ قدیمی (برای ابزار مهاجرت)
+ * Old plugin path (for migration tool)
  */
 add_filter( 'mnsnp/migrator/old_plugin', function () {
     $basename = 'mns-woocommerce-rate-based-products/mns-woocommerce-rate-based-products.php';
@@ -80,7 +80,7 @@ add_filter( 'mnsnp/migrator/old_plugin', function () {
 } );
 
 /**
- * هِلپر سراسری: Singleton افزونه
+ * Global helper: Plugin Singleton
  *
  * @return \MNS\NavasanPlus\Plugin
  */
@@ -91,24 +91,24 @@ if ( ! function_exists( 'mns_navasan_plus' ) ) {
 }
 
 /**
- * [اختیاری] فعال‌سازی متاباکس «Currency Chart»
- * پیش‌فرض خاموش است. برای روشن‌کردن، فقط کامنت این خط را بردار.
+ * [Optional] Enable "Currency Chart" metabox
+ * Default is off. To enable, just uncomment this line.
  */
 // add_filter( 'mnsnp/enable_currency_chart_metabox', '__return_true' );
 
-/** بوت افزونه پس از لود سایر افزونه‌ها */
+/** Boot plugin after loading other plugins */
 add_action( 'plugins_loaded', static function () {
     mns_navasan_plus()->run();
 } );
 
-/** مقداردهی اولیه هنگام فعال‌سازی */
+/** Initial setup during activation */
 register_activation_hook( __FILE__, static function () {
     try {
         \MNS\NavasanPlus\DB::instance()->update_option( 'install_time', time(), true );
     } catch ( \Throwable $e ) { /* silent */ }
 } );
 
-/** پاک‌سازی زمان‌بندی‌ها هنگام غیرفعال‌سازی (برای RateSync) */
+/** Clean up schedules during deactivation (for RateSync) */
 register_deactivation_hook( __FILE__, static function () {
     if ( class_exists( '\MNS\NavasanPlus\Services\RateSync' ) ) {
         try {

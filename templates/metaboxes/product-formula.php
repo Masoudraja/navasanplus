@@ -17,10 +17,10 @@ $post_id      = isset($post_id) ? (int) $post_id : 0;
 $formula_data = is_array($formula_data ?? null) ? $formula_data : [];
 $product_data = is_array($product_data ?? null) ? $product_data : [];
 
-// فرمول انتخابی فعلی
+// Currently selected formula
 $current_fid = (int) get_post_meta( $post_id, DB::instance()->full_meta_key('formula_id'), true );
 
-// سلکت فرمول
+// Select formula
 ?>
 <p class="form-field">
   <label for="mns_navasan_plus_formula_id"><?php esc_html_e('Formula', 'mns-navasan-plus'); ?></label>
@@ -38,7 +38,7 @@ $current_fid = (int) get_post_meta( $post_id, DB::instance()->full_meta_key('for
 </p>
 
 <?php
-// پنل متغیرها برای هر فرمول (فقط یکی نمایش داده می‌شود)
+// Variable panels for each formula (only one is displayed)
 foreach ($formula_data as $fid => $row):
   $vars = (array) ($row['variables'] ?? []);
   $vals = (array) ($product_data[$fid] ?? []);
@@ -65,7 +65,7 @@ foreach ($formula_data as $fid => $row):
           $name   = (string) ($meta['name'] ?? $code);
           $symbol = (string) ($meta['unit_symbol'] ?? '');
 
-          $reg    = $vals[$code]['regular'] ?? ''; // override ذخیره‌شده برای این محصول
+          $reg    = $vals[$code]['regular'] ?? ''; // Saved override for this product
       ?>
         <tr>
           <td>

@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Taban Gohar Rate Service
- * خروجی استاندارد:
+ * Standard output:
  * [
  *   '<api-key>' => ['name' => string, 'price' => float],
  *   ...
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class TabanGohar extends AbstractRateService {
 
-    /** جلوگیری از Dynamic Properties در PHP 8.2+ */
+    /** Prevent Dynamic Properties in PHP 8.2+ */
     protected array $badges = [];
 
     public function __construct() {
@@ -25,7 +25,7 @@ class TabanGohar extends AbstractRateService {
 
         $this->key      = 'tabangohar';
         $this->name     = 'Taban Gohar';
-        // جهت نمایش/اطلاع؛ خود endpoint واقعی در retrieve ساخته می‌شود
+        // For display/information purposes; the actual endpoint is built in retrieve method
         $this->url      = 'https://webservice.tgnsrv.ir/';
         $this->free     = false;
         $this->currency = 'IRT';
@@ -38,7 +38,7 @@ class TabanGohar extends AbstractRateService {
             ],
         ];
 
-        // UX بهتر: پسورد به‌صورت password field
+        // Better UX: password as password field
         $this->settings = [
             'username' => [
                 'type'        => 'text',
@@ -54,7 +54,7 @@ class TabanGohar extends AbstractRateService {
     }
 
     /**
-     * دریافت نرخ‌ها از وب‌سرویس تابان‌گوهر و نگاشت به ساختار داخلی
+     * Retrieve rates from TabanGohar web service and map to internal structure
      *
      * @return array|\WP_Error
      */
@@ -66,7 +66,7 @@ class TabanGohar extends AbstractRateService {
             return new \WP_Error( $this->get_key(), __( 'Missing TabanGohar credentials.', 'mns-navasan-plus' ) );
         }
 
-        // امکان override با فیلتر (محیط‌های تست/پراکسی و…)
+        // Can be overridden with Filter (test/proxy environments, etc.)
         $endpoint = sprintf(
             'https://webservice.tgnsrv.ir/Pr/Get/%s/%s',
             rawurlencode( $username ),
@@ -74,13 +74,13 @@ class TabanGohar extends AbstractRateService {
         );
         $endpoint = apply_filters( 'mnsnp/tabangohar/endpoint', $endpoint, $username, $password );
 
-        // درخواست HTTP؛ انتظار داریم AbstractRateService::request آرایهٔ PHP برگرداند
+        // HTTP Request; we expect AbstractRateService::request to return PHP array
         $response = $this->request( $endpoint );
         if ( is_wp_error( $response ) ) {
             return $response;
         }
 
-        // خطای سمت سرویس
+        // Server-side error
         if ( isset( $response['Error'] ) && $response['Error'] !== '' ) {
             return new \WP_Error( $this->get_key(), sanitize_text_field( (string) $response['Error'] ) );
         }
@@ -89,12 +89,12 @@ class TabanGohar extends AbstractRateService {
             return new \WP_Error( $this->get_key(), __( 'Webservice returned empty or invalid payload.', 'mns-navasan-plus' ) );
         }
 
-        // نگاشت آیتم‌ها (عنوان/ضریب)
+        // Map items (title/ratio)
         $map  = apply_filters( 'mnsnp/tabangohar/items', $this->items() );
         $data = [];
 
         foreach ( $response as $key => $value ) {
-            if ( $key === 'TimeRead' ) { // فیلد زمان را نادیده بگیر
+            if ( $key === 'TimeRead' ) { // Ignore time field
                 continue;
             }
 
@@ -119,7 +119,7 @@ class TabanGohar extends AbstractRateService {
     }
 
     /**
-     * نگاشت آیتم‌های API → عنوان و ضریب محاسبه
+     * Map API items → title and calculation ratio
      *
      * @return array<string, array{title:string, ratio:float}>
      */
@@ -135,13 +135,13 @@ class TabanGohar extends AbstractRateService {
             'YekGram21'            => [ 'title' => 'یک گرم طلای 21 عیار',    'ratio' => 1 ],
             'YekMesghal18'         => [ 'title' => 'یک مثقال طلای 18 عیار',  'ratio' => 1 ],
             'YekMesghal17'         => [ 'title' => 'یک مثقال طلای 17 عیار',  'ratio' => 1 ],
-            'KharidMotefaregheh18' => [ 'title' => 'خرید متفرقه 18',         'ratio' => 1 ],
+            'KharidMotefaregheh18' => [ 'title' => 'Purchase متفرقه 18',         'ratio' => 1 ],
             'TavizMotefaregheh18'  => [ 'title' => 'تعویض متفرقه 18',        'ratio' => 1 ],
             'OunceTala'            => [ 'title' => 'انس طلا',                'ratio' => 1 ],
             'OunceNoghreh'         => [ 'title' => 'انس نقره',               'ratio' => 0.001 ],
-            'Dollar'               => [ 'title' => 'دلار',                   'ratio' => 1 ],
-            'Euro'                 => [ 'title' => 'یورو',                   'ratio' => 1 ],
-            'Derham'               => [ 'title' => 'درهم',                   'ratio' => 1 ],
+            'Dollar'               => [ 'title' => 'Dollar',                   'ratio' => 1 ],
+            'Euro'                 => [ 'title' => 'Euro',                   'ratio' => 1 ],
+            'Derham'               => [ 'title' => 'Dirham',                   'ratio' => 1 ],
             'Pelatin'              => [ 'title' => 'پلاتین',                 'ratio' => 1 ],
         ];
     }

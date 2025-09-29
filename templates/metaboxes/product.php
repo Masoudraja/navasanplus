@@ -22,13 +22,13 @@ $product_type  = $is_variation ? 'variation' : 'simple';
 
 $section_class = $is_variation
     ? 'mns-navasan-plus_variation_product_fields'
-    // عمداً hidden/کلاس‌های مخفی ووکامرس حذف شده تا همیشه دیده شود
+    // Intentionally removed hidden/concealed WooCommerce classes so it's always visible
     : 'options_group show_if_simple mns-navasan-plus_simple_product_fields';
 
 $data_loop     = $is_variation ? ' data-loop="' . esc_attr( (int) $loop ) . '"' : '';
 
 $name_prefix   = $is_variation ? '_variable' : '';
-$name_suffix   = $is_variation ? '[' . (int) $loop . ']' : ''; // برای محصول ساده خالی بماند
+$name_suffix   = $is_variation ? '[' . (int) $loop . ']' : ''; // Keep empty for simple products
 
 $id_suffix     = $is_variation ? '_' . (int) $loop : '';
 $field_class   = $is_variation ? 'mns-navasan-plus_variation_field' : 'mns-navasan-plus_simple_field';
@@ -97,7 +97,7 @@ $formula_posts = get_posts([
     'suppress_filters' => true,
 ]);
 
-// مقدار ذخیره‌شدهٔ متغیرهای فرمولِ همین محصول/ورییشن (آرایهٔ تجمیع‌شده)
+// Saved value of formula variables for this product/variation (aggregated array)
 $stored_formula_vars = $product->get_meta( '_mns_navasan_plus_formula_variables', true );
 $stored_formula_vars = is_array( $stored_formula_vars ) ? $stored_formula_vars : [];
 
@@ -109,7 +109,7 @@ foreach ( $formula_posts as $fp ) {
     $post = get_post( $fid );
     if ( ! $post ) continue;
 
-    // آرایهٔ متغیرهای فرمول از متای فرمول
+    // Array of formula variables from formula meta
     $vars_meta = (array) get_post_meta(
         $fid,
         DB::instance()->full_meta_key( 'formula_variables' ),
@@ -130,16 +130,16 @@ foreach ( $formula_posts as $fp ) {
         'variables' => $vars_for_ui,
     ];
 
-    // از آرایهٔ ذخیره‌شده در خود محصول بخوان (فقط 'regular' برای هر code)
+    // Read from saved array in product itself (only 'regular' for each code)
     $product_data[ $fid ] = [];
     foreach ( $vars_for_ui as $code => $_ ) {
         $regular = '';
         if ( ! empty( $stored_formula_vars[ $fid ][ $code ] ) ) {
-            // سازگاری با داده‌های قدیمی: اگر آرایه است، از کلید 'regular' بخوان
+            // Compatibility with old data: if it's an array, read from 'regular' key
             if ( is_array( $stored_formula_vars[ $fid ][ $code ] ) ) {
                 $regular = $stored_formula_vars[ $fid ][ $code ]['regular'] ?? '';
             } else {
-                // یا اگر به‌صورت scalar ذخیره شده بود
+                // Or if it was saved as scalar
                 $regular = $stored_formula_vars[ $fid ][ $code ];
             }
         }
@@ -152,7 +152,7 @@ foreach ( $formula_posts as $fp ) {
 <div class="<?php echo esc_attr( $section_class ); ?>"<?php echo $data_loop; ?>>
 
   <?php
-  // 1) فعال‌سازی قیمت‌گذاری بر پایه نرخ
+  // 1) Enable rate-based pricing
   Fields::checkbox(
   'mns_navasan_plus_active' . $id_suffix,
   $name_prefix . '_mns_navasan_plus_active' . $name_suffix,
@@ -165,7 +165,7 @@ foreach ( $formula_posts as $fp ) {
   ]
 );
 
-  // 3) نوع وابستگی (Simple / Advanced)
+  // 3) Dependency type (Simple / Advanced)
   Fields::select(
       'mns_navasan_plus_dependence_type' . $id_suffix,
       $name_prefix . '_mns_navasan_plus_dependence_type' . $name_suffix,
@@ -176,16 +176,16 @@ foreach ( $formula_posts as $fp ) {
       __( 'Choose how to calculate this product’s price.', 'mns-navasan-plus' )
   );
 
-  // 4) بلوک فرمول (زیرتمپلیت product-formula)
+  // 4) Formula block (product-formula sub-template)
   Snippets::load_template( 'metaboxes/product-formula', [
       'post_id'      => $product->get_id(),
       'name_prefix'  => $name_prefix,   // '' برای ساده، '_variable' برای ورییشن
       'name_suffix'  => $name_suffix,   // '' برای ساده، '[i]' برای ورییشن
-      'formula_data' => $formula_data,  // لیست فرمول‌ها + متغیرها
-      'product_data' => $product_data,  // فقط مقدارهای regular ذخیره‌شده
+      'formula_data' => $formula_data,  // List of formulas + variables
+      'product_data' => $product_data,  // Only saved regular values
   ] );
 
-  // 5) انتخاب ارز (برای حالت simple)
+  // 5) Select currency (for simple mode)
   Fields::select(
       'mns_navasan_plus_currency_id' . $id_suffix,
       $name_prefix . '_mns_navasan_plus_currency_id' . $name_suffix,
@@ -195,7 +195,7 @@ foreach ( $formula_posts as $fp ) {
       [ 'wrapper_class' => $wrapper_class . ' form-row-first show_if_mns_navasan_plus_dependence_type_simple show_if_mns_navasan_plus_active', 'class' => $field_class ]
   );
 
-  // 6) Profit settings (برای حالت simple)
+  // 6) Profit settings (for simple mode)
   Fields::select(
       'mns_navasan_plus_profit_type' . $id_suffix,
       $name_prefix . '_mns_navasan_plus_profit_type' . $name_suffix,
@@ -212,7 +212,7 @@ foreach ( $formula_posts as $fp ) {
       [ 'wrapper_class' => $wrapper_class . ' show_if_mns_navasan_plus_currency_id show_if_mns_navasan_plus_dependence_type_simple show_if_mns_navasan_plus_active', 'class' => $field_class ]
   );
 
-  // 7) Rounding (fallback سراسری + per-product)
+  // 7) Rounding (global fallback + per-product)
   Fields::select(
       'mns_navasan_plus_rounding_type' . $id_suffix,
       $name_prefix . '_mns_navasan_plus_rounding_type' . $name_suffix,
@@ -237,7 +237,7 @@ foreach ( $formula_posts as $fp ) {
       [ 'wrapper_class' => $wrapper_class . ' show_if_mns_navasan_plus_currency_id show_if_mns_navasan_plus_dependence_type_simple show_if_mns_navasan_plus_active', 'class' => $field_class ]
   );
 
-  // 8) سقف و کف (فقط در حالت simple)
+  // 8) Ceiling and floor (only in simple mode)
   Fields::number(
       'mns_navasan_plus_ceil_price' . $id_suffix,
       $name_prefix . '_mns_navasan_plus_ceil_price' . $name_suffix,
@@ -256,10 +256,10 @@ foreach ( $formula_posts as $fp ) {
 </div>
 
 <?php
-// ... همان کد قبلی تا قبل از بخش پیش‌نمایش ...
+// ... همان Code Previous تا قبل از بخش Preview ...
 
 // -------------------------------------------------------------------------
-// پیش‌نمایش «اجزای فرمول» و جمع نهایی
+// Preview «اجزای Formula» و جمع نهایی
 // -------------------------------------------------------------------------
 $dep_meta    = (string) $product->get_meta( '_mns_navasan_plus_dependence_type', 'simple' );
 $use_formula = in_array( strtolower( $dep_meta ), [ 'advanced', 'formula' ], true );

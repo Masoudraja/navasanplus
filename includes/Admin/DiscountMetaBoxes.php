@@ -8,7 +8,7 @@ use MNS\NavasanPlus\DB;
 class DiscountMetaBoxes {
 
     public function run() {
-        // پیش‌فرض: «روشن» — قابل خاموش‌کردن با فیلتر
+        // Default: "On" — can be disabled with filter
         if ( ! apply_filters( 'mnsnp/enable_side_discount_box', true ) ) {
             return;
         }
@@ -71,7 +71,7 @@ class DiscountMetaBoxes {
         $in = wp_unslash( $_POST['mnsnp_discount'] );
 
         $map = [
-            'profit_percentage' => 0, // دقت اعشار
+            'profit_percentage' => 0, // Decimal precision
             'profit_fixed'      => 0,
             'charge_percentage' => 0,
             'charge_fixed'      => 0,

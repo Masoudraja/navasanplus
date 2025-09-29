@@ -2,8 +2,8 @@
 /**
  * PublicNS\Currency
  *
- * رَپِر یک «پُست» (CPT) ارز برای دسترسی یکنواخت به نرخ جاری، نماد، تاریخ به‌روزرسانی
- * و محاسبات ساده‌ی آماری (مثل میانگین قبلی برای درصد تغییر).
+ * رَپِر یک «پُست» (CPT) Currency برای دسترسی یکنواخت به Rate جاری، نماد، تاریخ به‌روزرسانی
+ * و محاسبات ساده‌ی Statisticsی (مثل میانگین Previous برای درصد تغییر).
  *
  * File: includes/PublicNS/Currency.php
  */
@@ -31,7 +31,7 @@ class Currency {
     private array   $prev_mean_cache   = [];    // keyed by span
 
     /**
-     * @param \WP_Post $post پستِ مربوط به ارز (post_type: mnswmc)
+     * @param \WP_Post $post پستِ مربوط به Currency (post_type: mnswmc)
      */
     public function __construct( \WP_Post $post ) {
         $this->post = $post;
@@ -42,38 +42,38 @@ class Currency {
         return $this->post;
     }
 
-    /** شناسه پست */
+    /** ID پست */
     public function get_id(): int {
         return (int) $this->post->ID;
     }
 
-    /** نام ارز (عنوان پست) */
+    /** Name Currency (عنوان پست) */
     public function get_name(): string {
         return (string) get_the_title( $this->post );
     }
 
-    /** کُد ارز (اختیاری) از متا */
+    /** کُد Currency (اختیاری) از متا */
     public function get_code(): string {
         if ( $this->code_cache !== null ) return $this->code_cache;
         return $this->code_cache = (string) DB::instance()->read_post_meta( $this->get_id(), 'currency_code', '' );
     }
 
-    /** نماد/واحد نمایش (مثلاً "تومان" یا "$") از متا */
+    /** نماد/Unit Display (مثلاً "Toman" یا "$") از متا */
     public function get_symbol(): string {
         if ( $this->symbol_cache !== null ) return $this->symbol_cache;
         return $this->symbol_cache = (string) DB::instance()->read_post_meta( $this->get_id(), 'currency_symbol', '' );
     }
 
-    /** نرخ جاری از متا */
+    /** Rate جاری از متا */
     public function get_rate(): float {
         if ( $this->rate_cache !== null ) return $this->rate_cache;
         return $this->rate_cache = (float) DB::instance()->read_post_meta( $this->get_id(), 'currency_value', 0 );
     }
 
     /**
-     * رشته‌ی قابل نمایش نرخ (با فرمت و نماد)
+     * رشته‌ی قابل Display Rate (با فرمت و نماد)
      *
-     * @param float|null $rate     اگر null باشد از نرخ جاری استفاده می‌شود
+     * @param float|null $rate     اگر null باشد از Rate جاری استفاده می‌شود
      * @param int|null   $decimals تعداد اعشار برای فرمت
      */
     public function display_rate( ?float $rate = null, ?int $decimals = 2 ): string {
@@ -84,12 +84,12 @@ class Currency {
     }
 
     /**
-     * زمان آخرین به‌روزرسانی نرخ
+     * زمان Lastین به‌روزرسانی Rate
      *
-     * ترتیب اولویت:
+     * ترتیب Firstویت:
      *  1) متای `currency_update_time`
      *  2) بیشترین کلید زمانی در آرایه‌ی `currency_history`
-     *  3) زمان آخرین ویرایش پست
+     *  3) زمان Lastین Edit پست
      *
      * @return int Unix timestamp
      */
@@ -112,16 +112,16 @@ class Currency {
             }
         }
 
-        // fallback: زمان آخرین تغییر پست
+        // fallback: زمان Lastین تغییر پست
         $modified = get_post_modified_time( 'U', true, $pid );
         return $this->update_time_cache = ( $modified ? (int) $modified : time() );
     }
 
     /**
-     * میانگین «قبلی» برای محاسبه‌ی درصد تغییر
-     * به‌صورت میانگین نقاط تاریخی بدون درنظر گرفتن آخرین مقدار.
+     * میانگین «Previous» برای Calculation‌ی درصد تغییر
+     * به‌صورت میانگین نقاط تاریخی بدون درنظر گرفتن Lastین مقدار.
      *
-     * @param int $span حداکثر تعداد نقاطی که لحاظ می‌کنیم (بدون آخرین نقطه)
+     * @param int $span حداکثر تعداد نقاطی که لحاظ می‌کنیم (بدون Lastین نقطه)
      */
     public function get_prev_mean( int $span = 10 ): float {
         $span    = max( 1, (int) $span );
@@ -135,14 +135,14 @@ class Currency {
             return $this->prev_mean_cache[ $cache_k ] = (float) $this->get_rate();
         }
 
-        // مرتب‌سازی بر اساس زمان
+        // Sort بر اساس زمان
         ksort( $history, SORT_NUMERIC );
 
-        // حذف آخرین نقطه (جدیدترین)
+        // Delete Lastین نقطه (جدیدترین)
         $keys = array_keys( $history );
         array_pop( $keys );
 
-        // در نظر گرفتن فقط span نقطه‌ی آخرِ باقی‌مانده
+        // در نظر گرفتن فقط span نقطه‌ی Lastِ باقی‌مانده
         $keys = array_slice( $keys, -$span );
 
         $sum = 0.0; $cnt = 0;
@@ -154,7 +154,7 @@ class Currency {
     }
 
     /**
-     * درصد تغییر نسبت به میانگین قبلی (مثبت/منفی)
+     * درصد تغییر نسبت به میانگین Previous (مثبت/منفی)
      * @param int $span
      */
     public function get_change_percent( int $span = 10 ): float {
@@ -167,7 +167,7 @@ class Currency {
     }
 
     /**
-     * تاریخچه‌ی نرخ‌ها (timestamp ⇒ rate)
+     * تاریخچه‌ی Rate‌ها (timestamp ⇒ rate)
      * @return array<int,float>
      */
     public function get_history(): array {
@@ -183,7 +183,7 @@ class Currency {
         return date_i18n( $format, $this->get_update_time() );
     }
 
-    /** خروجی ساده برای JSON/UI */
+    /** Output ساده برای JSON/UI */
     public function to_array(): array {
         return [
             'id'           => $this->get_id(),

@@ -8,7 +8,7 @@
 namespace MNS\NavasanPlus\PublicNS;
 
 use MNS\NavasanPlus\DB;
-use MNS\NavasanPlus\Services\FormulaEngine; // موتور واحد ارزیابی
+use MNS\NavasanPlus\Services\FormulaEngine; // موتور Unit Currencyیابی
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -19,7 +19,7 @@ class Formula {
     /** @var \WP_Post */
     protected $post;
 
-    // Meta keys (سازگار با نوسان؛ با پیشوند DB ذخیره می‌شوند)
+    // Meta keys (سازگار با نوسان؛ با پیشوند DB Save می‌شوند)
     public const META_EXPR        = 'formula_formul';
     public const META_VARIABLES   = 'formula_variables';
     public const META_COMPONENTS  = 'formula_components';
@@ -40,7 +40,7 @@ class Formula {
     public function get_id(): int        { return (int) $this->post->ID; }
     public function get_name(): string   { return (string) get_the_title( $this->post ); }
 
-    /** متن/عبارت فرمول */
+    /** متن/Expression Formula */
     public function get_expression(): string {
         return (string) DB::instance()->read_post_meta( $this->get_id(), self::META_EXPR, '' );
     }
@@ -63,7 +63,7 @@ class Formula {
         foreach ( $raw as $codeKey => $row ) {
             if ( ! is_array( $row ) ) { continue; }
 
-            // code: اولویت با کلید آرایه، سپس 'code' داخل آیتم، سپس اسلاگ name
+            // code: Firstویت با کلید آرایه، سپس 'code' داخل آیتم، سپس اسلاگ name
             $code = is_string( $codeKey ) ? $codeKey : ( $row['code'] ?? '' );
             if ( $code === '' ) {
                 $code = sanitize_title( (string) ( $row['name'] ?? ('var_'.$i) ) );
@@ -109,7 +109,7 @@ class Formula {
     }
 }
 
-/** شیء «متغیر فرمول» */
+/** شیء «Variable Formula» */
 class FormulaVariable {
     protected string $code;
     protected string $name;
@@ -142,13 +142,13 @@ class FormulaVariable {
     public function get_value_symbol(): string { return $this->value_symbol; }
 }
 
-/** شیء «کامپوننت فرمول» */
+/** شیء «کامپوننت Formula» */
 class FormulaComponent {
     protected string $name;
     protected string $text;
     protected string $symbol;
 
-    /** Engine واحد اشتراکی برای کاهش سربار ساخت مکرر */
+    /** Engine Unit اشتراکی برای کاهش سربار ساخت مکرر */
     private static ?FormulaEngine $engine = null;
 
     public function __construct( string $name, string $text, string $symbol = '' ) {
@@ -170,10 +170,10 @@ class FormulaComponent {
     }
 
     /**
-     * اجرای متن کامپوننت با متغیرها (موتور واحد: Services\FormulaEngine)
+     * اجرای متن کامپوننت با Variableها (موتور Unit: Services\FormulaEngine)
      * - نگاشت [CODE] → CODE
      * - پاک‌سازی ورودی‌ها
-     * - ارزیابی امن
+     * - Currencyیابی امن
      */
     public function execute( array $vars ): float {
         $expr = (string) $this->text;
@@ -181,7 +181,7 @@ class FormulaComponent {
             return 0.0;
         }
 
-        // الگوی [CODE] را به شناسهٔ ساده تبدیل کن (با حفظ حروف/عدد/آندرلاین)
+        // الگوی [CODE] را به IDٔ ساده تبدیل کن (با حفظ حروف/عدد/آندرلاین)
         $expr = preg_replace( '/\[(\w+)\]/', '$1', $expr );
 
         // فقط کاراکترهای مجاز: اعداد/حروف/آندرلاین و عملگرها و پرانتز و کاما (برای توابعی مثل min/max)
@@ -189,7 +189,7 @@ class FormulaComponent {
             return 0.0;
         }
 
-        // مقادیر متغیرها را امن و عددی کن
+        // مقادیر Variableها را امن و عددی کن
         $safeVars = [];
         foreach ( $vars as $k => $v ) {
             if ( is_string( $k ) && preg_match( '/^\w+$/', $k ) ) {
