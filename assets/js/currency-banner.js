@@ -428,17 +428,14 @@
     });
 
     // Handle Woodmart theme header builder
-    if (
-      typeof woodmart !== "undefined" ||
-      $("body").hasClass("woodmart-theme")
-    ) {
+    if (typeof woodmart !== "undefined" || $("body").hasClass("woodmart-theme")) {
       // Initialize after a short delay to ensure header is loaded
       setTimeout(() => {
         MNSCurrencyBanner.init();
       }, 500);
-
+      
       // Re-initialize on window load
-      $(window).on("load", function () {
+      $(window).on("load", function() {
         setTimeout(() => {
           MNSCurrencyBanner.init();
         }, 100);
