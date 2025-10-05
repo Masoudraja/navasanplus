@@ -101,6 +101,14 @@ add_action( 'plugins_loaded', static function () {
     mns_navasan_plus()->run();
 } );
 
+/** Include test file during development */
+if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+    $test_file = __DIR__ . '/test-banner.php';
+    if ( file_exists( $test_file ) ) {
+        include_once $test_file;
+    }
+}
+
 /** Initial setup during activation */
 register_activation_hook( __FILE__, static function () {
     try {

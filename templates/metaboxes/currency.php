@@ -31,12 +31,30 @@ use MNS\NavasanPlus\Helpers;
 // Nonce for security
 wp_nonce_field( 'mns_navasan_plus_currency', '_mns_navasan_plus_currency_nonce' );
 
-// Rate Symbol
+// Currency Code (like USD, EUR, YekGram18, etc.)
+Fields::text(
+    'mns_navasan_plus_currency_code',
+    'mns_navasan_plus_currency_code',
+    $currency['code'] ?? '',
+    __( 'Currency Code', 'mns-navasan-plus' ),
+    [ 'placeholder' => 'e.g., USD, YekGram18, Dollar' ]
+);
+
+// Currency Symbol (like $, €, تومان, etc.)
+Fields::text(
+    'mns_navasan_plus_currency_symbol',
+    'mns_navasan_plus_currency_symbol',
+    $currency['symbol'] ?? '',
+    __( 'Currency Symbol/Unit', 'mns-navasan-plus' ),
+    [ 'placeholder' => 'e.g., $, €, تومان, گرم' ]
+);
+
+// Rate Symbol (legacy field)
 Fields::text(
     'mns_navasan_plus_currency_rate_symbol',
     'mns_navasan_plus_currency_rate_symbol',
     $currency['rate_symbol'],
-    __( 'Rate Symbol', 'mns-navasan-plus' )
+    __( 'Rate Symbol (Legacy)', 'mns-navasan-plus' )
 );
 
 // Value

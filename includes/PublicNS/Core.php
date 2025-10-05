@@ -28,6 +28,9 @@ final class Core {
     private function __construct() {
         // This hook is called on WooCommerce product queries
         add_action( 'woocommerce_product_query', [ $this, 'products_query' ], 9999 );
+        
+        // Initialize Currency Banner
+        CurrencyBanner::instance();
     }
 
     /** (Optional) Loader::boot_public() calls this */

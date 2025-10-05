@@ -21,6 +21,11 @@ final class Core {
         // Review/rating notice
         add_action( 'admin_notices',        [ $this, 'review_notice' ] );
 
+        // - Boot menu first
+        if ( class_exists( __NAMESPACE__ . '\\Menu' ) ) {
+            ( new Menu() )->run();
+        }
+
         // - Boot settings
         if ( class_exists( __NAMESPACE__ . '\\Settings' ) && method_exists( Settings::class, 'instance' ) ) {
             Settings::instance(); // Usually registers its own hooks
@@ -43,6 +48,11 @@ final class Core {
         // - WooCommerce integration (your class has run method)
         if ( class_exists( __NAMESPACE__ . '\\WooCommerce' ) ) {
             ( new WooCommerce() )->run();
+        }
+
+        // - Currency Banner admin page
+        if ( class_exists( __NAMESPACE__ . '\\CurrencyBannerPage' ) ) {
+            ( new CurrencyBannerPage() )->run();
         }
 
         // Note: We don't have Widgets, so we don't call anything

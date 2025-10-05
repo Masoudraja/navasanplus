@@ -233,6 +233,11 @@ final class Loader {
         if ( class_exists( __NAMESPACE__ . '\\Admin\\Menu' ) ) {
             ( new \MNS\NavasanPlus\Admin\Menu() )->run();
         }
+        
+        // Initialize Admin Core which handles CurrencyBannerPage and other admin components
+        if ( class_exists( __NAMESPACE__ . '\\Admin\\Core' ) ) {
+            \MNS\NavasanPlus\Admin\Core::instance();
+        }
         if ( ! class_exists( __NAMESPACE__ . '\\Admin\\PostTypes' ) && file_exists( $post_types_file ) ) require_once $post_types_file;
         if ( ! class_exists( __NAMESPACE__ . '\\Admin\\MetaBoxes' ) && file_exists( $metaboxes_file ) )  require_once $metaboxes_file;
         if ( ! class_exists( __NAMESPACE__ . '\\Admin\\Settings' ) && file_exists( $settings_file ) )    require_once $settings_file;

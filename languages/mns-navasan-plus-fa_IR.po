@@ -693,7 +693,7 @@ msgstr "فعال‌سازی هم‌رسانی دوره‌ای از سرویس ا
 
 #: includes/Admin/Settings.php:96
 msgid "Enter your Taban Gohar API username & password."
-msgstr "نام کاربری و رمز عبور API تبان گهر خود را وارد کنید."
+msgstr "نام کاربری و رمز عبور API تابان گهر خود را وارد کنید."
 
 #: includes/Admin/Settings.php:196
 msgid "1–1440 minutes."
@@ -713,7 +713,7 @@ msgstr "دفعات هم‌رسانی (دقیقه)."
 
 #: includes/Admin/Settings.php:292
 msgid "Test Connection (Taban Gohar)"
-msgstr "تست اتصال (تبان گهر)"
+msgstr "تست اتصال (تابان گهر)"
 
 #: includes/Admin/Settings.php:287
 msgid "Sync Rates Now"

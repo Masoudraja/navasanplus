@@ -173,14 +173,14 @@ final class PriceBreakdown {
                     <?php if ( isset($display_data['profit']) ): ?>
                     <tr style="border-bottom: 1px solid #f0f0f0;">
                         <th style="text-align: right; font-weight: 600; color: #34495e; background: #f8f9fa; direction: rtl;"><?php echo \esc_html( $display_data['profit']['label'] ); ?>:</th>
-                        <td style="color: #27ae60; font-weight: 600; text-align: right; direction: rtl;"><?php echo \esc_html( \number_format_i18n( (float)$display_data['profit']['value'], 2 ) ); ?> <?php echo \esc_html( $display_data['profit']['value_symbol'] ); ?></td>
+                        <td style="color: #27ae60; font-weight: 600; text-align: right; direction: rtl;"><?php echo \esc_html( \number_format_i18n( (int)$display_data['profit']['value'] ) ); ?> <?php echo \esc_html( $display_data['profit']['value_symbol'] ); ?></td>
                     </tr>
                     <?php endif; ?>
 
                     <?php if ( isset($display_data['charge']) ): ?>
                     <tr style="border-bottom: 1px solid #f0f0f0;">
                         <th style="text-align: right; font-weight: 600; color: #34495e; background: #f8f9fa; direction: rtl;"><?php echo \esc_html( $display_data['charge']['label'] ); ?>:</th>
-                        <td style="color: #27ae60; font-weight: 600; text-align: right; direction: rtl;"><?php echo \esc_html( \number_format_i18n( (float)$display_data['charge']['value'], 2 ) ); ?> <?php echo \esc_html( $display_data['charge']['value_symbol'] ); ?></td>
+                        <td style="color: #27ae60; font-weight: 600; text-align: right; direction: rtl;"><?php echo \esc_html( \number_format_i18n( (int)$display_data['charge']['value'] ) ); ?> <?php echo \esc_html( $display_data['charge']['value_symbol'] ); ?></td>
                     </tr>
                     <?php endif; ?>
                 </tbody>

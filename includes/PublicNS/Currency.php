@@ -76,9 +76,9 @@ class Currency {
      * @param float|null $rate     اگر null باشد از Rate جاری استفاده می‌شود
      * @param int|null   $decimals تعداد اعشار برای فرمت
      */
-    public function display_rate( ?float $rate = null, ?int $decimals = 2 ): string {
+    public function display_rate( ?float $rate = null, ?int $decimals = 0 ): string {
         $value     = ($rate !== null) ? (float) $rate : $this->get_rate();
-        $formatted = Helpers::format_decimal( $value, $decimals ?? 2 );
+        $formatted = Helpers::format_decimal( $value, $decimals ?? 0 );
         $symbol    = $this->get_symbol();
         return $symbol !== '' ? ($formatted . ' ' . $symbol) : $formatted;
     }

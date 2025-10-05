@@ -50,7 +50,27 @@ final class MetaBoxes {
     }
 
     public function currency_output( \WP_Post $post ): void {
-        Snippets::load_template( 'metaboxes/currency', [ 'post_id' => $post->ID ] );
+        $db = DB::instance();
+        $currency = [
+            'rate_symbol' => $db->read_post_meta( $post->ID, 'currency_rate_symbol', '' ),
+            'code' => $db->read_post_meta( $post->ID, 'currency_code', '' ),
+            'symbol' => $db->read_post_meta( $post->ID, 'currency_symbol', '' ),
+            'value' => $db->read_post_meta( $post->ID, 'currency_value', 0 ),
+            // Add other currency fields as needed
+            'calculation_type' => $db->read_post_meta( $post->ID, 'currency_calculation_type', 'manual' ),
+            'formula_text' => $db->read_post_meta( $post->ID, 'currency_formula_text', '' ),
+            'profit' => $db->read_post_meta( $post->ID, 'currency_profit', 0 ),
+            'fee' => $db->read_post_meta( $post->ID, 'currency_fee', 0 ),
+            'ratio' => $db->read_post_meta( $post->ID, 'currency_ratio', 1 ),
+            'fixed' => $db->read_post_meta( $post->ID, 'currency_fixed', 0 ),
+            'update_type' => $db->read_post_meta( $post->ID, 'currency_update_type', 'none' ),
+            'relation' => $db->read_post_meta( $post->ID, 'currency_relation', '' ),
+            'connection' => $db->read_post_meta( $post->ID, 'currency_connection', '' ),
+            'operation' => $db->read_post_meta( $post->ID, 'currency_operation', '+' ),
+            'calculation_order' => $db->read_post_meta( $post->ID, 'currency_calculation_order', 0 ),
+            'lowest_rate' => $db->read_post_meta( $post->ID, 'currency_lowest_rate', 0 ),
+        ];
+        Snippets::load_template( 'metaboxes/currency', [ 'post_id' => $post->ID, 'currency' => $currency ] );
     }
 
     public function formula_output( \WP_Post $post ): void {
@@ -75,9 +95,68 @@ final class MetaBoxes {
     public function save_currency( int $post_id, \WP_Post $post ): void {
         if ( ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || ! $post || $post->post_type !== 'mnsnp_currency' ) return;
         if ( ! current_user_can( 'manage_woocommerce' ) ) return;
+        if ( empty( $_POST['_mns_navasan_plus_currency_nonce'] ) || ! wp_verify_nonce( $_POST['_mns_navasan_plus_currency_nonce'], 'mns_navasan_plus_currency' ) ) return;
+        
         $db = DB::instance();
-        if ( isset( $_POST['mnswmc_currency_value'] ) ) { $rate = wc_format_decimal( wp_unslash( $_POST['mnswmc_currency_value'] ), 6 ); $db->update_post_meta( $post_id, 'currency_value', $rate ); }
-        if ( isset( $_POST['mnswmc_currency_rate_symbol'] ) ) { $sym = sanitize_text_field( wp_unslash( $_POST['mnswmc_currency_rate_symbol'] ) ); $db->update_post_meta( $post_id, 'currency_rate_symbol', $sym ); }
+        
+        // Currency Code
+        if ( isset( $_POST['mns_navasan_plus_currency_code'] ) ) {
+            $code = sanitize_text_field( wp_unslash( $_POST['mns_navasan_plus_currency_code'] ) );
+            $db->update_post_meta( $post_id, 'currency_code', $code );
+        }
+        
+        // Currency Symbol
+        if ( isset( $_POST['mns_navasan_plus_currency_symbol'] ) ) {
+            $symbol = sanitize_text_field( wp_unslash( $_POST['mns_navasan_plus_currency_symbol'] ) );
+            $db->update_post_meta( $post_id, 'currency_symbol', $symbol );
+        }
+        
+        // Legacy rate symbol
+        if ( isset( $_POST['mns_navasan_plus_currency_rate_symbol'] ) ) {
+            $rate_symbol = sanitize_text_field( wp_unslash( $_POST['mns_navasan_plus_currency_rate_symbol'] ) );
+            $db->update_post_meta( $post_id, 'currency_rate_symbol', $rate_symbol );
+        }
+        
+        // Currency Value
+        if ( isset( $_POST['mns_navasan_plus_currency_value'] ) ) {
+            $rate = wc_format_decimal( wp_unslash( $_POST['mns_navasan_plus_currency_value'] ), 6 );
+            $db->update_post_meta( $post_id, 'currency_value', $rate );
+        }
+        
+        // Other currency fields
+        $fields = [
+            'currency_calculation_type' => 'sanitize_text_field',
+            'currency_formula_text' => 'sanitize_textarea_field', 
+            'currency_profit' => 'floatval',
+            'currency_fee' => 'floatval',
+            'currency_ratio' => 'floatval',
+            'currency_fixed' => 'floatval',
+            'currency_update_type' => 'sanitize_text_field',
+            'currency_relation' => 'sanitize_text_field',
+            'currency_connection' => 'sanitize_text_field',
+            'currency_operation' => 'sanitize_text_field',
+            'currency_calculation_order' => 'intval',
+            'currency_lowest_rate' => 'floatval',
+        ];
+        
+        foreach ( $fields as $field => $sanitizer ) {
+            $post_key = 'mns_navasan_plus_' . $field;
+            if ( isset( $_POST[$post_key] ) ) {
+                $value = wp_unslash( $_POST[$post_key] );
+                $value = $sanitizer( $value );
+                $db->update_post_meta( $post_id, $field, $value );
+            }
+        }
+        
+        // Legacy compatibility
+        if ( isset( $_POST['mnswmc_currency_value'] ) ) {
+            $rate = wc_format_decimal( wp_unslash( $_POST['mnswmc_currency_value'] ), 6 );
+            $db->update_post_meta( $post_id, 'currency_value', $rate );
+        }
+        if ( isset( $_POST['mnswmc_currency_rate_symbol'] ) ) {
+            $sym = sanitize_text_field( wp_unslash( $_POST['mnswmc_currency_rate_symbol'] ) );
+            $db->update_post_meta( $post_id, 'currency_rate_symbol', $sym );
+        }
     }
 
     public function save_formula( int $post_id, \WP_Post $post ): void {

@@ -21,6 +21,14 @@ final class WooCommerce {
         add_filter( 'woocommerce_variation_prices_price',      [ $this, 'set_and_filter_dynamic_prices' ], 20, 2 );
         
         add_action( 'init', [ $this, 'add_order_macros' ] );
+        
+        // Add order item meta display
+        add_action( 'woocommerce_checkout_create_order_line_item', [ $this, 'add_order_item_meta' ], 10, 4 );
+        add_filter( 'woocommerce_order_item_display_meta_key', [ $this, 'display_order_item_meta_key' ], 10, 3 );
+        add_filter( 'woocommerce_order_item_display_meta_value', [ $this, 'display_order_item_meta_value' ], 10, 3 );
+        
+        // Add direct display for admin order pages (fallback)
+        add_action( 'woocommerce_before_order_itemmeta', [ $this, 'display_order_item_breakdown' ], 10, 3 );
     }
 
     /**
@@ -135,5 +143,191 @@ final class WooCommerce {
                 return 0.0;
             } );
         }
+    }
+    
+    /**
+     * Add order item meta data for weight, profit, and charge
+     */
+    public function add_order_item_meta( $item, $cart_item_key, $values, $order ): void {
+        $product = $item->get_product();
+        if ( ! $product ) return;
+        
+        $db = DB::instance();
+        
+        // Check if this product uses Navasan Plus pricing
+        $is_active = $this->product_meta_bool( $product, 'active' );
+        $dep_type = $product->get_meta( $db->full_meta_key('dependence_type'), true ) ?: 'simple';
+        
+        if ( ! $is_active || ! in_array($dep_type, ['advanced', 'formula']) ) {
+            return;
+        }
+        
+        $fid = (int) $product->get_meta( $db->full_meta_key('formula_id'), true );
+        if ( $fid <= 0 ) {
+            return;
+        }
+        
+        // Get formula variables and overrides
+        $vars_meta = get_post_meta( $fid, $db->full_meta_key('formula_variables'), true );
+        $overAll = $product->get_meta( $db->full_meta_key('formula_variables'), true );
+        
+        $vars_meta = is_array($vars_meta) ? $vars_meta : [];
+        $overAll = is_array($overAll) ? $overAll : [];
+        $overrides = $overAll[$fid] ?? [];
+        
+        if ( empty($vars_meta) ) return;
+        
+        // Extract weight, profit, and charge values
+        foreach ( $vars_meta as $code => $row ) {
+            $role = $row['role'] ?? 'none';
+            if ( in_array($role, ['weight', 'profit', 'charge']) ) {
+                // Try to get override value first, then fallback to formula default
+                $value = null;
+                if ( isset($overrides[$code]['regular']) && $overrides[$code]['regular'] !== '' ) {
+                    $value = $overrides[$code]['regular'];
+                } elseif ( isset($overrides[$code]) && !is_array($overrides[$code]) && $overrides[$code] !== '' ) {
+                    $value = $overrides[$code];
+                } elseif ( isset($row['value']) && $row['value'] !== '' ) {
+                    $value = $row['value'];
+                }
+                
+                if ( $value !== null && $value !== '' ) {
+                    $label = $row['name'] ?? $role;
+                    $symbol = $row['value_symbol'] ?? '';
+                    
+                    // Format the value based on role
+                    if ( $role === 'weight' ) {
+                        $formatted_value = number_format_i18n( (float)$value, 3 ) . ' ' . ($symbol ?: __('grams', 'mns-navasan-plus'));
+                    } else {
+                        // Remove decimals for profit and charge
+                        $formatted_value = number_format_i18n( (int)$value ) . ' ' . $symbol;
+                    }
+                    
+                    // Add as order item meta
+                    $item->add_meta_data( $label, $formatted_value, true );
+                }
+            }
+        }
+    }
+    
+    /**
+     * Display custom meta key labels in orders
+     */
+    public function display_order_item_meta_key( $display_key, $meta, $item ): string {
+        // Return the key as-is since we're already using proper labels
+        return $display_key;
+    }
+    
+    /**
+     * Display custom meta values in orders
+     */
+    public function display_order_item_meta_value( $display_value, $meta, $item ): string {
+        // Return the value as-is since we're already formatting it properly
+        return $display_value;
+    }
+    
+    /**
+     * Display breakdown info directly in order items section (with duplication prevention)
+     */
+    public function display_order_item_breakdown( $item_id, $item, $product ): void {
+        if ( ! $product || ! is_admin() ) return;
+        
+        // Prevent duplicate display - check if meta is already showing
+        static $displayed_items = [];
+        if ( isset($displayed_items[$item_id]) ) return;
+        
+        $db = DB::instance();
+        
+        // Check if this product uses Navasan Plus pricing
+        $is_active = $this->product_meta_bool( $product, 'active' );
+        $dep_type = $product->get_meta( $db->full_meta_key('dependence_type'), true ) ?: 'simple';
+        
+        if ( ! $is_active || ! in_array($dep_type, ['advanced', 'formula']) ) {
+            return;
+        }
+        
+        $fid = (int) $product->get_meta( $db->full_meta_key('formula_id'), true );
+        if ( $fid <= 0 ) {
+            return;
+        }
+        
+        // Get formula variables and overrides
+        $vars_meta = get_post_meta( $fid, $db->full_meta_key('formula_variables'), true );
+        $overAll = $product->get_meta( $db->full_meta_key('formula_variables'), true );
+        
+        $vars_meta = is_array($vars_meta) ? $vars_meta : [];
+        $overAll = is_array($overAll) ? $overAll : [];
+        $overrides = $overAll[$fid] ?? [];
+        
+        if ( empty($vars_meta) ) return;
+        
+        // Check if item already has this meta (from checkout)
+        $existing_meta = $item->get_meta_data();
+        $has_breakdown_meta = false;
+        foreach ( $existing_meta as $meta ) {
+            $meta_data = $meta->get_data();
+            foreach ( $vars_meta as $code => $row ) {
+                if ( ($row['role'] ?? '') === 'weight' && $meta_data['key'] === ($row['name'] ?? 'weight') ) {
+                    $has_breakdown_meta = true;
+                    break 2;
+                }
+            }
+        }
+        
+        // If meta already exists, don't display again
+        if ( $has_breakdown_meta ) {
+            $displayed_items[$item_id] = true;
+            return;
+        }
+        
+        // Extract weight, profit, and charge values
+        $display_data = [];
+        foreach ( $vars_meta as $code => $row ) {
+            $role = $row['role'] ?? 'none';
+            if ( in_array($role, ['weight', 'profit', 'charge']) ) {
+                $value = null;
+                if ( isset($overrides[$code]['regular']) && $overrides[$code]['regular'] !== '' ) {
+                    $value = $overrides[$code]['regular'];
+                } elseif ( isset($overrides[$code]) && !is_array($overrides[$code]) && $overrides[$code] !== '' ) {
+                    $value = $overrides[$code];
+                } elseif ( isset($row['value']) && $row['value'] !== '' ) {
+                    $value = $row['value'];
+                }
+                
+                if ( $value !== null && $value !== '' ) {
+                    $label = $row['name'] ?? $role;
+                    $symbol = $row['value_symbol'] ?? '';
+                    
+                    if ( $role === 'weight' ) {
+                        $formatted_value = number_format_i18n( (float)$value, 3 ) . ' ' . ($symbol ?: __('grams', 'mns-navasan-plus'));
+                    } else {
+                        $formatted_value = number_format_i18n( (int)$value ) . ' ' . $symbol;
+                    }
+                    
+                    $display_data[$role] = [
+                        'label' => $label,
+                        'value' => $formatted_value
+                    ];
+                }
+            }
+        }
+        
+        if ( empty($display_data) ) return;
+        
+        $displayed_items[$item_id] = true;
+        
+        // Display in compact table format (following user's table layout preference)
+        echo '<div class="mnsnp-order-breakdown" style="margin: 5px 0; padding: 5px; background: #f9f9f9; border: 1px solid #e1e1e1;">';
+        echo '<table style="width: 100%; border-collapse: collapse; font-size: 11px; line-height: 1.2;">';
+        
+        foreach ( $display_data as $role => $data ) {
+            echo '<tr style="border-bottom: 1px solid #ddd;">';
+            echo '<td style="padding: 3px 5px; font-weight: 600; width: 35%; text-align: right; border-right: 1px solid #ddd;">' . esc_html($data['label']) . ':</td>';
+            echo '<td style="padding: 3px 5px; text-align: right; color: #333;">' . esc_html($data['value']) . '</td>';
+            echo '</tr>';
+        }
+        
+        echo '</table>';
+        echo '</div>';
     }
 }
