@@ -1,13 +1,13 @@
 {
   "name": "mns-navasan-plus",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:parser": "terser assets/js/formula-parser.js -c -m -o assets/js/formula-parser.min.js --source-map",
-    "build:js": "terser assets/js/admin.js -c -m -o assets/js/admin.min.js --source-map && terser assets/js/public.js -c -m -o assets/js/public.min.js --source-map && terser assets/js/common.js -c -m -o assets/js/common.min.js --source-map && terser assets/js/persist.js -c -m -o assets/js/persist.min.js --source-map",
-    "build:css": "cleancss -o assets/css/admin.min.css assets/css/admin.css && cleancss -o assets/css/public.min.css assets/css/public.css && cleancss -o assets/css/common.min.css assets/css/common.css",
+    "build:js": "terser assets/js/admin.js -c -m -o assets/js/admin.min.js --source-map && terser assets/js/public.js -c -m -o assets/js/public.min.js --source-map && terser assets/js/common.js -c -m -o assets/js/common.min.js --source-map && terser assets/js/persist.js -c -m -o assets/js/persist.min.js --source-map && terser assets/js/currency-banner-modern.js -c -m -o assets/js/currency-banner-modern.min.js --source-map",
+    "build:css": "cleancss -o assets/css/admin.min.css assets/css/admin.css && cleancss -o assets/css/public.min.css assets/css/public.css && cleancss -o assets/css/common.min.css assets/css/common.css && cleancss -o assets/css/currency-banner-modern.min.css assets/css/currency-banner-modern.css",
     "build": "run-s build:parser build:js build:css"
   },
   "keywords": [],
@@ -18,5 +18,12 @@
     "clean-css-cli": "^5.6.3",
     "npm-run-all": "^4.1.5",
     "terser": "^5.43.1"
+  },
+  "dependencies": {
+    "autoprefixer": "^10.4.21",
+    "cssnano-cli": "^1.0.5",
+    "gsap": "^3.12.2",
+    "postcss-cli": "^11.0.1",
+    "swiper": "^11.0.0"
   }
 }

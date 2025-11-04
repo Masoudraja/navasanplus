@@ -45,17 +45,18 @@ class CurrencyBannerPage {
         wp_enqueue_script( 'wp-color-picker' );
         
         // Add admin JavaScript
+        $preview_nonce = wp_create_nonce( 'mns_banner_preview' );
         wp_add_inline_script( 'jquery', '
             jQuery(document).ready(function($) {
                 // Ensure form submission works
                 $("form").on("submit", function() {
                     $(this).find("input[type=submit]").prop("disabled", true);
                 });
-                
+
                 // Preview banner
                 $(".mns-preview-banner").on("click", function() {
-                    const shortcode = $("#mns-generated-shortcode").val();
-                    
+                    const shortcode = $("#mns-generated-shortcode-modern").val();
+
                     // Open preview in new window/tab
                     const previewWindow = window.open("", "_blank", "width=1200,height=600,scrollbars=yes,resizable=yes");
                     previewWindow.document.write(`
@@ -73,16 +74,20 @@ class CurrencyBannerPage {
                         </html>
                     `);
                     previewWindow.document.close();
-                    
+
                     // Load preview content via AJAX
                     $.post(ajaxurl, {
                         action: "mns_banner_preview",
                         shortcode: shortcode,
-                        _wpnonce: "' . wp_create_nonce( 'mns_banner_preview' ) . '"
+                        _wpnonce: "' . esc_js( $preview_nonce ) . '"
                     }, function(response) {
                         if (response.success) {
                             previewWindow.document.getElementById("banner-preview").innerHTML = response.data;
+                        } else {
+                            previewWindow.document.getElementById("banner-preview").innerHTML = "<p style=\"color: red;\">Error loading preview</p>";
                         }
+                    }).fail(function() {
+                        previewWindow.document.getElementById("banner-preview").innerHTML = "<p style=\"color: red;\">Failed to load preview</p>";
                     });
                 });
 
@@ -91,22 +96,20 @@ class CurrencyBannerPage {
                     if (confirm("آیا مطمئن هستید می‌خواهید تمام تنظیمات بنر را به پیش‌فرض بازگردانید؟")) {
                         // Reset form to defaults
                         $("#mns_banner_style").val("modern");
-                        $("#mns_banner_height").val("auto");
                         $("#mns_banner_background").val("gradient");
-                        $("#mns_banner_columns").val("auto");
-                        $("#mns_banner_auto_refresh").val("30");
+                        $("#mns_banner_auto_refresh").prop("checked", true);
                         $("#mns_banner_show_change").prop("checked", true);
                         $("#mns_banner_show_time").prop("checked", true);
                         $("#mns_banner_animation").val("slide");
-                        
+
                         // Clear selected currencies
-                        $("#mns-selected-currencies .mns-currency-card").each(function() {
-                            $(this).find(".mns-remove-currency").click();
+                        $("#mns-selected-currencies-modern .mns-currency-card-modern").each(function() {
+                            $(this).find(".mns-remove-currency-modern").click();
                         });
-                        
+
                         // Update shortcode
-                        if (typeof updateShortcode === "function") {
-                            updateShortcode();
+                        if (typeof updateShortcodeModern === "function") {
+                            updateShortcodeModern();
                         }
                     }
                 });
@@ -143,38 +146,27 @@ class CurrencyBannerPage {
             'name'               => $banner_name,
             'selected_currencies' => $selected_currencies,
             'style'              => sanitize_text_field( $_POST['mns_banner_style'] ?? 'modern' ),
-            'height'             => sanitize_text_field( $_POST['mns_banner_height'] ?? 'auto' ),
             'background'         => sanitize_text_field( $_POST['mns_banner_background'] ?? 'gradient' ),
             'background_color'   => sanitize_hex_color( $_POST['mns_banner_background_color'] ?? '#667eea' ),
-            'columns'            => sanitize_text_field( $_POST['mns_banner_columns'] ?? 'auto' ),
-            'auto_refresh'       => intval( $_POST['mns_banner_auto_refresh'] ?? 30 ),
+            'auto_refresh'       => isset( $_POST['mns_banner_auto_refresh'] ) ? '30' : '0',
+            'refresh_interval'   => intval( $_POST['mns_banner_refresh_interval'] ?? 30 ),
             'show_change'        => isset( $_POST['mns_banner_show_change'] ) ? 'yes' : 'no',
             'show_time'          => isset( $_POST['mns_banner_show_time'] ) ? 'yes' : 'no',
             'show_symbol'        => isset( $_POST['mns_banner_show_symbol'] ) ? 'yes' : 'no',
             'animation'          => sanitize_text_field( $_POST['mns_banner_animation'] ?? 'slide' ),
+            'mobile_animation'   => sanitize_text_field( $_POST['mns_banner_mobile_animation'] ?? 'carousel' ),
+            'tablet_view'        => sanitize_text_field( $_POST['mns_banner_tablet_view'] ?? 'grid' ),
             'font_size'          => intval( $_POST['mns_banner_font_size'] ?? 16 ),
-            'font_color'         => sanitize_hex_color( $_POST['mns_banner_font_color'] ?? '#333333' ),
+            'font_color'         => sanitize_hex_color( $_POST['mns_banner_font_color'] ?? '#ffffff' ),
             'border_radius'      => intval( $_POST['mns_banner_border_radius'] ?? 8 ),
             'padding'            => intval( $_POST['mns_banner_padding'] ?? 20 ),
-            'margin'             => intval( $_POST['mns_banner_margin'] ?? 10 ),
             'item_spacing'       => intval( $_POST['mns_banner_item_spacing'] ?? 15 ),
             'shadow'             => sanitize_text_field( $_POST['mns_banner_shadow'] ?? 'light' ),
-            'width'              => sanitize_text_field( $_POST['mns_banner_width'] ?? '100%' )
+            'max_currencies'     => intval( $_POST['mns_banner_max_currencies'] ?? 6 ),
+            'enable_hover_effect' => isset( $_POST['mns_banner_enable_hover_effect'] ) ? 'yes' : 'no'
         ];
 
-        // Get existing banners
-        $banners = get_option( 'mns_currency_banners', [] );
-        $banner_id = sanitize_text_field( $_POST['banner_id'] ?? '' );
-        
-        if ( empty( $banner_id ) ) {
-            // Create new banner
-            $banner_id = 'banner_' . time() . '_' . wp_generate_password( 8, false, false );
-        }
-        
-        $banners[ $banner_id ] = $settings;
-        update_option( 'mns_currency_banners', $banners );
-        
-        // Also update the main settings for backward compatibility
+        // Save settings
         update_option( 'mns_currency_banner_settings', $settings );
     }
 
@@ -183,15 +175,24 @@ class CurrencyBannerPage {
             'name'               => 'Default Banner',
             'selected_currencies' => [],
             'style'              => 'modern',
-            'height'             => 'auto',
             'background'         => 'gradient',
             'background_color'   => '#667eea',
-            'columns'            => 'auto',
-            'auto_refresh'       => 30,
+            'auto_refresh'       => '30',
+            'refresh_interval'   => 30,
             'show_change'        => 'yes',
             'show_time'          => 'yes',
             'show_symbol'        => 'no',
-            'animation'          => 'slide'
+            'animation'          => 'slide',
+            'mobile_animation'   => 'carousel',
+            'tablet_view'        => 'grid',
+            'font_size'          => 16,
+            'font_color'         => '#ffffff',
+            'border_radius'      => 8,
+            'padding'            => 20,
+            'item_spacing'       => 15,
+            'shadow'             => 'light',
+            'max_currencies'     => 6,
+            'enable_hover_effect' => 'yes'
         ];
 
         $settings = get_option( 'mns_currency_banner_settings', [] );
@@ -219,7 +220,7 @@ class CurrencyBannerPage {
                                     <?php wp_nonce_field( 'mns_currency_banner_settings', 'mns_currency_banner_nonce' ); ?>
                                     
                                     <?php 
-                                    Snippets::load_template( 'currency-banner-admin', [
+                                    Snippets::load_template( 'currency-banner-modern-admin', [
                                         'selected' => $settings['selected_currencies'],
                                         'context'  => 'admin_page'
                                     ]);
@@ -259,24 +260,31 @@ class CurrencyBannerPage {
                                     <p><strong><?php _e( 'ارزهای مشخص:', 'mns-navasan-plus' ); ?></strong></p>
                                     <code>[mns_currency_banner currencies="1,2,3"]</code>
 
-                                    <p><strong><?php _e( 'سبک مینیمال:', 'mns-navasan-plus' ); ?></strong></p>
-                                    <code>[mns_currency_banner style="minimal" height="compact"]</code>
+                                    <p><strong><?php _e( 'سبک شیشه‌ای:', 'mns-navasan-plus' ); ?></strong></p>
+                                    <code>[mns_currency_banner style="glass"]</code>
 
-                                    <p><strong><?php _e( 'ستون‌های سفارشی:', 'mns-navasan-plus' ); ?></strong></p>
-                                    <code>[mns_currency_banner columns="4" background="solid"]</code>
+                                    <p><strong><?php _e('رنگ سفارشی:', 'mns-navasan-plus' ); ?></strong></p>
+                                    <code>[mns_currency_banner background="custom" background_color="#ff6b6b"]</code>
+                                    
+                                    <p><strong><?php _e('حداکثر ۳ ارز با انیمیشن تیکر:', 'mns-navasan-plus' ); ?></strong></p>
+                                    <code>[mns_currency_banner max_currencies="3" animation="ticker"]</code>
                                 </div>
 
                                 <h4><?php _e( 'پارامترهای شورت‌کد', 'mns-navasan-plus' ); ?></h4>
                                 <ul class="mns-parameter-list">
                                     <li><strong>currencies</strong> - <?php _e( 'شناسه‌های ارز جدا شده با کاما', 'mns-navasan-plus' ); ?></li>
-                                    <li><strong>style</strong> - <?php _e( 'مدرن، مینیمال، کلاسیک', 'mns-navasan-plus' ); ?></li>
-                                    <li><strong>height</strong> - <?php _e( 'خودکار، فشرده، بلند', 'mns-navasan-plus' ); ?></li>
-                                    <li><strong>background</strong> - <?php _e( 'گرادیان، یکدست، شفاف', 'mns-navasan-plus' ); ?></li>
-                                    <li><strong>columns</strong> - <?php _e( 'خودکار، ۲، ۳، ۴، ۵، ۶', 'mns-navasan-plus' ); ?></li>
-                                    <li><strong>auto_refresh</strong> - <?php _e( 'فاصله بروزرسانی به ثانیه (۰=خاموش)', 'mns-navasan-plus' ); ?></li>
+                                    <li><strong>style</strong> - <?php _e( 'مدرن، شیشه‌ای، مینیمال', 'mns-navasan-plus' ); ?></li>
+                                    <li><strong>background</strong> - <?php _e( 'گرادیان، یکدست، شفاف، سفارشی', 'mns-navasan-plus' ); ?></li>
+                                    <li><strong>auto_refresh</strong> - <?php _e( '۰=خاموش یا ۳۰=فعال', 'mns-navasan-plus' ); ?></li>
+                                    <li><strong>refresh_interval</strong> - <?php _e( 'فاصله بروزرسانی به ثانیه', 'mns-navasan-plus' ); ?></li>
                                     <li><strong>show_change</strong> - <?php _e( 'بله/خیر - نمایش درصد تغییر', 'mns-navasan-plus' ); ?></li>
                                     <li><strong>show_time</strong> - <?php _e( 'بله/خیر - نمایش زمان بروزرسانی', 'mns-navasan-plus' ); ?></li>
-                                    <li><strong>animation</strong> - <?php _e( 'لغزش، محو، هیچ', 'mns-navasan-plus' ); ?></li>
+                                    <li><strong>show_symbol</strong> - <?php _e( 'بله/خیر - نمایش نماد ارز', 'mns-navasan-plus' ); ?></li>
+                                    <li><strong>animation</strong> - <?php _e( 'لغزش، محو، تیکر، swiper', 'mns-navasan-plus' ); ?></li>
+                                    <li><strong>mobile_animation</strong> - <?php _e( 'carousel، تیکر، پشته‌ای، شبکه، swiper', 'mns-navasan-plus' ); ?></li>
+                                    <li><strong>tablet_view</strong> - <?php _e( 'grid، carousel، ticker، stacked، swiper', 'mns-navasan-plus' ); ?></li>
+                                    <li><strong>max_currencies</strong> - <?php _e( 'حداکثر تعداد ارزها (۱-۲۰)', 'mns-navasan-plus' ); ?></li>
+                                    <li><strong>enable_hover_effect</strong> - <?php _e( 'بله/خیر - فعال‌سازی جلوه‌های هاور', 'mns-navasan-plus' ); ?></li>
                                 </ul>
                             </div>
                         </div>
@@ -353,81 +361,54 @@ class CurrencyBannerPage {
         <?php
     }
 
-    private function render_currency_stats(): void {
-        $currencies = get_posts([
-            'post_type'      => 'mnsnp_currency',
-            'posts_per_page' => -1,
-            'post_status'    => 'publish',
-            'orderby'        => 'title',
-            'order'          => 'ASC'
-        ]);
-
-        if ( empty( $currencies ) ) {
-            echo '<p>' . __( 'هیچ ارزی یافت نشد. ابتدا برخی ارزها را ایجاد کنید.', 'mns-navasan-plus' ) . '</p>';
-            return;
-        }
-
-        echo '<table class="mns-currency-stats-table">';
-        echo '<thead><tr>';
-        echo '<th>' . __( 'ارز', 'mns-navasan-plus' ) . '</th>';
-        echo '<th>' . __( 'نرخ', 'mns-navasan-plus' ) . '</th>';
-        echo '<th>' . __( 'آخرین بروزرسانی', 'mns-navasan-plus' ) . '</th>';
-        echo '</tr></thead>';
-        echo '<tbody>';
-
-        foreach ( $currencies as $post ) {
-            $currency = new Currency( $post );
-            echo '<tr>';
-            echo '<td>';
-            echo '<strong>' . esc_html( $currency->get_name() ) . '</strong>';
-            if ( $currency->get_code() ) {
-                echo ' <small>(' . esc_html( $currency->get_code() ) . ')</small>';
-            }
-            echo '</td>';
-            echo '<td><span class="mns-rate-value">' . esc_html( $currency->display_rate() ) . '</span></td>';
-            echo '<td><span class="mns-rate-updated">' . esc_html( $currency->format_update_time() ) . '</span></td>';
-            echo '</tr>';
-        }
-
-        echo '</tbody></table>';
-    }
-
     /**
      * AJAX handler for banner preview
      */
     public function ajax_banner_preview(): void {
         if ( ! wp_verify_nonce( $_POST['_wpnonce'] ?? '', 'mns_banner_preview' ) ) {
-            wp_die( 'Security check failed' );
+            wp_send_json_error( 'Security check failed' );
+            return;
         }
 
         if ( ! current_user_can( 'manage_woocommerce' ) ) {
-            wp_die( 'Access denied' );
+            wp_send_json_error( 'Access denied' );
+            return;
         }
 
         $shortcode = sanitize_text_field( $_POST['shortcode'] ?? '[mns_currency_banner]' );
-        
+
+        // Validate shortcode format
+        if ( ! preg_match( '/^\[mns_currency_banner.*\]$/', $shortcode ) ) {
+            wp_send_json_error( 'Invalid shortcode format' );
+            return;
+        }
+
         // Start output buffering to capture styles and scripts
         ob_start();
-        
-        // Load banner CSS
-        $css_file = MNS_NAVASAN_PLUS_PATH . 'assets/css/currency-banner.css';
+
+        // Load banner CSS - properly escape for security
+        $css_file = MNS_NAVASAN_PLUS_PATH . 'assets/css/currency-banner-modern.css';
         if ( file_exists( $css_file ) ) {
-            echo '<style>' . file_get_contents( $css_file ) . '</style>';
+            $css_content = file_get_contents( $css_file );
+            // Use wp_strip_all_tags to remove any potential HTML, then use esc_html to prevent XSS
+            echo '<style>' . wp_kses( $css_content, array() ) . '</style>';
         }
-        
+
         // Generate banner output
         $banner_output = do_shortcode( $shortcode );
         echo $banner_output;
-        
-        // Add initialization script
+
+        // Add initialization script - load from enqueued source
         echo '<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>';
-        $js_file = MNS_NAVASAN_PLUS_PATH . 'assets/js/currency-banner.js';
+        $js_file = MNS_NAVASAN_PLUS_PATH . 'assets/js/currency-banner-modern.js';
         if ( file_exists( $js_file ) ) {
-            echo '<script>' . file_get_contents( $js_file ) . '</script>';
+            // JavaScript files should not be escaped, but we validate the file path
+            $js_content = file_get_contents( $js_file );
+            echo '<script>' . $js_content . '</script>';
         }
-        
+
         $output = ob_get_clean();
-        
+
         wp_send_json_success( $output );
     }
 }
