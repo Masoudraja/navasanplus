@@ -195,53 +195,57 @@ final class CategoryDiscountFields {
     set_time_limit(300);
 
     // Set a flag to bypass time-based discount restrictions during category updates
-    $GLOBALS['mnsnp_category_update_in_progress'] = true;
+    // Using static method instead of global variable for better safety
+    \MNS\NavasanPlus\Services\TimeBasedDiscounts::set_category_update_flag(true);
 
-    foreach ($product_ids as $pid) {
-      // 3a: Update discount meta.
-      foreach ($this->fields as $key => $label) {
-        $value_to_save = $discounts[$key] ?? '';
-        $value = $value_to_save === '' ? '' : wc_format_decimal($value_to_save, 0);
-        update_post_meta($pid, $db->full_meta_key($key), $value);
-      }
-      // 3b: Recalculate and apply the final price.
-      if (class_exists(PriceCalculator::class)) {
-        try {
-          $res = PriceCalculator::instance()->calculate($pid);
-          if ($res !== null) {
-            $price_after = is_array($res) ? (float) ($res['price'] ?? 0) : (float) $res;
-            $price_before = is_array($res)
-              ? (float) ($res['price_before'] ?? $price_after)
-              : $price_after;
-            $p_i = (int) floor($price_after);
-            $pb_i = (int) floor($price_before);
-            $has_discount = $pb_i > $p_i;
-            $regular_i = $has_discount ? $pb_i : $p_i;
-            $sale_i = $has_discount ? $p_i : 0;
-            update_post_meta($pid, '_regular_price', $regular_i > 0 ? (string) $regular_i : '');
-            update_post_meta($pid, '_sale_price', $sale_i > 0 ? (string) $sale_i : '');
-            update_post_meta(
-              $pid,
-              '_price',
-              $sale_i > 0 ? (string) $sale_i : ($regular_i > 0 ? (string) $regular_i : ''),
-            );
+    try {
+      foreach ($product_ids as $pid) {
+        // 3a: Update discount meta.
+        foreach ($this->fields as $key => $label) {
+          $value_to_save = $discounts[$key] ?? '';
+          $value = $value_to_save === '' ? '' : wc_format_decimal($value_to_save, 0);
+          update_post_meta($pid, $db->full_meta_key($key), $value);
+        }
+        // 3b: Recalculate and apply the final price.
+        if (class_exists(PriceCalculator::class)) {
+          try {
+            $res = PriceCalculator::instance()->calculate($pid);
+            if ($res !== null) {
+              $price_after = is_array($res) ? (float) ($res['price'] ?? 0) : (float) $res;
+              $price_before = is_array($res)
+                ? (float) ($res['price_before'] ?? $price_after)
+                : $price_after;
+              $p_i = (int) floor($price_after);
+              $pb_i = (int) floor($price_before);
+              $has_discount = $pb_i > $p_i;
+              $regular_i = $has_discount ? $pb_i : $p_i;
+              $sale_i = $has_discount ? $p_i : 0;
+              update_post_meta($pid, '_regular_price', $regular_i > 0 ? (string) $regular_i : '');
+              update_post_meta($pid, '_sale_price', $sale_i > 0 ? (string) $sale_i : '');
+              update_post_meta(
+                $pid,
+                '_price',
+                $sale_i > 0 ? (string) $sale_i : ($regular_i > 0 ? (string) $regular_i : ''),
+              );
 
-            // Clear caches for both the product/variation AND its parent.
-            if (function_exists('wc_delete_product_transients')) {
-              wc_delete_product_transients($pid);
-              $parent_id = wp_get_post_parent_id($pid);
-              if ($parent_id) {
-                wc_delete_product_transients($parent_id);
+              // Clear caches for both the product/variation AND its parent.
+              if (function_exists('wc_delete_product_transients')) {
+                wc_delete_product_transients($pid);
+                $parent_id = wp_get_post_parent_id($pid);
+                if ($parent_id) {
+                  wc_delete_product_transients($parent_id);
+                }
               }
             }
+          } catch (\Throwable $e) {
+            /* Continue on error */
           }
-        } catch (\Throwable $e) {
-          /* Continue on error */
         }
       }
+    } finally {
+      // IMPORTANT: Always remove the flag, even if an error occurs
+      // Using finally ensures this cleanup happens no matter what
+      \MNS\NavasanPlus\Services\TimeBasedDiscounts::set_category_update_flag(false);
     }
-
-    // Remove the flag after updates are complete
-    unset($GLOBALS['mnsnp_category_update_in_progress']);
   }
 }

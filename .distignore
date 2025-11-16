@@ -1,0 +1,69 @@
+# WordPress Plugin Distribution Ignore
+# Files/folders that should NOT be included in the plugin ZIP
+
+# Development dependencies (HUGE!)
+node_modules/
+vendor/
+
+# Package managers
+package.json
+package-lock.json
+composer.json
+composer.lock
+
+# Source files (only ship minified)
+assets/js/*.js
+!assets/js/*.min.js
+assets/css/*.css
+!assets/css/*.min.css
+
+# Source maps (optional - remove if you want them)
+assets/js/*.map
+assets/css/*.map
+
+# Build tools & configs
+.babelrc
+.eslintrc
+.prettierrc
+postcss.config.js
+webpack.config.js
+tsconfig.json
+
+# IDE files
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Git files
+.git/
+.gitignore
+.gitattributes
+.gitmodules
+.github/
+
+# CI/CD
+.gitlab-ci.yml
+.travis.yml
+.circleci/
+
+# Documentation (optional - keep README if needed)
+*.md
+!README.txt
+
+# Tests
+tests/
+phpunit.xml
+.phpunit.result.cache
+
+# Temporary files
+*.tmp
+*.bak
+*.log
+translatable_strings.tmp
+
+# OS files
+Thumbs.db
+desktop.ini

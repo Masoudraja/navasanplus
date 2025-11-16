@@ -363,11 +363,12 @@ final class Loader {
     $recalc_file = __DIR__ . '/Admin/RecalculatePage.php';
     $cat_discount_file = __DIR__ . '/Admin/CategoryDiscountFields.php';
 
-    if (class_exists(__NAMESPACE__ . '\\Admin\\Menu')) {
-      (new \MNS\NavasanPlus\Admin\Menu())->run();
+    // Initialize Export/Import tool
+    if (class_exists(__NAMESPACE__ . '\\Tools\\ExportImport')) {
+      \MNS\NavasanPlus\Tools\ExportImport::instance();
     }
 
-    // Initialize Admin Core which handles CurrencyBannerPage and other admin components
+    // Initialize Admin Core which handles Menu, CurrencyBannerPage and other admin components
     if (class_exists(__NAMESPACE__ . '\\Admin\\Core')) {
       \MNS\NavasanPlus\Admin\Core::instance();
     }

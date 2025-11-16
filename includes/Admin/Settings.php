@@ -145,7 +145,7 @@ final class Settings {
             },
             'mns-navasan-plus-settings'
         );
-        
+
         add_settings_field(
             'force_locale',
             __( 'Plugin Language', 'mns-navasan-plus' ),
@@ -153,6 +153,48 @@ final class Settings {
             'mns-navasan-plus-settings',
             'mns_navasan_plus_language'
         );
+
+        // Data Preservation Settings
+        add_settings_section(
+            'mns_navasan_plus_data',
+            __( 'Data Management', 'mns-navasan-plus' ),
+            function() {
+                echo '<p>' . esc_html__( 'Control what happens to your data when uninstalling the plugin.', 'mns-navasan-plus' ) . '</p>';
+            },
+            'mns-navasan-plus-settings'
+        );
+
+        register_setting(
+            'mns_navasan_plus_options_group',
+            'mns_navasan_plus_preserve_data_on_uninstall'
+        );
+
+        add_settings_field(
+            'preserve_data',
+            __( 'Preserve Data on Uninstall', 'mns-navasan-plus' ),
+            [ $this, 'preserve_data_callback' ],
+            'mns-navasan-plus-settings',
+            'mns_navasan_plus_data'
+        );
+    }
+
+    /**
+     * Preserve data checkbox callback
+     */
+    public function preserve_data_callback(): void {
+        $preserve = get_option( 'mns_navasan_plus_preserve_data_on_uninstall', false );
+        ?>
+        <label>
+            <input type="checkbox"
+                   name="mns_navasan_plus_preserve_data_on_uninstall"
+                   value="1"
+                   <?php checked( $preserve, 1 ); ?>>
+            <?php esc_html_e( 'Keep all plugin data when uninstalling (recommended)', 'mns-navasan-plus' ); ?>
+        </label>
+        <p class="description">
+            <?php esc_html_e( 'When enabled, all your settings, currencies, formulas, and product configurations will be preserved even if you uninstall the plugin. You can use Export/Import to backup your data.', 'mns-navasan-plus' ); ?>
+        </p>
+        <?php
     }
 
     public function sanitize_options( $input ): array {

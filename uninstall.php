@@ -10,7 +10,15 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
     exit;
 }
 
-// Define our DB prefix (in case it’s not already defined)
+// Check if user wants to preserve data on uninstall
+$preserve_data = get_option( 'mns_navasan_plus_preserve_data_on_uninstall', false );
+
+// If preserve data option is enabled, don't delete anything
+if ( $preserve_data ) {
+    return;
+}
+
+// Define our DB prefix (in case it's not already defined)
 if ( ! defined( 'MNS_NAVASAN_PLUS_DB_PREFIX' ) ) {
     define( 'MNS_NAVASAN_PLUS_DB_PREFIX', 'mns_navasan_plus' );
 }

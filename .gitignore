@@ -1,27 +1,41 @@
-/node_modules
-/vendor
+# WordPress Plugin - Development Files
+# These should NEVER be in production
+
+# Dependencies (111MB!)
+node_modules/
+vendor/
+
+# Build files
+package-lock.json
+composer.lock
+
+# IDE files
 .DS_Store
-.idea
-.vscode
-.git
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.bak
+*.log
+.cache/
+
+# OS files
+Thumbs.db
+desktop.ini
+
+# Git files (shouldn't be nested)
+.git/
 .gitignore
 .gitattributes
-.gitignore
 .gitmodules
 .gitkeep
 .gitlab-ci.yml
-.gitignore
-.gitattributes
-.gitignore
-.gitmodules
-.gitkeep
-.gitlab-ci.yml
-.gitignore
-.gitattributes
-.gitignore
-.gitmodules
-.gitkeep
-.gitlab-ci.yml
-.gitignore
-.package-lock.json
-.package.json
+
+# Development only
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

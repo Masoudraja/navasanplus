@@ -53,14 +53,14 @@ class ModernCurrencyBanner {
         // Register modern assets only
         wp_register_style(
             'mns-currency-banner-modern',
-            Helpers::plugin_url( 'assets/css/currency-banner-modern.css' ),
+            Helpers::plugin_url( 'assets/css/currency-banner-modern.min.css' ),
             [],
             MNS_NAVASAN_PLUS_VER
         );
 
         wp_register_script(
             'mns-currency-banner-modern',
-            Helpers::plugin_url( 'assets/js/currency-banner-modern.js' ),
+            Helpers::plugin_url( 'assets/js/currency-banner-modern.min.js' ),
             [ 'jquery' ],
             MNS_NAVASAN_PLUS_VER,
             true

@@ -17,13 +17,13 @@ use MNS\NavasanPlus\Helpers;
 // Enqueue public assets
 wp_enqueue_style(
     'mns-navasan-plus-public',
-    Helpers::plugin_url( 'assets/css/public.css' ),
+    Helpers::plugin_url( 'assets/css/public.min.css' ),
     [],
     '1.0.0'
 );
 wp_enqueue_script(
     'mns-navasan-plus-public',
-    Helpers::plugin_url( 'assets/js/public.js' ),
+    Helpers::plugin_url( 'assets/js/public.min.js' ),
     [ 'jquery' ],
     '1.0.0',
     true

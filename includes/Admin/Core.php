@@ -69,13 +69,13 @@ final class Core {
     public function enqueue_assets(): void {
         wp_enqueue_style(
             'mns-navasan-plus-admin',
-            Helpers::plugin_url( 'assets/css/admin.css' ),
+            Helpers::plugin_url( 'assets/css/admin.min.css' ),
             [],
             '1.0.0'
         );
         wp_enqueue_script(
             'mns-navasan-plus-admin',
-            Helpers::plugin_url( 'assets/js/admin.js' ),
+            Helpers::plugin_url( 'assets/js/admin.min.js' ),
             [ 'jquery' ],
             '1.0.0',
             true

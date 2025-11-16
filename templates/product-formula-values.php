@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 // If displaying on frontend, enqueue public styles (usually not needed in admin)
 if ( ! is_admin() ) {
-    wp_enqueue_style( 'mns-navasan-plus-public', Helpers::plugin_url( 'assets/css/public.css' ), [], '1.0.0' );
+    wp_enqueue_style( 'mns-navasan-plus-public', Helpers::plugin_url( 'assets/css/public.min.css' ), [], '1.0.0' );
 }
 
 // Sanitize inputs

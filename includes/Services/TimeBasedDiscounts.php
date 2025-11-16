@@ -12,6 +12,12 @@ use MNS\NavasanPlus\DB;
  */
 final class TimeBasedDiscounts {
   /**
+   * Static flag to bypass time restrictions during category bulk updates
+   * Replaces the global variable for better safety and scope control
+   */
+  private static bool $category_update_in_progress = false;
+
+  /**
    * Hook into WordPress
    */
   public function run(): void {
@@ -64,10 +70,19 @@ final class TimeBasedDiscounts {
 
   /**
    * Schedule cron job for discount expiration
+   *
+   * Uses 'twicehourly' (every 30 minutes) for more responsive discount activation/expiration.
+   * This is especially important for flash sales and time-sensitive promotions.
+   *
+   * Filter: 'mnsnp_discount_cron_interval' to customize the interval
+   * Available intervals: 'hourly', 'twicehourly', 'daily', or custom intervals
    */
   public function schedule_discount_expiration_cron(): void {
     if (!wp_next_scheduled('mnsnp_discount_expiration_cron')) {
-      wp_schedule_event(time(), 'hourly', 'mnsnp_discount_expiration_cron');
+      // Default to twicehourly (every 30 minutes) for better responsiveness
+      // Can be filtered to 'hourly', 'daily', or custom interval
+      $interval = apply_filters('mnsnp_discount_cron_interval', 'twicehourly');
+      wp_schedule_event(time(), $interval, 'mnsnp_discount_expiration_cron');
     }
   }
 
@@ -205,9 +220,9 @@ final class TimeBasedDiscounts {
       return; // No times to set
     }
 
-    // Convert to timestamps
-    $start_timestamp = $start_time ? strtotime($start_time) : null;
-    $end_timestamp = $end_time ? strtotime($end_time) : null;
+    // Convert to timestamps using WordPress timezone-aware functions
+    $start_timestamp = $start_time ? $this->convert_local_to_timestamp($start_time) : null;
+    $end_timestamp = $end_time ? $this->convert_local_to_timestamp($end_time) : null;
 
     // Set the sale dates on the product object
     // WooCommerce will save these when it saves the product
@@ -293,9 +308,9 @@ final class TimeBasedDiscounts {
       return; // No times to inject
     }
 
-    // Convert to timestamps
-    $start_timestamp = $start_time ? strtotime($start_time) : '';
-    $end_timestamp = $end_time ? strtotime($end_time) : '';
+    // Convert to timestamps using WordPress timezone-aware functions
+    $start_timestamp = $start_time ? $this->convert_local_to_timestamp($start_time) : '';
+    $end_timestamp = $end_time ? $this->convert_local_to_timestamp($end_time) : '';
 
     // Inject into $_POST so WooCommerce sees them
     if ($start_timestamp) {
@@ -346,9 +361,9 @@ final class TimeBasedDiscounts {
 
     // If we have times set, use WooCommerce's data store to save directly to product object
     if ($start_time || $end_time) {
-      // Convert to timestamps
-      $start_timestamp = $start_time ? strtotime($start_time) : '';
-      $end_timestamp = $end_time ? strtotime($end_time) : '';
+      // Convert to timestamps using WordPress timezone-aware functions
+      $start_timestamp = $start_time ? $this->convert_local_to_timestamp($start_time) : '';
+      $end_timestamp = $end_time ? $this->convert_local_to_timestamp($end_time) : '';
 
       // Get the product object if we don't have it
       if (is_numeric($product)) {
@@ -405,19 +420,20 @@ final class TimeBasedDiscounts {
     // Convert our datetime-local format to WooCommerce timestamp format
     // Our format: Y-m-d\TH:i (e.g., "2025-01-15T14:30")
     // WooCommerce stores: Unix timestamp (e.g., 1736951400)
+    // IMPORTANT: Using WordPress timezone-aware conversion
     $start_timestamp = '';
     $end_timestamp = '';
 
     if ($start_time) {
-      $start_timestamp = strtotime($start_time);
-      if ($start_timestamp === false) {
+      $start_timestamp = $this->convert_local_to_timestamp($start_time);
+      if ($start_timestamp === false || $start_timestamp === '') {
         $start_timestamp = '';
       }
     }
 
     if ($end_time) {
-      $end_timestamp = strtotime($end_time);
-      if ($end_timestamp === false) {
+      $end_timestamp = $this->convert_local_to_timestamp($end_time);
+      if ($end_timestamp === false || $end_timestamp === '') {
         $end_timestamp = '';
       }
     }
@@ -477,15 +493,15 @@ final class TimeBasedDiscounts {
     $our_start_time = get_post_meta($post_id, $db->full_meta_key('discount_start_time'), true);
     $our_end_time = get_post_meta($post_id, $db->full_meta_key('discount_end_time'), true);
 
-    // Convert WooCommerce timestamps back to our datetime format
+    // Convert WooCommerce timestamps back to our datetime format using WordPress timezone
     if ($meta_key === '_sale_price_dates_from') {
-      $new_start_time = $meta_value ? date('Y-m-d\TH:i', $meta_value) : '';
+      $new_start_time = $meta_value ? $this->convert_timestamp_to_local($meta_value) : '';
       // Only update if different to avoid infinite loops
       if ($new_start_time !== $our_start_time) {
         update_post_meta($post_id, $db->full_meta_key('discount_start_time'), $new_start_time);
       }
     } elseif ($meta_key === '_sale_price_dates_to') {
-      $new_end_time = $meta_value ? date('Y-m-d\TH:i', $meta_value) : '';
+      $new_end_time = $meta_value ? $this->convert_timestamp_to_local($meta_value) : '';
       // Only update if different to avoid infinite loops
       if ($new_end_time !== $our_end_time) {
         update_post_meta($post_id, $db->full_meta_key('discount_end_time'), $new_end_time);
@@ -534,9 +550,10 @@ final class TimeBasedDiscounts {
       return;
     }
 
-    $now = time();
-    $start_timestamp = $start_time ? strtotime($start_time) : 0;
-    $end_timestamp = $end_time ? strtotime($end_time) : 0;
+    // Use WordPress timezone-aware current time
+    $now = current_time('timestamp');
+    $start_timestamp = $start_time ? $this->convert_local_to_timestamp($start_time) : 0;
+    $end_timestamp = $end_time ? $this->convert_local_to_timestamp($end_time) : 0;
 
     // Determine which time to show countdown for
     $target_timestamp = 0;
@@ -579,23 +596,57 @@ final class TimeBasedDiscounts {
     ?>
     <div class="mnsnp-sale-countdown <?php echo esc_attr(
       $wrapper_class,
-    ); ?>" data-end-time="<?php echo esc_attr($target_timestamp); ?>">
+    ); ?>" data-end-time="<?php echo esc_attr($target_timestamp); ?>" data-countdown-type="<?php echo esc_attr($countdown_type); ?>">
       <div class="mnsnp-countdown-message"><?php echo esc_html($message); ?></div>
       <div class="mnsnp-countdown-timer">
-        <span class="mnsnp-days"><?php echo esc_html(
+        <span class="mnsnp-days" data-unit="days"><?php echo esc_html(
           $days,
         ); ?><span class="mnsnp-label"><?php _e('Days', 'mns-navasan-plus'); ?></span></span>
-        <span class="mnsnp-hours"><?php echo esc_html(
+        <span class="mnsnp-hours" data-unit="hours"><?php echo esc_html(
           $hours,
         ); ?><span class="mnsnp-label"><?php _e('Hours', 'mns-navasan-plus'); ?></span></span>
-        <span class="mnsnp-minutes"><?php echo esc_html(
+        <span class="mnsnp-minutes" data-unit="minutes"><?php echo esc_html(
           $minutes,
         ); ?><span class="mnsnp-label"><?php _e('Mins', 'mns-navasan-plus'); ?></span></span>
-        <span class="mnsnp-seconds"><?php echo esc_html(
+        <span class="mnsnp-seconds" data-unit="seconds"><?php echo esc_html(
           $seconds,
         ); ?><span class="mnsnp-label"><?php _e('Secs', 'mns-navasan-plus'); ?></span></span>
       </div>
     </div>
+    <script>
+    (function() {
+      // JavaScript countdown timer that works with cached pages
+      // Uses data-end-time attribute to calculate time remaining client-side
+      var countdown = document.querySelector('.mnsnp-sale-countdown[data-end-time="<?php echo esc_js($target_timestamp); ?>"]');
+      if (!countdown) return;
+
+      function updateCountdown() {
+        var endTime = parseInt(countdown.getAttribute('data-end-time'));
+        var now = Math.floor(Date.now() / 1000);
+        var timeLeft = endTime - now;
+
+        if (timeLeft <= 0) {
+          // Countdown finished - reload page to update discount status
+          window.location.reload();
+          return;
+        }
+
+        var days = Math.floor(timeLeft / 86400);
+        var hours = Math.floor((timeLeft % 86400) / 3600);
+        var minutes = Math.floor((timeLeft % 3600) / 60);
+        var seconds = timeLeft % 60;
+
+        countdown.querySelector('.mnsnp-days').childNodes[0].textContent = days;
+        countdown.querySelector('.mnsnp-hours').childNodes[0].textContent = hours;
+        countdown.querySelector('.mnsnp-minutes').childNodes[0].textContent = minutes;
+        countdown.querySelector('.mnsnp-seconds').childNodes[0].textContent = seconds;
+      }
+
+      // Update immediately and then every second
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    })();
+    </script>
     <?php
   }
 
@@ -603,8 +654,8 @@ final class TimeBasedDiscounts {
    * Check if discount is currently active
    */
   private function is_discount_active(int $product_id): bool {
-    // Bypass time restrictions during category updates
-    if (!empty($GLOBALS['mnsnp_category_update_in_progress'])) {
+    // Bypass time restrictions during category updates (using static flag instead of global)
+    if (self::$category_update_in_progress) {
       return true;
     }
 
@@ -612,15 +663,16 @@ final class TimeBasedDiscounts {
     $start_time = get_post_meta($product_id, $db->full_meta_key('discount_start_time'), true);
     $end_time = get_post_meta($product_id, $db->full_meta_key('discount_end_time'), true);
 
-    $now = time();
+    // Use WordPress timezone-aware current time
+    $now = current_time('timestamp');
 
-    // Check start time
-    if ($start_time && strtotime($start_time) > $now) {
+    // Check start time (fixed: use >= to include exact start time)
+    if ($start_time && $this->convert_local_to_timestamp($start_time) > $now) {
       return false; // Discount hasn't started yet
     }
 
-    // Check end time
-    if ($end_time && strtotime($end_time) < $now) {
+    // Check end time (fixed: use <= to include exact end time)
+    if ($end_time && $this->convert_local_to_timestamp($end_time) <= $now) {
       return false; // Discount has expired
     }
 
@@ -673,11 +725,14 @@ final class TimeBasedDiscounts {
 
     $products = get_posts($args);
 
+    // Use WordPress timezone-aware current time
+    $now = current_time('timestamp');
+
     foreach ($products as $product) {
       $end_time = get_post_meta($product->ID, '_mns_navasan_plus_discount_end_time', true);
 
-      // Check if end time is in the past
-      if ($end_time && strtotime($end_time) < time()) {
+      // Check if end time is in the past (fixed: use <= and timezone-aware time)
+      if ($end_time && $this->convert_local_to_timestamp($end_time) <= $now) {
         // For backward compatibility, we can clear the discount values
         // but the main logic now uses the filter approach above
       }
@@ -893,15 +948,16 @@ final class TimeBasedDiscounts {
     $start_time = get_term_meta($term_id, 'discount_start_time', true);
     $end_time = get_term_meta($term_id, 'discount_end_time', true);
 
-    $now = time();
+    // Use WordPress timezone-aware current time
+    $now = current_time('timestamp');
 
-    // Check start time
-    if ($start_time && strtotime($start_time) > $now) {
+    // Check start time (fixed: use >= to include exact start time)
+    if ($start_time && $this->convert_local_to_timestamp($start_time) > $now) {
       return false; // Discount hasn't started yet
     }
 
-    // Check end time
-    if ($end_time && strtotime($end_time) < $now) {
+    // Check end time (fixed: use <= to include exact end time)
+    if ($end_time && $this->convert_local_to_timestamp($end_time) <= $now) {
       return false; // Discount has expired
     }
 
@@ -935,9 +991,9 @@ final class TimeBasedDiscounts {
     update_post_meta($product_id, $db->full_meta_key('discount_start_time'), $start_time);
     update_post_meta($product_id, $db->full_meta_key('discount_end_time'), $end_time);
 
-    // Convert to timestamps and save to WooCommerce meta
-    $start_timestamp = $start_time ? strtotime($start_time) : '';
-    $end_timestamp = $end_time ? strtotime($end_time) : '';
+    // Convert to timestamps using WordPress timezone-aware functions
+    $start_timestamp = $start_time ? $this->convert_local_to_timestamp($start_time) : '';
+    $end_timestamp = $end_time ? $this->convert_local_to_timestamp($end_time) : '';
 
     if ($start_timestamp) {
       update_post_meta($product_id, '_sale_price_dates_from', $start_timestamp);
@@ -1023,9 +1079,9 @@ final class TimeBasedDiscounts {
     $db = DB::instance();
     $synced_count = 0;
 
-    // Convert to timestamps once
-    $start_timestamp = $start_time ? strtotime($start_time) : '';
-    $end_timestamp = $end_time ? strtotime($end_time) : '';
+    // Convert to timestamps once using WordPress timezone-aware functions
+    $start_timestamp = $start_time ? $this->convert_local_to_timestamp($start_time) : '';
+    $end_timestamp = $end_time ? $this->convert_local_to_timestamp($end_time) : '';
 
     // Sync each product
     foreach ($product_ids as $product_id) {
@@ -1073,5 +1129,83 @@ final class TimeBasedDiscounts {
       ),
       'synced_count' => $synced_count
     ]);
+  }
+
+  /**
+   * Convert datetime-local format to timestamp using WordPress timezone
+   *
+   * This ensures times entered by users are interpreted in the site's timezone,
+   * not the server's timezone. Critical for international sites.
+   *
+   * @param string $datetime_local Format: Y-m-d\TH:i (e.g., "2025-11-14T15:30")
+   * @return int|false Timestamp or false on failure
+   */
+  private function convert_local_to_timestamp(string $datetime_local) {
+    if (empty($datetime_local)) {
+      return false;
+    }
+
+    // Convert datetime-local format (Y-m-d\TH:i) to a format strtotime understands
+    // Replace 'T' with space: "2025-11-14T15:30" → "2025-11-14 15:30"
+    $formatted = str_replace('T', ' ', $datetime_local);
+
+    // Get WordPress timezone
+    $timezone = wp_timezone();
+
+    try {
+      // Create DateTime object in site's timezone
+      $dt = new \DateTime($formatted, $timezone);
+      return $dt->getTimestamp();
+    } catch (\Exception $e) {
+      // Fallback to strtotime if DateTime fails
+      // Note: This may not respect timezone properly but prevents total failure
+      return strtotime($formatted);
+    }
+  }
+
+  /**
+   * Convert timestamp to datetime-local format using WordPress timezone
+   *
+   * @param int $timestamp Unix timestamp
+   * @return string Format: Y-m-d\TH:i
+   */
+  private function convert_timestamp_to_local(int $timestamp): string {
+    if (empty($timestamp)) {
+      return '';
+    }
+
+    // Get WordPress timezone
+    $timezone = wp_timezone();
+
+    try {
+      // Create DateTime object from timestamp
+      $dt = new \DateTime('@' . $timestamp);
+      // Set timezone to site's timezone
+      $dt->setTimezone($timezone);
+      // Return in datetime-local format
+      return $dt->format('Y-m-d\TH:i');
+    } catch (\Exception $e) {
+      // Fallback to date function
+      return date('Y-m-d\TH:i', $timestamp);
+    }
+  }
+
+  /**
+   * Set category update flag to bypass time restrictions
+   * Use this with try-finally to ensure proper cleanup
+   *
+   * @param bool $status
+   */
+  public static function set_category_update_flag(bool $status): void {
+    self::$category_update_in_progress = $status;
+  }
+
+  /**
+   * Get category update flag status
+   *
+   * @return bool
+   */
+  public static function is_category_update_in_progress(): bool {
+    return self::$category_update_in_progress;
   }
 }

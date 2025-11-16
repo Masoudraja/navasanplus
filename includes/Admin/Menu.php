@@ -20,6 +20,29 @@ final class Menu {
             'dashicons-chart-line',
             56
         );
+
+        // Add Export/Import submenu
+        add_submenu_page(
+            self::SLUG,
+            __( 'Export / Import', 'mns-navasan-plus' ),
+            __( 'Export / Import', 'mns-navasan-plus' ),
+            'manage_options',
+            'mns-navasan-plus-export-import',
+            [ $this, 'render_export_import_page' ]
+        );
+    }
+
+    /**
+     * Render Export/Import page
+     */
+    public function render_export_import_page(): void {
+        if ( ! current_user_can( 'manage_options' ) ) {
+            wp_die( __( 'Access denied.', 'mns-navasan-plus' ) );
+        }
+
+        if ( class_exists( 'MNS\NavasanPlus\Tools\ExportImport' ) ) {
+            \MNS\NavasanPlus\Tools\ExportImport::instance()->render_page();
+        }
     }
 
     public function landing(): void {
